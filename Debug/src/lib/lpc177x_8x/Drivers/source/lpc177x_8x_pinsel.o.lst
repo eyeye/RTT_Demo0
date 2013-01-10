@@ -1,0 +1,1988 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"lpc177x_8x_pinsel.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.align	2
+  19              		.thumb
+  20              		.thumb_func
+  22              	PIN_GetPointer:
+  23              	.LFB55:
+  24              		.file 1 "../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c"
+   1:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /**********************************************************************
+   2:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * $Id$      lpc177x_8x_pinsel.c         2011-06-02
+   3:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** *//**
+   4:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * @file     lpc177x_8x_pinsel.c
+   5:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * @brief    Contains all functions support for Pin-connection block
+   6:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** *           firmware library on LPC177x_8x
+   7:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * @version  1.0
+   8:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * @date     02. June. 2011
+   9:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * @author   NXP MCU SW Application Team
+  10:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * 
+  11:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * Copyright(C) 2011, NXP Semiconductor
+  12:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * All rights reserved.
+  13:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** *
+  14:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** ***********************************************************************
+  15:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * Software that is described herein is for illustrative purposes only
+  16:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * which provides customers with programming information regarding the
+  17:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * products. This software is supplied "AS IS" without any warranties.
+  18:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * NXP Semiconductors assumes no responsibility or liability for the
+  19:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * use of the software, conveys no license or title under any patent,
+  20:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * copyright, or mask work right to the product. NXP Semiconductors
+  21:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * reserves the right to make changes in the software without
+  22:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * notification. NXP Semiconductors also make no representation or
+  23:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * warranty that such application will be suitable for the specified
+  24:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * use without further testing or modification.
+  25:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * Permission to use, copy, modify, and distribute this software and its
+  26:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * documentation is hereby granted, under NXP Semiconductors'
+  27:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * relevant copyright in the software, without fee, provided that it
+  28:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * is used in conjunction with NXP Semiconductors microcontrollers.  This
+  29:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * copyright, permission, and disclaimer notice must appear in all copies of
+  30:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** * this code.
+  31:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** **********************************************************************/
+  32:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+  33:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /* Peripheral group ----------------------------------------------------------- */
+  34:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /** @addtogroup PINSEL
+  35:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @{
+  36:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  */
+  37:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** #ifdef __BUILD_WITH_EXAMPLE__
+  38:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** #include "lpc177x_8x_libcfg.h"
+  39:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** #else
+  40:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** #include "lpc177x_8x_libcfg_default.h"
+  41:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** #endif /* __BUILD_WITH_EXAMPLE__ */
+  42:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** #ifdef _PINSEL
+  43:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+  44:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /* Includes ------------------------------------------------------------------- */
+  45:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** #include "lpc177x_8x_pinsel.h"
+  46:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+  47:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /* Private Functions ---------------------------------------------------------- */
+  48:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+  49:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /*********************************************************************//**
+  50:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @brief       Get pointer to GPIO peripheral due to GPIO port
+  51:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   portnum     Port Number value, should be in range from 0..3.
+  52:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   pinnum      Pin number value, should be in range from 0..31
+  53:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @return      Pointer to GPIO peripheral
+  54:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  **********************************************************************/
+  55:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** static uint32_t * PIN_GetPointer(uint8_t portnum, uint8_t pinnum)
+  56:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** {
+  25              		.loc 1 56 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 16
+  28              		@ frame_needed = 1, uses_anonymous_args = 0
+  29              		@ link register save eliminated.
+  30 0000 80B4     		push	{r7}
+  31              	.LCFI0:
+  32              		.cfi_def_cfa_offset 4
+  33              		.cfi_offset 7, -4
+  34 0002 85B0     		sub	sp, sp, #20
+  35              	.LCFI1:
+  36              		.cfi_def_cfa_offset 24
+  37 0004 00AF     		add	r7, sp, #0
+  38              	.LCFI2:
+  39              		.cfi_def_cfa_register 7
+  40 0006 0246     		mov	r2, r0
+  41 0008 0B46     		mov	r3, r1
+  42 000a FA71     		strb	r2, [r7, #7]
+  43 000c BB71     		strb	r3, [r7, #6]
+  57:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     uint32_t *pPIN = NULL;
+  44              		.loc 1 57 0
+  45 000e 4FF00003 		mov	r3, #0
+  46 0012 FB60     		str	r3, [r7, #12]
+  58:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     pPIN = (uint32_t *)(LPC_IOCON_BASE + ((portnum * 32 + pinnum)*sizeof(uint32_t)));
+  47              		.loc 1 58 0
+  48 0014 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  49 0016 4FEA4312 		lsl	r2, r3, #5
+  50 001a BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+  51 001c D318     		adds	r3, r2, r3
+  52 001e 03F18053 		add	r3, r3, #268435456
+  53 0022 03F53043 		add	r3, r3, #45056
+  54 0026 4FEA8303 		lsl	r3, r3, #2
+  55 002a FB60     		str	r3, [r7, #12]
+  59:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     return pPIN;
+  56              		.loc 1 59 0
+  57 002c FB68     		ldr	r3, [r7, #12]
+  60:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** }
+  58              		.loc 1 60 0
+  59 002e 1846     		mov	r0, r3
+  60 0030 07F11407 		add	r7, r7, #20
+  61 0034 BD46     		mov	sp, r7
+  62 0036 80BC     		pop	{r7}
+  63 0038 7047     		bx	lr
+  64              		.cfi_endproc
+  65              	.LFE55:
+  67 003a 00BF     		.align	2
+  68              		.global	PINSEL_GetPinType
+  69              		.thumb
+  70              		.thumb_func
+  72              	PINSEL_GetPinType:
+  73              	.LFB56:
+  61:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+  62:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /* Public Functions ----------------------------------------------------------- */
+  63:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /** @addtogroup PINSEL_Public_Functions
+  64:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @{
+  65:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  */
+  66:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+  67:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /*********************************************************************//**
+  68:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @brief       Get type of a pin.
+  69:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   portnum PORT number, should be in range: 0..3
+  70:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   pinnum  Pin number, should be in range: 0..31
+  71:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @return      Port type:
+  72:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_PIN_TYPE_D
+  73:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_PIN_TYPE_A
+  74:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_PIN_TYPE_I
+  75:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_PIN_TYPE_W
+  76:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_PIN_TYPE_U   
+  77:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_PIN_TYPE_UNKNOWN: Invalid pin
+  78:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  **********************************************************************/
+  79:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** PinSel_PinType PINSEL_GetPinType(uint8_t portnum, uint8_t pinnum)
+  80:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** {
+  74              		.loc 1 80 0
+  75              		.cfi_startproc
+  76              		@ args = 0, pretend = 0, frame = 16
+  77              		@ frame_needed = 1, uses_anonymous_args = 0
+  78              		@ link register save eliminated.
+  79 003c 80B4     		push	{r7}
+  80              	.LCFI3:
+  81              		.cfi_def_cfa_offset 4
+  82              		.cfi_offset 7, -4
+  83 003e 85B0     		sub	sp, sp, #20
+  84              	.LCFI4:
+  85              		.cfi_def_cfa_offset 24
+  86 0040 00AF     		add	r7, sp, #0
+  87              	.LCFI5:
+  88              		.cfi_def_cfa_register 7
+  89 0042 0246     		mov	r2, r0
+  90 0044 0B46     		mov	r3, r1
+  91 0046 FA71     		strb	r2, [r7, #7]
+  92 0048 BB71     		strb	r3, [r7, #6]
+  81:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     PinSel_PinType Ret = PINSEL_PIN_TYPE_UNKNOWN;
+  93              		.loc 1 81 0
+  94 004a 4FF00503 		mov	r3, #5
+  95 004e FB73     		strb	r3, [r7, #15]
+  82:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     switch(portnum)
+  96              		.loc 1 82 0
+  97 0050 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  98 0052 052B     		cmp	r3, #5
+  99 0054 7FD8     		bhi	.L30
+ 100 0056 01A2     		adr	r2, .L9
+ 101 0058 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 102              		.align	2
+ 103              	.L9:
+ 104 005c 75000000 		.word	.L5+1
+ 105 0060 05010000 		.word	.L6+1
+ 106 0064 27010000 		.word	.L7+1
+ 107 0068 27010000 		.word	.L7+1
+ 108 006c 27010000 		.word	.L7+1
+ 109 0070 2F010000 		.word	.L8+1
+ 110              	.L5:
+  83:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     {
+  84:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         case 0:
+  85:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             if((pinnum <=6)||
+ 111              		.loc 1 85 0
+ 112 0074 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 113 0076 062B     		cmp	r3, #6
+ 114 0078 0BD9     		bls	.L10
+ 115              		.loc 1 85 0 is_stmt 0 discriminator 1
+ 116 007a BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 117 007c 092B     		cmp	r3, #9
+ 118 007e 02D9     		bls	.L11
+  86:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 ((pinnum >= 10)&&(pinnum <=11))||
+ 119              		.loc 1 86 0 is_stmt 1
+ 120 0080 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 121 0082 0B2B     		cmp	r3, #11
+ 122 0084 05D9     		bls	.L10
+ 123              	.L11:
+ 124              		.loc 1 86 0 is_stmt 0 discriminator 1
+ 125 0086 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 126 0088 0D2B     		cmp	r3, #13
+ 127 008a 06D9     		bls	.L12
+  87:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 ((pinnum >= 14)&&(pinnum <=22)))
+ 128              		.loc 1 87 0 is_stmt 1
+ 129 008c BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 130 008e 162B     		cmp	r3, #22
+ 131 0090 03D8     		bhi	.L12
+ 132              	.L10:
+  88:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 Ret = PINSEL_PIN_TYPE_D;
+ 133              		.loc 1 88 0
+ 134 0092 4FF00003 		mov	r3, #0
+ 135 0096 FB73     		strb	r3, [r7, #15]
+ 136 0098 33E0     		b	.L13
+ 137              	.L12:
+  89:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             else if ((pinnum == 12)||(pinnum==13)||
+ 138              		.loc 1 89 0
+ 139 009a BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 140 009c 0C2B     		cmp	r3, #12
+ 141 009e 08D0     		beq	.L14
+ 142              		.loc 1 89 0 is_stmt 0 discriminator 1
+ 143 00a0 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 144 00a2 0D2B     		cmp	r3, #13
+ 145 00a4 05D0     		beq	.L14
+ 146 00a6 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 147 00a8 162B     		cmp	r3, #22
+ 148 00aa 06D9     		bls	.L15
+  90:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                     ((pinnum >= 23)&&(pinnum <=26)))
+ 149              		.loc 1 90 0 is_stmt 1
+ 150 00ac BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 151 00ae 1A2B     		cmp	r3, #26
+ 152 00b0 03D8     		bhi	.L15
+ 153              	.L14:
+  91:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 Ret = PINSEL_PIN_TYPE_A;
+ 154              		.loc 1 91 0
+ 155 00b2 4FF00103 		mov	r3, #1
+ 156 00b6 FB73     		strb	r3, [r7, #15]
+ 157 00b8 23E0     		b	.L13
+ 158              	.L15:
+  92:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             else if ((pinnum == 29) || (pinnum==30)|| (pinnum==31))
+ 159              		.loc 1 92 0
+ 160 00ba BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 161 00bc 1D2B     		cmp	r3, #29
+ 162 00be 05D0     		beq	.L16
+ 163              		.loc 1 92 0 is_stmt 0 discriminator 1
+ 164 00c0 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 165 00c2 1E2B     		cmp	r3, #30
+ 166 00c4 02D0     		beq	.L16
+ 167 00c6 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 168 00c8 1F2B     		cmp	r3, #31
+ 169 00ca 03D1     		bne	.L17
+ 170              	.L16:
+  93:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 Ret = PINSEL_PIN_TYPE_U;
+ 171              		.loc 1 93 0 is_stmt 1
+ 172 00cc 4FF00203 		mov	r3, #2
+ 173 00d0 FB73     		strb	r3, [r7, #15]
+ 174 00d2 16E0     		b	.L13
+ 175              	.L17:
+  94:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             else if ((pinnum == 27) || (pinnum==28))
+ 176              		.loc 1 94 0
+ 177 00d4 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 178 00d6 1B2B     		cmp	r3, #27
+ 179 00d8 02D0     		beq	.L18
+ 180              		.loc 1 94 0 is_stmt 0 discriminator 1
+ 181 00da BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 182 00dc 1C2B     		cmp	r3, #28
+ 183 00de 03D1     		bne	.L19
+ 184              	.L18:
+  95:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 Ret = PINSEL_PIN_TYPE_I;
+ 185              		.loc 1 95 0 is_stmt 1
+ 186 00e0 4FF00303 		mov	r3, #3
+ 187 00e4 FB73     		strb	r3, [r7, #15]
+ 188 00e6 0CE0     		b	.L13
+ 189              	.L19:
+  96:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             else if ((pinnum == 7) || (pinnum==8)|| (pinnum==9))
+ 190              		.loc 1 96 0
+ 191 00e8 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 192 00ea 072B     		cmp	r3, #7
+ 193 00ec 05D0     		beq	.L20
+ 194              		.loc 1 96 0 is_stmt 0 discriminator 1
+ 195 00ee BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 196 00f0 082B     		cmp	r3, #8
+ 197 00f2 02D0     		beq	.L20
+ 198 00f4 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 199 00f6 092B     		cmp	r3, #9
+ 200 00f8 2FD1     		bne	.L31
+ 201              	.L20:
+  97:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 Ret = PINSEL_PIN_TYPE_W;
+ 202              		.loc 1 97 0 is_stmt 1
+ 203 00fa 4FF00403 		mov	r3, #4
+ 204 00fe FB73     		strb	r3, [r7, #15]
+  98:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             break;
+ 205              		.loc 1 98 0
+ 206 0100 2BE0     		b	.L31
+ 207              	.L13:
+ 208 0102 2AE0     		b	.L31
+ 209              	.L6:
+  99:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         case 1:
+ 100:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             if(pinnum <=29)
+ 210              		.loc 1 100 0
+ 211 0104 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 212 0106 1D2B     		cmp	r3, #29
+ 213 0108 03D8     		bhi	.L22
+ 101:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 Ret = PINSEL_PIN_TYPE_D;
+ 214              		.loc 1 101 0
+ 215 010a 4FF00003 		mov	r3, #0
+ 216 010e FB73     		strb	r3, [r7, #15]
+ 102:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             else if ((pinnum == 30) || (pinnum==31))
+ 103:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 Ret = PINSEL_PIN_TYPE_A;
+ 104:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             break;
+ 217              		.loc 1 104 0
+ 218 0110 25E0     		b	.L32
+ 219              	.L22:
+ 102:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             else if ((pinnum == 30) || (pinnum==31))
+ 220              		.loc 1 102 0
+ 221 0112 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 222 0114 1E2B     		cmp	r3, #30
+ 223 0116 02D0     		beq	.L24
+ 102:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             else if ((pinnum == 30) || (pinnum==31))
+ 224              		.loc 1 102 0 is_stmt 0 discriminator 1
+ 225 0118 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 226 011a 1F2B     		cmp	r3, #31
+ 227 011c 1FD1     		bne	.L32
+ 228              	.L24:
+ 103:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 Ret = PINSEL_PIN_TYPE_A;
+ 229              		.loc 1 103 0 is_stmt 1
+ 230 011e 4FF00103 		mov	r3, #1
+ 231 0122 FB73     		strb	r3, [r7, #15]
+ 232              		.loc 1 104 0
+ 233 0124 1BE0     		b	.L32
+ 234              	.L7:
+ 105:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         case 2:
+ 106:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         case 3:
+ 107:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         case 4:
+ 108:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             Ret = PINSEL_PIN_TYPE_D;
+ 235              		.loc 1 108 0
+ 236 0126 4FF00003 		mov	r3, #0
+ 237 012a FB73     		strb	r3, [r7, #15]
+ 109:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             break;
+ 238              		.loc 1 109 0
+ 239 012c 1AE0     		b	.L21
+ 240              	.L8:
+ 110:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         case 5:
+ 111:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             if((pinnum <=1)||
+ 241              		.loc 1 111 0
+ 242 012e BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 243 0130 012B     		cmp	r3, #1
+ 244 0132 02D9     		bls	.L25
+ 245              		.loc 1 111 0 is_stmt 0 discriminator 1
+ 246 0134 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 247 0136 042B     		cmp	r3, #4
+ 248 0138 03D1     		bne	.L26
+ 249              	.L25:
+ 112:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 (pinnum == 4))
+ 113:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 Ret = PINSEL_PIN_TYPE_D;
+ 250              		.loc 1 113 0 is_stmt 1
+ 251 013a 4FF00003 		mov	r3, #0
+ 252 013e FB73     		strb	r3, [r7, #15]
+ 114:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             else if ((pinnum == 2) || (pinnum==3))
+ 115:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 Ret = PINSEL_PIN_TYPE_I;
+ 116:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             break;
+ 253              		.loc 1 116 0
+ 254 0140 0FE0     		b	.L33
+ 255              	.L26:
+ 114:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             else if ((pinnum == 2) || (pinnum==3))
+ 256              		.loc 1 114 0
+ 257 0142 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 258 0144 022B     		cmp	r3, #2
+ 259 0146 02D0     		beq	.L28
+ 114:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             else if ((pinnum == 2) || (pinnum==3))
+ 260              		.loc 1 114 0 is_stmt 0 discriminator 1
+ 261 0148 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 262 014a 032B     		cmp	r3, #3
+ 263 014c 09D1     		bne	.L33
+ 264              	.L28:
+ 115:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 Ret = PINSEL_PIN_TYPE_I;
+ 265              		.loc 1 115 0 is_stmt 1
+ 266 014e 4FF00303 		mov	r3, #3
+ 267 0152 FB73     		strb	r3, [r7, #15]
+ 268              		.loc 1 116 0
+ 269 0154 05E0     		b	.L33
+ 270              	.L30:
+ 117:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         default:
+ 118:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             break;
+ 271              		.loc 1 118 0
+ 272 0156 00BF     		nop
+ 273 0158 04E0     		b	.L21
+ 274              	.L31:
+  98:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             break;
+ 275              		.loc 1 98 0
+ 276 015a 00BF     		nop
+ 277 015c 02E0     		b	.L21
+ 278              	.L32:
+ 104:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             break;
+ 279              		.loc 1 104 0
+ 280 015e 00BF     		nop
+ 281 0160 00E0     		b	.L21
+ 282              	.L33:
+ 116:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             break;
+ 283              		.loc 1 116 0
+ 284 0162 00BF     		nop
+ 285              	.L21:
+ 119:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     }
+ 120:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 121:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     return Ret;
+ 286              		.loc 1 121 0
+ 287 0164 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 122:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** }
+ 288              		.loc 1 122 0
+ 289 0166 1846     		mov	r0, r3
+ 290 0168 07F11407 		add	r7, r7, #20
+ 291 016c BD46     		mov	sp, r7
+ 292 016e 80BC     		pop	{r7}
+ 293 0170 7047     		bx	lr
+ 294              		.cfi_endproc
+ 295              	.LFE56:
+ 297 0172 00BF     		.align	2
+ 298              		.global	PINSEL_ConfigPin
+ 299              		.thumb
+ 300              		.thumb_func
+ 302              	PINSEL_ConfigPin:
+ 303              	.LFB57:
+ 123:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 124:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /*********************************************************************//**
+ 125:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @brief       Setup the pin selection function
+ 126:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   portnum PORT number, should be in range: 0..3
+ 127:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   pinnum  Pin number, should be in range: 0..31
+ 128:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   funcnum Function number, should be range: 0..7
+ 129:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - 0: Select GPIO (Default)
+ 130:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - 1: Selects the 1st alternate function
+ 131:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - 2: Selects the 2nd alternate function
+ 132:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              ...
+ 133:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - 7: Selects the 7th alternate function
+ 134:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @return      PINSEL Return Code
+ 135:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_INVALID_PIN
+ 136:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_OK
+ 137:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  **********************************************************************/
+ 138:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** PINSEL_RET_CODE PINSEL_ConfigPin ( uint8_t portnum, uint8_t pinnum, uint8_t funcnum)
+ 139:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** {
+ 304              		.loc 1 139 0
+ 305              		.cfi_startproc
+ 306              		@ args = 0, pretend = 0, frame = 16
+ 307              		@ frame_needed = 1, uses_anonymous_args = 0
+ 308 0174 80B5     		push	{r7, lr}
+ 309              	.LCFI6:
+ 310              		.cfi_def_cfa_offset 8
+ 311              		.cfi_offset 7, -8
+ 312              		.cfi_offset 14, -4
+ 313 0176 84B0     		sub	sp, sp, #16
+ 314              	.LCFI7:
+ 315              		.cfi_def_cfa_offset 24
+ 316 0178 00AF     		add	r7, sp, #0
+ 317              	.LCFI8:
+ 318              		.cfi_def_cfa_register 7
+ 319 017a 1346     		mov	r3, r2
+ 320 017c 0246     		mov	r2, r0
+ 321 017e FA71     		strb	r2, [r7, #7]
+ 322 0180 0A46     		mov	r2, r1
+ 323 0182 BA71     		strb	r2, [r7, #6]
+ 324 0184 7B71     		strb	r3, [r7, #5]
+ 140:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     uint32_t *pPIN = NULL;
+ 325              		.loc 1 140 0
+ 326 0186 4FF00003 		mov	r3, #0
+ 327 018a FB60     		str	r3, [r7, #12]
+ 141:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     PinSel_PinType type = PINSEL_GetPinType(portnum,pinnum);
+ 328              		.loc 1 141 0
+ 329 018c FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 330 018e BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 331 0190 1046     		mov	r0, r2
+ 332 0192 1946     		mov	r1, r3
+ 333 0194 FFF7FEFF 		bl	PINSEL_GetPinType
+ 334 0198 0346     		mov	r3, r0
+ 335 019a FB72     		strb	r3, [r7, #11]
+ 142:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 143:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(type == PINSEL_PIN_TYPE_UNKNOWN)
+ 336              		.loc 1 143 0
+ 337 019c FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 338 019e 052B     		cmp	r3, #5
+ 339 01a0 01D1     		bne	.L35
+ 144:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_INVALID_PIN;
+ 340              		.loc 1 144 0
+ 341 01a2 0F4B     		ldr	r3, .L37
+ 342 01a4 16E0     		b	.L36
+ 343              	.L35:
+ 145:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     
+ 146:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     pPIN = PIN_GetPointer(portnum, pinnum);
+ 344              		.loc 1 146 0
+ 345 01a6 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 346 01a8 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 347 01aa 1046     		mov	r0, r2
+ 348 01ac 1946     		mov	r1, r3
+ 349 01ae FFF727FF 		bl	PIN_GetPointer
+ 350 01b2 F860     		str	r0, [r7, #12]
+ 147:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     *pPIN &= ~IOCON_FUNC_MASK;//Clear function bits
+ 351              		.loc 1 147 0
+ 352 01b4 FB68     		ldr	r3, [r7, #12]
+ 353 01b6 1B68     		ldr	r3, [r3, #0]
+ 354 01b8 23F00702 		bic	r2, r3, #7
+ 355 01bc FB68     		ldr	r3, [r7, #12]
+ 356 01be 1A60     		str	r2, [r3, #0]
+ 148:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     *pPIN |= funcnum&IOCON_FUNC_MASK;
+ 357              		.loc 1 148 0
+ 358 01c0 FB68     		ldr	r3, [r7, #12]
+ 359 01c2 1A68     		ldr	r2, [r3, #0]
+ 360 01c4 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 361 01c6 03F00703 		and	r3, r3, #7
+ 362 01ca 1A43     		orrs	r2, r2, r3
+ 363 01cc FB68     		ldr	r3, [r7, #12]
+ 364 01ce 1A60     		str	r2, [r3, #0]
+ 149:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 150:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     return PINSEL_RET_OK;
+ 365              		.loc 1 150 0
+ 366 01d0 4FF00003 		mov	r3, #0
+ 367              	.L36:
+ 151:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** }
+ 368              		.loc 1 151 0
+ 369 01d4 1846     		mov	r0, r3
+ 370 01d6 07F11007 		add	r7, r7, #16
+ 371 01da BD46     		mov	sp, r7
+ 372 01dc 80BD     		pop	{r7, pc}
+ 373              	.L38:
+ 374 01de 00BF     		.align	2
+ 375              	.L37:
+ 376 01e0 01000010 		.word	268435457
+ 377              		.cfi_endproc
+ 378              	.LFE57:
+ 380              		.align	2
+ 381              		.global	PINSEL_SetPinMode
+ 382              		.thumb
+ 383              		.thumb_func
+ 385              	PINSEL_SetPinMode:
+ 386              	.LFB58:
+ 152:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 153:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 154:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /*********************************************************************//**
+ 155:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @brief       Setup resistor mode for pin of type D,A,W
+ 156:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   portnum PORT number, should be in range: 0..3
+ 157:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   pinnum  Pin number, should be in range: 0..31
+ 158:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   modenum: Mode number, should be in range: 0..3
+ 159:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 - PINSEL_BASICMODE_PLAINOUT: Plain output
+ 160:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 - PINSEL_BASICMODE_PULLDOWN: Pull-down enable
+ 161:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 - PINSEL_BASICMODE_PULLUP: Pull-up enable
+ 162:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 - PINSEL_BASICMODE_REPEATER: Repeater mode
+ 163:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @return      PINSEL Return Code
+ 164:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_INVALID_PIN
+ 165:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_NOT_SUPPORT
+ 166:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_OK
+ 167:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  **********************************************************************/
+ 168:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** PINSEL_RET_CODE PINSEL_SetPinMode ( uint8_t portnum, uint8_t pinnum, PinSel_BasicMode modenum)
+ 169:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** {
+ 387              		.loc 1 169 0
+ 388              		.cfi_startproc
+ 389              		@ args = 0, pretend = 0, frame = 16
+ 390              		@ frame_needed = 1, uses_anonymous_args = 0
+ 391 01e4 80B5     		push	{r7, lr}
+ 392              	.LCFI9:
+ 393              		.cfi_def_cfa_offset 8
+ 394              		.cfi_offset 7, -8
+ 395              		.cfi_offset 14, -4
+ 396 01e6 84B0     		sub	sp, sp, #16
+ 397              	.LCFI10:
+ 398              		.cfi_def_cfa_offset 24
+ 399 01e8 00AF     		add	r7, sp, #0
+ 400              	.LCFI11:
+ 401              		.cfi_def_cfa_register 7
+ 402 01ea 1346     		mov	r3, r2
+ 403 01ec 0246     		mov	r2, r0
+ 404 01ee FA71     		strb	r2, [r7, #7]
+ 405 01f0 0A46     		mov	r2, r1
+ 406 01f2 BA71     		strb	r2, [r7, #6]
+ 407 01f4 7B71     		strb	r3, [r7, #5]
+ 170:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     uint32_t *pPIN = NULL;
+ 408              		.loc 1 170 0
+ 409 01f6 4FF00003 		mov	r3, #0
+ 410 01fa FB60     		str	r3, [r7, #12]
+ 171:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     PinSel_PinType type = PINSEL_GetPinType(portnum,pinnum);
+ 411              		.loc 1 171 0
+ 412 01fc FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 413 01fe BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 414 0200 1046     		mov	r0, r2
+ 415 0202 1946     		mov	r1, r3
+ 416 0204 FFF7FEFF 		bl	PINSEL_GetPinType
+ 417 0208 0346     		mov	r3, r0
+ 418 020a FB72     		strb	r3, [r7, #11]
+ 172:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 173:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(type == PINSEL_PIN_TYPE_UNKNOWN)
+ 419              		.loc 1 173 0
+ 420 020c FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 421 020e 052B     		cmp	r3, #5
+ 422 0210 01D1     		bne	.L40
+ 174:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_INVALID_PIN;
+ 423              		.loc 1 174 0
+ 424 0212 154B     		ldr	r3, .L43
+ 425 0214 23E0     		b	.L41
+ 426              	.L40:
+ 175:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if((type != PINSEL_PIN_TYPE_D )&&
+ 427              		.loc 1 175 0
+ 428 0216 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 429 0218 002B     		cmp	r3, #0
+ 430 021a 07D0     		beq	.L42
+ 431              		.loc 1 175 0 is_stmt 0 discriminator 1
+ 432 021c FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 433 021e 012B     		cmp	r3, #1
+ 434 0220 04D0     		beq	.L42
+ 176:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         (type != PINSEL_PIN_TYPE_A )&&
+ 435              		.loc 1 176 0 is_stmt 1
+ 436 0222 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 437 0224 042B     		cmp	r3, #4
+ 438 0226 01D0     		beq	.L42
+ 177:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         (type != PINSEL_PIN_TYPE_W))
+ 178:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_NOT_SUPPORT;
+ 439              		.loc 1 178 0
+ 440 0228 104B     		ldr	r3, .L43+4
+ 441 022a 18E0     		b	.L41
+ 442              	.L42:
+ 179:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     
+ 180:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     pPIN = PIN_GetPointer(portnum, pinnum);
+ 443              		.loc 1 180 0
+ 444 022c FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 445 022e BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 446 0230 1046     		mov	r0, r2
+ 447 0232 1946     		mov	r1, r3
+ 448 0234 FFF7E4FE 		bl	PIN_GetPointer
+ 449 0238 F860     		str	r0, [r7, #12]
+ 181:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     *(uint32_t *)pPIN &= ~(IOCON_MODE_MASK);//Clear function bits
+ 450              		.loc 1 181 0
+ 451 023a FB68     		ldr	r3, [r7, #12]
+ 452 023c 1B68     		ldr	r3, [r3, #0]
+ 453 023e 23F01802 		bic	r2, r3, #24
+ 454 0242 FB68     		ldr	r3, [r7, #12]
+ 455 0244 1A60     		str	r2, [r3, #0]
+ 182:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     *(uint32_t *)pPIN |= (modenum << IOCON_MODE_POS)&IOCON_MODE_MASK;
+ 456              		.loc 1 182 0
+ 457 0246 FB68     		ldr	r3, [r7, #12]
+ 458 0248 1A68     		ldr	r2, [r3, #0]
+ 459 024a 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 460 024c 4FEAC303 		lsl	r3, r3, #3
+ 461 0250 03F01803 		and	r3, r3, #24
+ 462 0254 1A43     		orrs	r2, r2, r3
+ 463 0256 FB68     		ldr	r3, [r7, #12]
+ 464 0258 1A60     		str	r2, [r3, #0]
+ 183:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 184:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     return PINSEL_RET_OK;
+ 465              		.loc 1 184 0
+ 466 025a 4FF00003 		mov	r3, #0
+ 467              	.L41:
+ 185:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** }
+ 468              		.loc 1 185 0
+ 469 025e 1846     		mov	r0, r3
+ 470 0260 07F11007 		add	r7, r7, #16
+ 471 0264 BD46     		mov	sp, r7
+ 472 0266 80BD     		pop	{r7, pc}
+ 473              	.L44:
+ 474              		.align	2
+ 475              	.L43:
+ 476 0268 01000010 		.word	268435457
+ 477 026c 02000010 		.word	268435458
+ 478              		.cfi_endproc
+ 479              	.LFE58:
+ 481              		.align	2
+ 482              		.global	PINSEL_SetHysMode
+ 483              		.thumb
+ 484              		.thumb_func
+ 486              	PINSEL_SetHysMode:
+ 487              	.LFB59:
+ 186:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 187:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /*********************************************************************//**
+ 188:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @brief       Setup hysteresis for pin of type D, W
+ 189:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   portnum Port number, should be in range: 0..3
+ 190:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   pinnum  Pin number, should be in range: 0..31
+ 191:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   NewState new state of Hysteresis mode, should be:
+ 192:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - ENABLE: Hysteresis enable
+ 193:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - DISABLE: Hysteresis disable
+ 194:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @return      PINSEL Return Code
+ 195:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_INVALID_PIN
+ 196:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_NOT_SUPPORT
+ 197:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_OK
+ 198:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  **********************************************************************/
+ 199:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** PINSEL_RET_CODE PINSEL_SetHysMode(uint8_t portnum, uint8_t pinnum, FunctionalState NewState)
+ 200:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** {
+ 488              		.loc 1 200 0
+ 489              		.cfi_startproc
+ 490              		@ args = 0, pretend = 0, frame = 16
+ 491              		@ frame_needed = 1, uses_anonymous_args = 0
+ 492 0270 80B5     		push	{r7, lr}
+ 493              	.LCFI12:
+ 494              		.cfi_def_cfa_offset 8
+ 495              		.cfi_offset 7, -8
+ 496              		.cfi_offset 14, -4
+ 497 0272 84B0     		sub	sp, sp, #16
+ 498              	.LCFI13:
+ 499              		.cfi_def_cfa_offset 24
+ 500 0274 00AF     		add	r7, sp, #0
+ 501              	.LCFI14:
+ 502              		.cfi_def_cfa_register 7
+ 503 0276 1346     		mov	r3, r2
+ 504 0278 0246     		mov	r2, r0
+ 505 027a FA71     		strb	r2, [r7, #7]
+ 506 027c 0A46     		mov	r2, r1
+ 507 027e BA71     		strb	r2, [r7, #6]
+ 508 0280 7B71     		strb	r3, [r7, #5]
+ 201:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     uint32_t *pPIN = NULL;
+ 509              		.loc 1 201 0
+ 510 0282 4FF00003 		mov	r3, #0
+ 511 0286 FB60     		str	r3, [r7, #12]
+ 202:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     PinSel_PinType type = PINSEL_GetPinType(portnum,pinnum);
+ 512              		.loc 1 202 0
+ 513 0288 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 514 028a BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 515 028c 1046     		mov	r0, r2
+ 516 028e 1946     		mov	r1, r3
+ 517 0290 FFF7FEFF 		bl	PINSEL_GetPinType
+ 518 0294 0346     		mov	r3, r0
+ 519 0296 FB72     		strb	r3, [r7, #11]
+ 203:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 204:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(type == PINSEL_PIN_TYPE_UNKNOWN)
+ 520              		.loc 1 204 0
+ 521 0298 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 522 029a 052B     		cmp	r3, #5
+ 523 029c 01D1     		bne	.L46
+ 205:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_INVALID_PIN;
+ 524              		.loc 1 205 0
+ 525 029e 144B     		ldr	r3, .L51
+ 526 02a0 20E0     		b	.L47
+ 527              	.L46:
+ 206:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if((type != PINSEL_PIN_TYPE_D )&&
+ 528              		.loc 1 206 0
+ 529 02a2 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 530 02a4 002B     		cmp	r3, #0
+ 531 02a6 04D0     		beq	.L48
+ 532              		.loc 1 206 0 is_stmt 0 discriminator 1
+ 533 02a8 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 534 02aa 042B     		cmp	r3, #4
+ 535 02ac 01D0     		beq	.L48
+ 207:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         (type != PINSEL_PIN_TYPE_W))
+ 208:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_NOT_SUPPORT;
+ 536              		.loc 1 208 0 is_stmt 1
+ 537 02ae 114B     		ldr	r3, .L51+4
+ 538 02b0 18E0     		b	.L47
+ 539              	.L48:
+ 209:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     
+ 210:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     pPIN = PIN_GetPointer(portnum, pinnum);
+ 540              		.loc 1 210 0
+ 541 02b2 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 542 02b4 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 543 02b6 1046     		mov	r0, r2
+ 544 02b8 1946     		mov	r1, r3
+ 545 02ba FFF7A1FE 		bl	PIN_GetPointer
+ 546 02be F860     		str	r0, [r7, #12]
+ 211:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(NewState == DISABLE)
+ 547              		.loc 1 211 0
+ 548 02c0 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 549 02c2 002B     		cmp	r3, #0
+ 550 02c4 06D1     		bne	.L49
+ 212:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     {
+ 213:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         *(uint32_t *)pPIN &= ~IOCON_HYS_ENABLE;//Clear hys bits
+ 551              		.loc 1 213 0
+ 552 02c6 FB68     		ldr	r3, [r7, #12]
+ 553 02c8 1B68     		ldr	r3, [r3, #0]
+ 554 02ca 23F02002 		bic	r2, r3, #32
+ 555 02ce FB68     		ldr	r3, [r7, #12]
+ 556 02d0 1A60     		str	r2, [r3, #0]
+ 557 02d2 05E0     		b	.L50
+ 558              	.L49:
+ 214:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     }
+ 215:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     else
+ 216:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         *(uint32_t *)pPIN |= IOCON_HYS_ENABLE;
+ 559              		.loc 1 216 0
+ 560 02d4 FB68     		ldr	r3, [r7, #12]
+ 561 02d6 1B68     		ldr	r3, [r3, #0]
+ 562 02d8 43F02002 		orr	r2, r3, #32
+ 563 02dc FB68     		ldr	r3, [r7, #12]
+ 564 02de 1A60     		str	r2, [r3, #0]
+ 565              	.L50:
+ 217:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 218:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     return PINSEL_RET_OK;
+ 566              		.loc 1 218 0
+ 567 02e0 4FF00003 		mov	r3, #0
+ 568              	.L47:
+ 219:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** }
+ 569              		.loc 1 219 0
+ 570 02e4 1846     		mov	r0, r3
+ 571 02e6 07F11007 		add	r7, r7, #16
+ 572 02ea BD46     		mov	sp, r7
+ 573 02ec 80BD     		pop	{r7, pc}
+ 574              	.L52:
+ 575 02ee 00BF     		.align	2
+ 576              	.L51:
+ 577 02f0 01000010 		.word	268435457
+ 578 02f4 02000010 		.word	268435458
+ 579              		.cfi_endproc
+ 580              	.LFE59:
+ 582              		.align	2
+ 583              		.global	PINSEL_SetInvertInput
+ 584              		.thumb
+ 585              		.thumb_func
+ 587              	PINSEL_SetInvertInput:
+ 588              	.LFB60:
+ 220:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /*********************************************************************//**
+ 221:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @brief       Setup input polarity for pin of type A,I,D,W
+ 222:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   portnum Port number, should be in range: 0..3
+ 223:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   pinnum  Pin number, should be in range: 0..31
+ 224:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   NewState new state of Invert mode, should be:
+ 225:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - ENABLE: Input is inverted.
+ 226:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - DISABLE: Input isn't inverted.
+ 227:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @return      PINSEL Return Code
+ 228:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_INVALID_PIN
+ 229:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_NOT_SUPPORT
+ 230:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_OK
+ 231:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  **********************************************************************/
+ 232:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** PINSEL_RET_CODE PINSEL_SetInvertInput(uint8_t portnum, uint8_t pinnum, FunctionalState NewState)
+ 233:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** {
+ 589              		.loc 1 233 0
+ 590              		.cfi_startproc
+ 591              		@ args = 0, pretend = 0, frame = 16
+ 592              		@ frame_needed = 1, uses_anonymous_args = 0
+ 593 02f8 80B5     		push	{r7, lr}
+ 594              	.LCFI15:
+ 595              		.cfi_def_cfa_offset 8
+ 596              		.cfi_offset 7, -8
+ 597              		.cfi_offset 14, -4
+ 598 02fa 84B0     		sub	sp, sp, #16
+ 599              	.LCFI16:
+ 600              		.cfi_def_cfa_offset 24
+ 601 02fc 00AF     		add	r7, sp, #0
+ 602              	.LCFI17:
+ 603              		.cfi_def_cfa_register 7
+ 604 02fe 1346     		mov	r3, r2
+ 605 0300 0246     		mov	r2, r0
+ 606 0302 FA71     		strb	r2, [r7, #7]
+ 607 0304 0A46     		mov	r2, r1
+ 608 0306 BA71     		strb	r2, [r7, #6]
+ 609 0308 7B71     		strb	r3, [r7, #5]
+ 234:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     uint32_t *pPIN = NULL;
+ 610              		.loc 1 234 0
+ 611 030a 4FF00003 		mov	r3, #0
+ 612 030e FB60     		str	r3, [r7, #12]
+ 235:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     PinSel_PinType type = PINSEL_GetPinType(portnum,pinnum);
+ 613              		.loc 1 235 0
+ 614 0310 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 615 0312 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 616 0314 1046     		mov	r0, r2
+ 617 0316 1946     		mov	r1, r3
+ 618 0318 FFF7FEFF 		bl	PINSEL_GetPinType
+ 619 031c 0346     		mov	r3, r0
+ 620 031e FB72     		strb	r3, [r7, #11]
+ 236:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 237:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(type == PINSEL_PIN_TYPE_UNKNOWN)
+ 621              		.loc 1 237 0
+ 622 0320 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 623 0322 052B     		cmp	r3, #5
+ 624 0324 01D1     		bne	.L54
+ 238:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_INVALID_PIN;
+ 625              		.loc 1 238 0
+ 626 0326 124B     		ldr	r3, .L59
+ 627 0328 1DE0     		b	.L55
+ 628              	.L54:
+ 239:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(type== PINSEL_PIN_TYPE_U)
+ 629              		.loc 1 239 0
+ 630 032a FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 631 032c 022B     		cmp	r3, #2
+ 632 032e 01D1     		bne	.L56
+ 240:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_NOT_SUPPORT;
+ 633              		.loc 1 240 0
+ 634 0330 104B     		ldr	r3, .L59+4
+ 635 0332 18E0     		b	.L55
+ 636              	.L56:
+ 241:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     
+ 242:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     pPIN = PIN_GetPointer(portnum, pinnum);
+ 637              		.loc 1 242 0
+ 638 0334 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 639 0336 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 640 0338 1046     		mov	r0, r2
+ 641 033a 1946     		mov	r1, r3
+ 642 033c FFF760FE 		bl	PIN_GetPointer
+ 643 0340 F860     		str	r0, [r7, #12]
+ 243:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(NewState == DISABLE)
+ 644              		.loc 1 243 0
+ 645 0342 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 646 0344 002B     		cmp	r3, #0
+ 647 0346 06D1     		bne	.L57
+ 244:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     {
+ 245:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         *(uint32_t *)pPIN &= ~IOCON_INVERT_INPUT;//Clear hys bits
+ 648              		.loc 1 245 0
+ 649 0348 FB68     		ldr	r3, [r7, #12]
+ 650 034a 1B68     		ldr	r3, [r3, #0]
+ 651 034c 23F04002 		bic	r2, r3, #64
+ 652 0350 FB68     		ldr	r3, [r7, #12]
+ 653 0352 1A60     		str	r2, [r3, #0]
+ 654 0354 05E0     		b	.L58
+ 655              	.L57:
+ 246:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     }
+ 247:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     else
+ 248:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         *(uint32_t *)pPIN |= IOCON_INVERT_INPUT;
+ 656              		.loc 1 248 0
+ 657 0356 FB68     		ldr	r3, [r7, #12]
+ 658 0358 1B68     		ldr	r3, [r3, #0]
+ 659 035a 43F04002 		orr	r2, r3, #64
+ 660 035e FB68     		ldr	r3, [r7, #12]
+ 661 0360 1A60     		str	r2, [r3, #0]
+ 662              	.L58:
+ 249:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 250:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     return PINSEL_RET_OK;
+ 663              		.loc 1 250 0
+ 664 0362 4FF00003 		mov	r3, #0
+ 665              	.L55:
+ 251:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** }
+ 666              		.loc 1 251 0
+ 667 0366 1846     		mov	r0, r3
+ 668 0368 07F11007 		add	r7, r7, #16
+ 669 036c BD46     		mov	sp, r7
+ 670 036e 80BD     		pop	{r7, pc}
+ 671              	.L60:
+ 672              		.align	2
+ 673              	.L59:
+ 674 0370 01000010 		.word	268435457
+ 675 0374 02000010 		.word	268435458
+ 676              		.cfi_endproc
+ 677              	.LFE60:
+ 679              		.align	2
+ 680              		.global	PINSEL_SetSlewMode
+ 681              		.thumb
+ 682              		.thumb_func
+ 684              	PINSEL_SetSlewMode:
+ 685              	.LFB61:
+ 252:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 253:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /*********************************************************************//**
+ 254:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @brief       Setup Slew rate for pin of type D,W
+ 255:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   portnum Port number, should be in range: 0..3
+ 256:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   pinnum  Pin number, should be in range: 0..31
+ 257:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   NewState new state of Slew rate control, should be:
+ 258:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - ENABLE: Output slew rate control is enable
+ 259:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - DISABLE: Output slew rate control is disable
+ 260:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @return      PINSEL Return Code
+ 261:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_INVALID_PIN
+ 262:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_NOT_SUPPORT
+ 263:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_OK
+ 264:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  **********************************************************************/
+ 265:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** PINSEL_RET_CODE PINSEL_SetSlewMode(uint8_t portnum, uint8_t pinnum, FunctionalState NewState)
+ 266:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** {
+ 686              		.loc 1 266 0
+ 687              		.cfi_startproc
+ 688              		@ args = 0, pretend = 0, frame = 16
+ 689              		@ frame_needed = 1, uses_anonymous_args = 0
+ 690 0378 80B5     		push	{r7, lr}
+ 691              	.LCFI18:
+ 692              		.cfi_def_cfa_offset 8
+ 693              		.cfi_offset 7, -8
+ 694              		.cfi_offset 14, -4
+ 695 037a 84B0     		sub	sp, sp, #16
+ 696              	.LCFI19:
+ 697              		.cfi_def_cfa_offset 24
+ 698 037c 00AF     		add	r7, sp, #0
+ 699              	.LCFI20:
+ 700              		.cfi_def_cfa_register 7
+ 701 037e 1346     		mov	r3, r2
+ 702 0380 0246     		mov	r2, r0
+ 703 0382 FA71     		strb	r2, [r7, #7]
+ 704 0384 0A46     		mov	r2, r1
+ 705 0386 BA71     		strb	r2, [r7, #6]
+ 706 0388 7B71     		strb	r3, [r7, #5]
+ 267:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     uint32_t *pPIN = NULL;
+ 707              		.loc 1 267 0
+ 708 038a 4FF00003 		mov	r3, #0
+ 709 038e FB60     		str	r3, [r7, #12]
+ 268:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     PinSel_PinType type = PINSEL_GetPinType(portnum,pinnum);
+ 710              		.loc 1 268 0
+ 711 0390 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 712 0392 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 713 0394 1046     		mov	r0, r2
+ 714 0396 1946     		mov	r1, r3
+ 715 0398 FFF7FEFF 		bl	PINSEL_GetPinType
+ 716 039c 0346     		mov	r3, r0
+ 717 039e FB72     		strb	r3, [r7, #11]
+ 269:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 270:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(type == PINSEL_PIN_TYPE_UNKNOWN)
+ 718              		.loc 1 270 0
+ 719 03a0 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 720 03a2 052B     		cmp	r3, #5
+ 721 03a4 01D1     		bne	.L62
+ 271:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_INVALID_PIN;
+ 722              		.loc 1 271 0
+ 723 03a6 144B     		ldr	r3, .L67
+ 724 03a8 20E0     		b	.L63
+ 725              	.L62:
+ 272:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if((type!= PINSEL_PIN_TYPE_D) &&
+ 726              		.loc 1 272 0
+ 727 03aa FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 728 03ac 002B     		cmp	r3, #0
+ 729 03ae 04D0     		beq	.L64
+ 730              		.loc 1 272 0 is_stmt 0 discriminator 1
+ 731 03b0 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 732 03b2 042B     		cmp	r3, #4
+ 733 03b4 01D0     		beq	.L64
+ 273:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         (type!= PINSEL_PIN_TYPE_W))
+ 274:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_NOT_SUPPORT;
+ 734              		.loc 1 274 0 is_stmt 1
+ 735 03b6 114B     		ldr	r3, .L67+4
+ 736 03b8 18E0     		b	.L63
+ 737              	.L64:
+ 275:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     
+ 276:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     pPIN = PIN_GetPointer(portnum, pinnum);
+ 738              		.loc 1 276 0
+ 739 03ba FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 740 03bc BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 741 03be 1046     		mov	r0, r2
+ 742 03c0 1946     		mov	r1, r3
+ 743 03c2 FFF71DFE 		bl	PIN_GetPointer
+ 744 03c6 F860     		str	r0, [r7, #12]
+ 277:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(NewState == DISABLE)
+ 745              		.loc 1 277 0
+ 746 03c8 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 747 03ca 002B     		cmp	r3, #0
+ 748 03cc 06D1     		bne	.L65
+ 278:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     {
+ 279:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         *(uint32_t *)pPIN &= ~IOCON_SLEW_ENABLE;//Clear hys bits
+ 749              		.loc 1 279 0
+ 750 03ce FB68     		ldr	r3, [r7, #12]
+ 751 03d0 1B68     		ldr	r3, [r3, #0]
+ 752 03d2 23F40072 		bic	r2, r3, #512
+ 753 03d6 FB68     		ldr	r3, [r7, #12]
+ 754 03d8 1A60     		str	r2, [r3, #0]
+ 755 03da 05E0     		b	.L66
+ 756              	.L65:
+ 280:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     }
+ 281:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     else
+ 282:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         *(uint32_t *)pPIN |= IOCON_SLEW_ENABLE;
+ 757              		.loc 1 282 0
+ 758 03dc FB68     		ldr	r3, [r7, #12]
+ 759 03de 1B68     		ldr	r3, [r3, #0]
+ 760 03e0 43F40072 		orr	r2, r3, #512
+ 761 03e4 FB68     		ldr	r3, [r7, #12]
+ 762 03e6 1A60     		str	r2, [r3, #0]
+ 763              	.L66:
+ 283:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 284:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     return PINSEL_RET_OK;
+ 764              		.loc 1 284 0
+ 765 03e8 4FF00003 		mov	r3, #0
+ 766              	.L63:
+ 285:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** }
+ 767              		.loc 1 285 0
+ 768 03ec 1846     		mov	r0, r3
+ 769 03ee 07F11007 		add	r7, r7, #16
+ 770 03f2 BD46     		mov	sp, r7
+ 771 03f4 80BD     		pop	{r7, pc}
+ 772              	.L68:
+ 773 03f6 00BF     		.align	2
+ 774              	.L67:
+ 775 03f8 01000010 		.word	268435457
+ 776 03fc 02000010 		.word	268435458
+ 777              		.cfi_endproc
+ 778              	.LFE61:
+ 780              		.align	2
+ 781              		.global	PINSEL_SetI2CMode
+ 782              		.thumb
+ 783              		.thumb_func
+ 785              	PINSEL_SetI2CMode:
+ 786              	.LFB62:
+ 286:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 287:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /*********************************************************************//**
+ 288:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @brief       Setup I2CMode for only pins that provide special I2C functionality
+ 289:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   portnum Port number, should be in range: 0..3
+ 290:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   pinnum  Pin number, should be in range: 0..31
+ 291:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   I2CMode I2C mode, should be:
+ 292:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_I2CMODE_FAST_STANDARD: Fast mode and standard I2C mode
+ 293:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_I2CMODE_OPENDRAINIO: Open drain I/O
+ 294:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_I2CMODE_FASTMODEPLUS: Fast Mode Plus I/O
+ 295:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @return      PINSEL Return Code
+ 296:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_INVALID_PIN
+ 297:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_NOT_SUPPORT
+ 298:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_OK
+ 299:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  **********************************************************************/
+ 300:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** PINSEL_RET_CODE PINSEL_SetI2CMode(uint8_t portnum, uint8_t pinnum, PinSel_I2cMode I2CMode)
+ 301:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** {
+ 787              		.loc 1 301 0
+ 788              		.cfi_startproc
+ 789              		@ args = 0, pretend = 0, frame = 16
+ 790              		@ frame_needed = 1, uses_anonymous_args = 0
+ 791 0400 80B5     		push	{r7, lr}
+ 792              	.LCFI21:
+ 793              		.cfi_def_cfa_offset 8
+ 794              		.cfi_offset 7, -8
+ 795              		.cfi_offset 14, -4
+ 796 0402 84B0     		sub	sp, sp, #16
+ 797              	.LCFI22:
+ 798              		.cfi_def_cfa_offset 24
+ 799 0404 00AF     		add	r7, sp, #0
+ 800              	.LCFI23:
+ 801              		.cfi_def_cfa_register 7
+ 802 0406 1346     		mov	r3, r2
+ 803 0408 0246     		mov	r2, r0
+ 804 040a FA71     		strb	r2, [r7, #7]
+ 805 040c 0A46     		mov	r2, r1
+ 806 040e BA71     		strb	r2, [r7, #6]
+ 807 0410 7B71     		strb	r3, [r7, #5]
+ 302:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     uint32_t *pPIN = NULL;
+ 808              		.loc 1 302 0
+ 809 0412 4FF00003 		mov	r3, #0
+ 810 0416 FB60     		str	r3, [r7, #12]
+ 303:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     PinSel_PinType type = PINSEL_GetPinType(portnum,pinnum);
+ 811              		.loc 1 303 0
+ 812 0418 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 813 041a BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 814 041c 1046     		mov	r0, r2
+ 815 041e 1946     		mov	r1, r3
+ 816 0420 FFF7FEFF 		bl	PINSEL_GetPinType
+ 817 0424 0346     		mov	r3, r0
+ 818 0426 FB72     		strb	r3, [r7, #11]
+ 304:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 305:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(type == PINSEL_PIN_TYPE_UNKNOWN)
+ 819              		.loc 1 305 0
+ 820 0428 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 821 042a 052B     		cmp	r3, #5
+ 822 042c 01D1     		bne	.L70
+ 306:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_INVALID_PIN;
+ 823              		.loc 1 306 0
+ 824 042e 264B     		ldr	r3, .L79
+ 825 0430 44E0     		b	.L71
+ 826              	.L70:
+ 307:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(type != PINSEL_PIN_TYPE_I )
+ 827              		.loc 1 307 0
+ 828 0432 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 829 0434 032B     		cmp	r3, #3
+ 830 0436 01D0     		beq	.L72
+ 308:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_NOT_SUPPORT;
+ 831              		.loc 1 308 0
+ 832 0438 244B     		ldr	r3, .L79+4
+ 833 043a 3FE0     		b	.L71
+ 834              	.L72:
+ 309:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     
+ 310:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     pPIN = PIN_GetPointer(portnum, pinnum);
+ 835              		.loc 1 310 0
+ 836 043c FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 837 043e BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 838 0440 1046     		mov	r0, r2
+ 839 0442 1946     		mov	r1, r3
+ 840 0444 FFF7DCFD 		bl	PIN_GetPointer
+ 841 0448 F860     		str	r0, [r7, #12]
+ 311:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 312:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     switch(I2CMode)
+ 842              		.loc 1 312 0
+ 843 044a 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 844 044c 012B     		cmp	r3, #1
+ 845 044e 12D0     		beq	.L75
+ 846 0450 022B     		cmp	r3, #2
+ 847 0452 1FD0     		beq	.L76
+ 848 0454 002B     		cmp	r3, #0
+ 849 0456 2CD1     		bne	.L78
+ 850              	.L74:
+ 313:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     {
+ 314:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         // Standard/Fast Mode I2C: HS = HIDRIVE = 0
+ 315:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         case PINSEL_I2CMODE_FAST_STANDARD: 
+ 316:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             PINSEL_SetI2CFilter(portnum,pinnum,ENABLE);
+ 851              		.loc 1 316 0
+ 852 0458 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 853 045a BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 854 045c 1046     		mov	r0, r2
+ 855 045e 1946     		mov	r1, r3
+ 856 0460 4FF00102 		mov	r2, #1
+ 857 0464 FFF7FEFF 		bl	PINSEL_SetI2CFilter
+ 317:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             *(uint32_t *)pPIN &= ~(IOCON_I2CMODE_FASTPLUS);
+ 858              		.loc 1 317 0
+ 859 0468 FB68     		ldr	r3, [r7, #12]
+ 860 046a 1B68     		ldr	r3, [r3, #0]
+ 861 046c 23F40072 		bic	r2, r3, #512
+ 862 0470 FB68     		ldr	r3, [r7, #12]
+ 863 0472 1A60     		str	r2, [r3, #0]
+ 318:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             break;
+ 864              		.loc 1 318 0
+ 865 0474 20E0     		b	.L77
+ 866              	.L75:
+ 319:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 320:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         // Non-I2C: HS = 1, HIDRIVE = 0
+ 321:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         case PINSEL_I2CMODE_OPENDRAINIO:
+ 322:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             PINSEL_SetI2CFilter(portnum,pinnum,DISABLE);
+ 867              		.loc 1 322 0
+ 868 0476 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 869 0478 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 870 047a 1046     		mov	r0, r2
+ 871 047c 1946     		mov	r1, r3
+ 872 047e 4FF00002 		mov	r2, #0
+ 873 0482 FFF7FEFF 		bl	PINSEL_SetI2CFilter
+ 323:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             *(uint32_t *)pPIN &= ~(IOCON_I2CMODE_FASTPLUS);
+ 874              		.loc 1 323 0
+ 875 0486 FB68     		ldr	r3, [r7, #12]
+ 876 0488 1B68     		ldr	r3, [r3, #0]
+ 877 048a 23F40072 		bic	r2, r3, #512
+ 878 048e FB68     		ldr	r3, [r7, #12]
+ 879 0490 1A60     		str	r2, [r3, #0]
+ 324:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             break;
+ 880              		.loc 1 324 0
+ 881 0492 11E0     		b	.L77
+ 882              	.L76:
+ 325:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 326:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         // Fast Mode Plus I2C: HS = 0, HIDRIVE =1
+ 327:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         case PINSEL_I2CMODE_FASTMODEPLUS:   
+ 328:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             PINSEL_SetI2CFilter(portnum,pinnum,ENABLE);
+ 883              		.loc 1 328 0
+ 884 0494 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 885 0496 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 886 0498 1046     		mov	r0, r2
+ 887 049a 1946     		mov	r1, r3
+ 888 049c 4FF00102 		mov	r2, #1
+ 889 04a0 FFF7FEFF 		bl	PINSEL_SetI2CFilter
+ 329:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             *(uint32_t *)pPIN |= (IOCON_I2CMODE_FASTPLUS);
+ 890              		.loc 1 329 0
+ 891 04a4 FB68     		ldr	r3, [r7, #12]
+ 892 04a6 1B68     		ldr	r3, [r3, #0]
+ 893 04a8 43F40072 		orr	r2, r3, #512
+ 894 04ac FB68     		ldr	r3, [r7, #12]
+ 895 04ae 1A60     		str	r2, [r3, #0]
+ 330:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             break;
+ 896              		.loc 1 330 0
+ 897 04b0 02E0     		b	.L77
+ 898              	.L78:
+ 331:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         default:
+ 332:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****             return PINSEL_RET_ERR;
+ 899              		.loc 1 332 0
+ 900 04b2 4FF0FF33 		mov	r3, #-1
+ 901 04b6 01E0     		b	.L71
+ 902              	.L77:
+ 333:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     }
+ 334:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 335:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     return PINSEL_RET_OK;
+ 903              		.loc 1 335 0
+ 904 04b8 4FF00003 		mov	r3, #0
+ 905              	.L71:
+ 336:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** }
+ 906              		.loc 1 336 0
+ 907 04bc 1846     		mov	r0, r3
+ 908 04be 07F11007 		add	r7, r7, #16
+ 909 04c2 BD46     		mov	sp, r7
+ 910 04c4 80BD     		pop	{r7, pc}
+ 911              	.L80:
+ 912 04c6 00BF     		.align	2
+ 913              	.L79:
+ 914 04c8 01000010 		.word	268435457
+ 915 04cc 02000010 		.word	268435458
+ 916              		.cfi_endproc
+ 917              	.LFE62:
+ 919              		.align	2
+ 920              		.global	PINSEL_SetOpenDrainMode
+ 921              		.thumb
+ 922              		.thumb_func
+ 924              	PINSEL_SetOpenDrainMode:
+ 925              	.LFB63:
+ 337:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 338:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /*********************************************************************//**
+ 339:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @brief       Setup Open-drain mode in pin of type D, A, W
+ 340:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   portnum Port number, should be in range: 0..3
+ 341:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   pinnum  Pin number, should be in range: 0..31
+ 342:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   NewState new state of Open-drain mode:
+ 343:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - DISABLE: Normal pin I/O mode
+ 344:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - ENABLE: Open-drain enable
+ 345:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @return      PINSEL Return Code
+ 346:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_INVALID_PIN
+ 347:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_NOT_SUPPORT
+ 348:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_OK
+ 349:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  **********************************************************************/
+ 350:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** PINSEL_RET_CODE PINSEL_SetOpenDrainMode(uint8_t portnum, uint8_t pinnum, FunctionalState NewState)
+ 351:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** {
+ 926              		.loc 1 351 0
+ 927              		.cfi_startproc
+ 928              		@ args = 0, pretend = 0, frame = 16
+ 929              		@ frame_needed = 1, uses_anonymous_args = 0
+ 930 04d0 80B5     		push	{r7, lr}
+ 931              	.LCFI24:
+ 932              		.cfi_def_cfa_offset 8
+ 933              		.cfi_offset 7, -8
+ 934              		.cfi_offset 14, -4
+ 935 04d2 84B0     		sub	sp, sp, #16
+ 936              	.LCFI25:
+ 937              		.cfi_def_cfa_offset 24
+ 938 04d4 00AF     		add	r7, sp, #0
+ 939              	.LCFI26:
+ 940              		.cfi_def_cfa_register 7
+ 941 04d6 1346     		mov	r3, r2
+ 942 04d8 0246     		mov	r2, r0
+ 943 04da FA71     		strb	r2, [r7, #7]
+ 944 04dc 0A46     		mov	r2, r1
+ 945 04de BA71     		strb	r2, [r7, #6]
+ 946 04e0 7B71     		strb	r3, [r7, #5]
+ 352:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     uint32_t *pPIN = NULL;
+ 947              		.loc 1 352 0
+ 948 04e2 4FF00003 		mov	r3, #0
+ 949 04e6 FB60     		str	r3, [r7, #12]
+ 353:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     PinSel_PinType type = PINSEL_GetPinType(portnum,pinnum);
+ 950              		.loc 1 353 0
+ 951 04e8 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 952 04ea BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 953 04ec 1046     		mov	r0, r2
+ 954 04ee 1946     		mov	r1, r3
+ 955 04f0 FFF7FEFF 		bl	PINSEL_GetPinType
+ 956 04f4 0346     		mov	r3, r0
+ 957 04f6 FB72     		strb	r3, [r7, #11]
+ 354:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 355:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(type == PINSEL_PIN_TYPE_UNKNOWN)
+ 958              		.loc 1 355 0
+ 959 04f8 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 960 04fa 052B     		cmp	r3, #5
+ 961 04fc 01D1     		bne	.L82
+ 356:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_INVALID_PIN;
+ 962              		.loc 1 356 0
+ 963 04fe 154B     		ldr	r3, .L87
+ 964 0500 23E0     		b	.L83
+ 965              	.L82:
+ 357:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if((type != PINSEL_PIN_TYPE_D ) &&
+ 966              		.loc 1 357 0
+ 967 0502 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 968 0504 002B     		cmp	r3, #0
+ 969 0506 07D0     		beq	.L84
+ 970              		.loc 1 357 0 is_stmt 0 discriminator 1
+ 971 0508 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 972 050a 012B     		cmp	r3, #1
+ 973 050c 04D0     		beq	.L84
+ 358:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         (type != PINSEL_PIN_TYPE_A ) &&
+ 974              		.loc 1 358 0 is_stmt 1
+ 975 050e FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 976 0510 042B     		cmp	r3, #4
+ 977 0512 01D0     		beq	.L84
+ 359:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         (type != PINSEL_PIN_TYPE_W ))
+ 360:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_NOT_SUPPORT;
+ 978              		.loc 1 360 0
+ 979 0514 104B     		ldr	r3, .L87+4
+ 980 0516 18E0     		b	.L83
+ 981              	.L84:
+ 361:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     
+ 362:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     pPIN = PIN_GetPointer(portnum, pinnum);
+ 982              		.loc 1 362 0
+ 983 0518 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 984 051a BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 985 051c 1046     		mov	r0, r2
+ 986 051e 1946     		mov	r1, r3
+ 987 0520 FFF76EFD 		bl	PIN_GetPointer
+ 988 0524 F860     		str	r0, [r7, #12]
+ 363:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(NewState == DISABLE)
+ 989              		.loc 1 363 0
+ 990 0526 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 991 0528 002B     		cmp	r3, #0
+ 992 052a 06D1     		bne	.L85
+ 364:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     {
+ 365:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         *(uint32_t *)pPIN &= ~IOCON_OPENDRAIN_MODE;//Clear hys bits
+ 993              		.loc 1 365 0
+ 994 052c FB68     		ldr	r3, [r7, #12]
+ 995 052e 1B68     		ldr	r3, [r3, #0]
+ 996 0530 23F48062 		bic	r2, r3, #1024
+ 997 0534 FB68     		ldr	r3, [r7, #12]
+ 998 0536 1A60     		str	r2, [r3, #0]
+ 999 0538 05E0     		b	.L86
+ 1000              	.L85:
+ 366:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     }
+ 367:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     else
+ 368:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     {
+ 369:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         *(uint32_t *)pPIN |= IOCON_OPENDRAIN_MODE;
+ 1001              		.loc 1 369 0
+ 1002 053a FB68     		ldr	r3, [r7, #12]
+ 1003 053c 1B68     		ldr	r3, [r3, #0]
+ 1004 053e 43F48062 		orr	r2, r3, #1024
+ 1005 0542 FB68     		ldr	r3, [r7, #12]
+ 1006 0544 1A60     		str	r2, [r3, #0]
+ 1007              	.L86:
+ 370:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     }
+ 371:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     return PINSEL_RET_OK;
+ 1008              		.loc 1 371 0
+ 1009 0546 4FF00003 		mov	r3, #0
+ 1010              	.L83:
+ 372:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** }
+ 1011              		.loc 1 372 0
+ 1012 054a 1846     		mov	r0, r3
+ 1013 054c 07F11007 		add	r7, r7, #16
+ 1014 0550 BD46     		mov	sp, r7
+ 1015 0552 80BD     		pop	{r7, pc}
+ 1016              	.L88:
+ 1017              		.align	2
+ 1018              	.L87:
+ 1019 0554 01000010 		.word	268435457
+ 1020 0558 02000010 		.word	268435458
+ 1021              		.cfi_endproc
+ 1022              	.LFE63:
+ 1024              		.align	2
+ 1025              		.global	PINSEL_SetAnalogPinMode
+ 1026              		.thumb
+ 1027              		.thumb_func
+ 1029              	PINSEL_SetAnalogPinMode:
+ 1030              	.LFB64:
+ 373:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 374:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /*********************************************************************//**
+ 375:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @brief       Enable the Analog mode for each pin  of Type A(default is as Digital pins)
+ 376:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   portnum PORT number, should be in range: 0..3
+ 377:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   pinnum  Pin number, should be in range: 0..31
+ 378:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   enable: the state of the pin that is expected to run
+ 379:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 - ENABLE: Enable the DAC mode of the pin
+ 380:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 - DISABLE: Disable the DAC mode
+ 381:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @return      PINSEL Return Code
+ 382:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_INVALID_PIN
+ 383:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_NOT_SUPPORT
+ 384:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_OK
+ 385:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  **********************************************************************/
+ 386:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** PINSEL_RET_CODE PINSEL_SetAnalogPinMode (uint8_t portnum, uint8_t pinnum, uint8_t enable)
+ 387:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** {
+ 1031              		.loc 1 387 0
+ 1032              		.cfi_startproc
+ 1033              		@ args = 0, pretend = 0, frame = 16
+ 1034              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1035 055c 80B5     		push	{r7, lr}
+ 1036              	.LCFI27:
+ 1037              		.cfi_def_cfa_offset 8
+ 1038              		.cfi_offset 7, -8
+ 1039              		.cfi_offset 14, -4
+ 1040 055e 84B0     		sub	sp, sp, #16
+ 1041              	.LCFI28:
+ 1042              		.cfi_def_cfa_offset 24
+ 1043 0560 00AF     		add	r7, sp, #0
+ 1044              	.LCFI29:
+ 1045              		.cfi_def_cfa_register 7
+ 1046 0562 1346     		mov	r3, r2
+ 1047 0564 0246     		mov	r2, r0
+ 1048 0566 FA71     		strb	r2, [r7, #7]
+ 1049 0568 0A46     		mov	r2, r1
+ 1050 056a BA71     		strb	r2, [r7, #6]
+ 1051 056c 7B71     		strb	r3, [r7, #5]
+ 388:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     uint32_t *pPIN = NULL;
+ 1052              		.loc 1 388 0
+ 1053 056e 4FF00003 		mov	r3, #0
+ 1054 0572 FB60     		str	r3, [r7, #12]
+ 389:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     PinSel_PinType type = PINSEL_GetPinType(portnum,pinnum);
+ 1055              		.loc 1 389 0
+ 1056 0574 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 1057 0576 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1058 0578 1046     		mov	r0, r2
+ 1059 057a 1946     		mov	r1, r3
+ 1060 057c FFF7FEFF 		bl	PINSEL_GetPinType
+ 1061 0580 0346     		mov	r3, r0
+ 1062 0582 FB72     		strb	r3, [r7, #11]
+ 390:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 391:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(type == PINSEL_PIN_TYPE_UNKNOWN)
+ 1063              		.loc 1 391 0
+ 1064 0584 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 1065 0586 052B     		cmp	r3, #5
+ 1066 0588 01D1     		bne	.L90
+ 392:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_INVALID_PIN;
+ 1067              		.loc 1 392 0
+ 1068 058a 124B     		ldr	r3, .L95
+ 1069 058c 1DE0     		b	.L91
+ 1070              	.L90:
+ 393:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(type != PINSEL_PIN_TYPE_A )
+ 1071              		.loc 1 393 0
+ 1072 058e FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 1073 0590 012B     		cmp	r3, #1
+ 1074 0592 01D0     		beq	.L92
+ 394:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_NOT_SUPPORT;
+ 1075              		.loc 1 394 0
+ 1076 0594 104B     		ldr	r3, .L95+4
+ 1077 0596 18E0     		b	.L91
+ 1078              	.L92:
+ 395:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 396:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     pPIN = PIN_GetPointer(portnum, pinnum);
+ 1079              		.loc 1 396 0
+ 1080 0598 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 1081 059a BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1082 059c 1046     		mov	r0, r2
+ 1083 059e 1946     		mov	r1, r3
+ 1084 05a0 FFF72EFD 		bl	PIN_GetPointer
+ 1085 05a4 F860     		str	r0, [r7, #12]
+ 397:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 398:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(enable)
+ 1086              		.loc 1 398 0
+ 1087 05a6 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 1088 05a8 002B     		cmp	r3, #0
+ 1089 05aa 06D0     		beq	.L93
+ 399:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     {
+ 400:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         *(uint32_t *)pPIN &= ~(IOCON_DIGITIAL_MODE);
+ 1090              		.loc 1 400 0
+ 1091 05ac FB68     		ldr	r3, [r7, #12]
+ 1092 05ae 1B68     		ldr	r3, [r3, #0]
+ 1093 05b0 23F08002 		bic	r2, r3, #128
+ 1094 05b4 FB68     		ldr	r3, [r7, #12]
+ 1095 05b6 1A60     		str	r2, [r3, #0]
+ 1096 05b8 05E0     		b	.L94
+ 1097              	.L93:
+ 401:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     }
+ 402:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     else
+ 403:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     {
+ 404:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         *(uint32_t *)pPIN |= IOCON_DIGITIAL_MODE;//Set 7th bit to one
+ 1098              		.loc 1 404 0
+ 1099 05ba FB68     		ldr	r3, [r7, #12]
+ 1100 05bc 1B68     		ldr	r3, [r3, #0]
+ 1101 05be 43F08002 		orr	r2, r3, #128
+ 1102 05c2 FB68     		ldr	r3, [r7, #12]
+ 1103 05c4 1A60     		str	r2, [r3, #0]
+ 1104              	.L94:
+ 405:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     }
+ 406:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 407:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     return PINSEL_RET_OK;
+ 1105              		.loc 1 407 0
+ 1106 05c6 4FF00003 		mov	r3, #0
+ 1107              	.L91:
+ 408:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** }
+ 1108              		.loc 1 408 0
+ 1109 05ca 1846     		mov	r0, r3
+ 1110 05cc 07F11007 		add	r7, r7, #16
+ 1111 05d0 BD46     		mov	sp, r7
+ 1112 05d2 80BD     		pop	{r7, pc}
+ 1113              	.L96:
+ 1114              		.align	2
+ 1115              	.L95:
+ 1116 05d4 01000010 		.word	268435457
+ 1117 05d8 02000010 		.word	268435458
+ 1118              		.cfi_endproc
+ 1119              	.LFE64:
+ 1121              		.align	2
+ 1122              		.global	PINSEL_DacEnable
+ 1123              		.thumb
+ 1124              		.thumb_func
+ 1126              	PINSEL_DacEnable:
+ 1127              	.LFB65:
+ 409:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 410:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 411:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 412:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /*********************************************************************//**
+ 413:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @brief       Choose the DAC mode for pin P0.26
+ 414:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   portnum PORT number, should be in range: 0..3
+ 415:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   pinnum  Pin number, should be in range: 0..31
+ 416:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   enable: the state of the pin that is expected to run
+ 417:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 - ENABLE: Enable the DAC mode of the pin
+ 418:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 - DISABLE: Disable the DAC mode
+ 419:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @return      PINSEL Return Code
+ 420:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_INVALID_PIN
+ 421:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_NOT_SUPPORT
+ 422:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_OK
+ 423:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  **********************************************************************/
+ 424:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** PINSEL_RET_CODE PINSEL_DacEnable (uint8_t portnum, uint8_t pinnum, uint8_t enable)
+ 425:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** {
+ 1128              		.loc 1 425 0
+ 1129              		.cfi_startproc
+ 1130              		@ args = 0, pretend = 0, frame = 16
+ 1131              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1132 05dc 80B5     		push	{r7, lr}
+ 1133              	.LCFI30:
+ 1134              		.cfi_def_cfa_offset 8
+ 1135              		.cfi_offset 7, -8
+ 1136              		.cfi_offset 14, -4
+ 1137 05de 84B0     		sub	sp, sp, #16
+ 1138              	.LCFI31:
+ 1139              		.cfi_def_cfa_offset 24
+ 1140 05e0 00AF     		add	r7, sp, #0
+ 1141              	.LCFI32:
+ 1142              		.cfi_def_cfa_register 7
+ 1143 05e2 1346     		mov	r3, r2
+ 1144 05e4 0246     		mov	r2, r0
+ 1145 05e6 FA71     		strb	r2, [r7, #7]
+ 1146 05e8 0A46     		mov	r2, r1
+ 1147 05ea BA71     		strb	r2, [r7, #6]
+ 1148 05ec 7B71     		strb	r3, [r7, #5]
+ 426:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     uint32_t *pPIN = NULL;
+ 1149              		.loc 1 426 0
+ 1150 05ee 4FF00003 		mov	r3, #0
+ 1151 05f2 FB60     		str	r3, [r7, #12]
+ 427:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     
+ 428:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     PinSel_PinType type = PINSEL_GetPinType(portnum,pinnum);
+ 1152              		.loc 1 428 0
+ 1153 05f4 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 1154 05f6 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1155 05f8 1046     		mov	r0, r2
+ 1156 05fa 1946     		mov	r1, r3
+ 1157 05fc FFF7FEFF 		bl	PINSEL_GetPinType
+ 1158 0600 0346     		mov	r3, r0
+ 1159 0602 FB72     		strb	r3, [r7, #11]
+ 429:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     
+ 430:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(type == PINSEL_PIN_TYPE_UNKNOWN)
+ 1160              		.loc 1 430 0
+ 1161 0604 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 1162 0606 052B     		cmp	r3, #5
+ 1163 0608 01D1     		bne	.L98
+ 431:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_INVALID_PIN;
+ 1164              		.loc 1 431 0
+ 1165 060a 144B     		ldr	r3, .L104
+ 1166 060c 20E0     		b	.L99
+ 1167              	.L98:
+ 432:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 433:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     // This setting is only for DAC pin (output pin)
+ 434:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(!((portnum == 0) && (pinnum == 26)))
+ 1168              		.loc 1 434 0
+ 1169 060e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1170 0610 002B     		cmp	r3, #0
+ 1171 0612 02D1     		bne	.L100
+ 1172              		.loc 1 434 0 is_stmt 0 discriminator 1
+ 1173 0614 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1174 0616 1A2B     		cmp	r3, #26
+ 1175 0618 01D0     		beq	.L101
+ 1176              	.L100:
+ 435:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     {
+ 436:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_NOT_SUPPORT;
+ 1177              		.loc 1 436 0 is_stmt 1
+ 1178 061a 114B     		ldr	r3, .L104+4
+ 1179 061c 18E0     		b	.L99
+ 1180              	.L101:
+ 437:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     }
+ 438:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 439:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     pPIN = PIN_GetPointer(portnum, pinnum);
+ 1181              		.loc 1 439 0
+ 1182 061e FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 1183 0620 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1184 0622 1046     		mov	r0, r2
+ 1185 0624 1946     		mov	r1, r3
+ 1186 0626 FFF7EBFC 		bl	PIN_GetPointer
+ 1187 062a F860     		str	r0, [r7, #12]
+ 440:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 441:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(enable)
+ 1188              		.loc 1 441 0
+ 1189 062c 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 1190 062e 002B     		cmp	r3, #0
+ 1191 0630 06D0     		beq	.L102
+ 442:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     {
+ 443:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         *(uint32_t *)pPIN |= IOCON_DAC_ENABLE;//Set 16th bit to one
+ 1192              		.loc 1 443 0
+ 1193 0632 FB68     		ldr	r3, [r7, #12]
+ 1194 0634 1B68     		ldr	r3, [r3, #0]
+ 1195 0636 43F48032 		orr	r2, r3, #65536
+ 1196 063a FB68     		ldr	r3, [r7, #12]
+ 1197 063c 1A60     		str	r2, [r3, #0]
+ 1198 063e 05E0     		b	.L103
+ 1199              	.L102:
+ 444:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     }
+ 445:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     else
+ 446:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     {
+ 447:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         *(uint32_t *)pPIN &= ~IOCON_DAC_ENABLE;//Set 16th bit to one
+ 1200              		.loc 1 447 0
+ 1201 0640 FB68     		ldr	r3, [r7, #12]
+ 1202 0642 1B68     		ldr	r3, [r3, #0]
+ 1203 0644 23F48032 		bic	r2, r3, #65536
+ 1204 0648 FB68     		ldr	r3, [r7, #12]
+ 1205 064a 1A60     		str	r2, [r3, #0]
+ 1206              	.L103:
+ 448:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 449:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     }
+ 450:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 451:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     return PINSEL_RET_OK;
+ 1207              		.loc 1 451 0
+ 1208 064c 4FF00003 		mov	r3, #0
+ 1209              	.L99:
+ 452:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** }
+ 1210              		.loc 1 452 0
+ 1211 0650 1846     		mov	r0, r3
+ 1212 0652 07F11007 		add	r7, r7, #16
+ 1213 0656 BD46     		mov	sp, r7
+ 1214 0658 80BD     		pop	{r7, pc}
+ 1215              	.L105:
+ 1216 065a 00BF     		.align	2
+ 1217              	.L104:
+ 1218 065c 01000010 		.word	268435457
+ 1219 0660 02000010 		.word	268435458
+ 1220              		.cfi_endproc
+ 1221              	.LFE65:
+ 1223              		.align	2
+ 1224              		.global	PINSEL_SetFilter
+ 1225              		.thumb
+ 1226              		.thumb_func
+ 1228              	PINSEL_SetFilter:
+ 1229              	.LFB66:
+ 453:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 454:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /*********************************************************************//**
+ 455:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @brief       Control the 10ns glitch filter for pin of type A,W
+ 456:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   portnum PORT number, should be in range: 0..3
+ 457:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   pinnum  Pin number, should be in range: 0..31
+ 458:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   enable: the state of the pin that is expected to run
+ 459:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 - ENABLE: The noise pulses below approximately 10ns are filtered out
+ 460:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 - DISABLE: No input filtering is done.
+ 461:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @return      PINSEL Return Code
+ 462:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_INVALID_PIN
+ 463:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_NOT_SUPPORT
+ 464:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_OK
+ 465:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  **********************************************************************/
+ 466:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** PINSEL_RET_CODE PINSEL_SetFilter (uint8_t portnum, uint8_t pinnum, uint8_t enable)
+ 467:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** {
+ 1230              		.loc 1 467 0
+ 1231              		.cfi_startproc
+ 1232              		@ args = 0, pretend = 0, frame = 16
+ 1233              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1234 0664 80B5     		push	{r7, lr}
+ 1235              	.LCFI33:
+ 1236              		.cfi_def_cfa_offset 8
+ 1237              		.cfi_offset 7, -8
+ 1238              		.cfi_offset 14, -4
+ 1239 0666 84B0     		sub	sp, sp, #16
+ 1240              	.LCFI34:
+ 1241              		.cfi_def_cfa_offset 24
+ 1242 0668 00AF     		add	r7, sp, #0
+ 1243              	.LCFI35:
+ 1244              		.cfi_def_cfa_register 7
+ 1245 066a 1346     		mov	r3, r2
+ 1246 066c 0246     		mov	r2, r0
+ 1247 066e FA71     		strb	r2, [r7, #7]
+ 1248 0670 0A46     		mov	r2, r1
+ 1249 0672 BA71     		strb	r2, [r7, #6]
+ 1250 0674 7B71     		strb	r3, [r7, #5]
+ 468:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     uint32_t *pPIN = NULL;
+ 1251              		.loc 1 468 0
+ 1252 0676 4FF00003 		mov	r3, #0
+ 1253 067a FB60     		str	r3, [r7, #12]
+ 469:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     PinSel_PinType type = PINSEL_GetPinType(portnum,pinnum);
+ 1254              		.loc 1 469 0
+ 1255 067c FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 1256 067e BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1257 0680 1046     		mov	r0, r2
+ 1258 0682 1946     		mov	r1, r3
+ 1259 0684 FFF7FEFF 		bl	PINSEL_GetPinType
+ 1260 0688 0346     		mov	r3, r0
+ 1261 068a FB72     		strb	r3, [r7, #11]
+ 470:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     
+ 471:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(type == PINSEL_PIN_TYPE_UNKNOWN)
+ 1262              		.loc 1 471 0
+ 1263 068c FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 1264 068e 052B     		cmp	r3, #5
+ 1265 0690 01D1     		bne	.L107
+ 472:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_INVALID_PIN;
+ 1266              		.loc 1 472 0
+ 1267 0692 144B     		ldr	r3, .L112
+ 1268 0694 20E0     		b	.L108
+ 1269              	.L107:
+ 473:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if((type != PINSEL_PIN_TYPE_A ) &&
+ 1270              		.loc 1 473 0
+ 1271 0696 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 1272 0698 012B     		cmp	r3, #1
+ 1273 069a 04D0     		beq	.L109
+ 1274              		.loc 1 473 0 is_stmt 0 discriminator 1
+ 1275 069c FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 1276 069e 042B     		cmp	r3, #4
+ 1277 06a0 01D0     		beq	.L109
+ 474:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         (type != PINSEL_PIN_TYPE_W ))
+ 475:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_NOT_SUPPORT;
+ 1278              		.loc 1 475 0 is_stmt 1
+ 1279 06a2 114B     		ldr	r3, .L112+4
+ 1280 06a4 18E0     		b	.L108
+ 1281              	.L109:
+ 476:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 477:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     pPIN = PIN_GetPointer(portnum, pinnum);
+ 1282              		.loc 1 477 0
+ 1283 06a6 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 1284 06a8 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1285 06aa 1046     		mov	r0, r2
+ 1286 06ac 1946     		mov	r1, r3
+ 1287 06ae FFF7A7FC 		bl	PIN_GetPointer
+ 1288 06b2 F860     		str	r0, [r7, #12]
+ 478:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 479:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 480:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(enable)
+ 1289              		.loc 1 480 0
+ 1290 06b4 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 1291 06b6 002B     		cmp	r3, #0
+ 1292 06b8 06D0     		beq	.L110
+ 481:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     {
+ 482:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         *(uint32_t *)pPIN &= ~(IOCON_10ns_FILTER_DISABLE);//Clear 8th bit to 0
+ 1293              		.loc 1 482 0
+ 1294 06ba FB68     		ldr	r3, [r7, #12]
+ 1295 06bc 1B68     		ldr	r3, [r3, #0]
+ 1296 06be 23F48072 		bic	r2, r3, #256
+ 1297 06c2 FB68     		ldr	r3, [r7, #12]
+ 1298 06c4 1A60     		str	r2, [r3, #0]
+ 1299 06c6 05E0     		b	.L111
+ 1300              	.L110:
+ 483:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     }
+ 484:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     else
+ 485:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     {
+ 486:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         *(uint32_t *)pPIN |= (IOCON_10ns_FILTER_DISABLE);//Set 8th bit to one
+ 1301              		.loc 1 486 0
+ 1302 06c8 FB68     		ldr	r3, [r7, #12]
+ 1303 06ca 1B68     		ldr	r3, [r3, #0]
+ 1304 06cc 43F48072 		orr	r2, r3, #256
+ 1305 06d0 FB68     		ldr	r3, [r7, #12]
+ 1306 06d2 1A60     		str	r2, [r3, #0]
+ 1307              	.L111:
+ 487:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     }
+ 488:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 489:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 490:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     return PINSEL_RET_OK;
+ 1308              		.loc 1 490 0
+ 1309 06d4 4FF00003 		mov	r3, #0
+ 1310              	.L108:
+ 491:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** }
+ 1311              		.loc 1 491 0
+ 1312 06d8 1846     		mov	r0, r3
+ 1313 06da 07F11007 		add	r7, r7, #16
+ 1314 06de BD46     		mov	sp, r7
+ 1315 06e0 80BD     		pop	{r7, pc}
+ 1316              	.L113:
+ 1317 06e2 00BF     		.align	2
+ 1318              	.L112:
+ 1319 06e4 01000010 		.word	268435457
+ 1320 06e8 02000010 		.word	268435458
+ 1321              		.cfi_endproc
+ 1322              	.LFE66:
+ 1324              		.align	2
+ 1325              		.global	PINSEL_SetI2CFilter
+ 1326              		.thumb
+ 1327              		.thumb_func
+ 1329              	PINSEL_SetI2CFilter:
+ 1330              	.LFB67:
+ 492:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** /*********************************************************************//**
+ 493:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @brief       Control the 50ns glitch filter for I2C pins (type I)
+ 494:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   portnum PORT number, should be in range: 0..3
+ 495:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   pinnum  Pin number, should be in range: 0..31
+ 496:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @param[in]   enable: the state of the pin that is expected to run
+ 497:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 - ENABLE: The noise pulses below approximately 10ns are filtered out
+ 498:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****                 - DISABLE: No input filtering is done.
+ 499:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  * @return      PINSEL Return Code
+ 500:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_INVALID_PIN
+ 501:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_NOT_SUPPORT
+ 502:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  *              - PINSEL_RET_OK
+ 503:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****  **********************************************************************/
+ 504:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** PINSEL_RET_CODE PINSEL_SetI2CFilter (uint8_t portnum, uint8_t pinnum, uint8_t enable)
+ 505:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** {
+ 1331              		.loc 1 505 0
+ 1332              		.cfi_startproc
+ 1333              		@ args = 0, pretend = 0, frame = 16
+ 1334              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1335 06ec 80B5     		push	{r7, lr}
+ 1336              	.LCFI36:
+ 1337              		.cfi_def_cfa_offset 8
+ 1338              		.cfi_offset 7, -8
+ 1339              		.cfi_offset 14, -4
+ 1340 06ee 84B0     		sub	sp, sp, #16
+ 1341              	.LCFI37:
+ 1342              		.cfi_def_cfa_offset 24
+ 1343 06f0 00AF     		add	r7, sp, #0
+ 1344              	.LCFI38:
+ 1345              		.cfi_def_cfa_register 7
+ 1346 06f2 1346     		mov	r3, r2
+ 1347 06f4 0246     		mov	r2, r0
+ 1348 06f6 FA71     		strb	r2, [r7, #7]
+ 1349 06f8 0A46     		mov	r2, r1
+ 1350 06fa BA71     		strb	r2, [r7, #6]
+ 1351 06fc 7B71     		strb	r3, [r7, #5]
+ 506:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     uint32_t *pPIN = NULL;
+ 1352              		.loc 1 506 0
+ 1353 06fe 4FF00003 		mov	r3, #0
+ 1354 0702 FB60     		str	r3, [r7, #12]
+ 507:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     PinSel_PinType type = PINSEL_GetPinType(portnum,pinnum);
+ 1355              		.loc 1 507 0
+ 1356 0704 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 1357 0706 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1358 0708 1046     		mov	r0, r2
+ 1359 070a 1946     		mov	r1, r3
+ 1360 070c FFF7FEFF 		bl	PINSEL_GetPinType
+ 1361 0710 0346     		mov	r3, r0
+ 1362 0712 FB72     		strb	r3, [r7, #11]
+ 508:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     
+ 509:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(type == PINSEL_PIN_TYPE_UNKNOWN)
+ 1363              		.loc 1 509 0
+ 1364 0714 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 1365 0716 052B     		cmp	r3, #5
+ 1366 0718 01D1     		bne	.L115
+ 510:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_INVALID_PIN;
+ 1367              		.loc 1 510 0
+ 1368 071a 124B     		ldr	r3, .L120
+ 1369 071c 1DE0     		b	.L116
+ 1370              	.L115:
+ 511:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(type != PINSEL_PIN_TYPE_I)
+ 1371              		.loc 1 511 0
+ 1372 071e FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 1373 0720 032B     		cmp	r3, #3
+ 1374 0722 01D0     		beq	.L117
+ 512:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         return PINSEL_RET_NOT_SUPPORT;
+ 1375              		.loc 1 512 0
+ 1376 0724 104B     		ldr	r3, .L120+4
+ 1377 0726 18E0     		b	.L116
+ 1378              	.L117:
+ 513:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 514:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     pPIN = PIN_GetPointer(portnum, pinnum);
+ 1379              		.loc 1 514 0
+ 1380 0728 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 1381 072a BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1382 072c 1046     		mov	r0, r2
+ 1383 072e 1946     		mov	r1, r3
+ 1384 0730 FFF766FC 		bl	PIN_GetPointer
+ 1385 0734 F860     		str	r0, [r7, #12]
+ 515:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 516:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 517:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     if(enable)
+ 1386              		.loc 1 517 0
+ 1387 0736 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 1388 0738 002B     		cmp	r3, #0
+ 1389 073a 06D0     		beq	.L118
+ 518:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     {
+ 519:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         *(uint32_t *)pPIN &= ~(IOCON_HS_MASK);//Clear 8th bit to 0
+ 1390              		.loc 1 519 0
+ 1391 073c FB68     		ldr	r3, [r7, #12]
+ 1392 073e 1B68     		ldr	r3, [r3, #0]
+ 1393 0740 23F48072 		bic	r2, r3, #256
+ 1394 0744 FB68     		ldr	r3, [r7, #12]
+ 1395 0746 1A60     		str	r2, [r3, #0]
+ 1396 0748 05E0     		b	.L119
+ 1397              	.L118:
+ 520:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     }
+ 521:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     else
+ 522:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     {
+ 523:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****         *(uint32_t *)pPIN |= (IOCON_I2C_FILTER_DISABLE);//Set 8th bit to one
+ 1398              		.loc 1 523 0
+ 1399 074a FB68     		ldr	r3, [r7, #12]
+ 1400 074c 1B68     		ldr	r3, [r3, #0]
+ 1401 074e 43F48072 		orr	r2, r3, #256
+ 1402 0752 FB68     		ldr	r3, [r7, #12]
+ 1403 0754 1A60     		str	r2, [r3, #0]
+ 1404              	.L119:
+ 524:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     }
+ 525:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 526:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** 
+ 527:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c ****     return PINSEL_RET_OK;
+ 1405              		.loc 1 527 0
+ 1406 0756 4FF00003 		mov	r3, #0
+ 1407              	.L116:
+ 528:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.c **** }
+ 1408              		.loc 1 528 0
+ 1409 075a 1846     		mov	r0, r3
+ 1410 075c 07F11007 		add	r7, r7, #16
+ 1411 0760 BD46     		mov	sp, r7
+ 1412 0762 80BD     		pop	{r7, pc}
+ 1413              	.L121:
+ 1414              		.align	2
+ 1415              	.L120:
+ 1416 0764 01000010 		.word	268435457
+ 1417 0768 02000010 		.word	268435458
+ 1418              		.cfi_endproc
+ 1419              	.LFE67:
+ 1421              	.Letext0:
+ 1422              		.file 2 "g:\\program files\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/gcc/ar
+ 1423              		.file 3 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Drivers\\include/lpc_types.h"
+ 1424              		.file 4 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Drivers\\include/lpc177x_8x_pinsel.h"
+ 1425              		.file 5 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Core\\CMSIS\\Include/core_cm3.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 lpc177x_8x_pinsel.c
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:18     .text:00000000 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:22     .text:00000000 PIN_GetPointer
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:72     .text:0000003c PINSEL_GetPinType
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:104    .text:0000005c $d
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:112    .text:00000074 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:302    .text:00000174 PINSEL_ConfigPin
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:376    .text:000001e0 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:380    .text:000001e4 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:385    .text:000001e4 PINSEL_SetPinMode
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:476    .text:00000268 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:481    .text:00000270 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:486    .text:00000270 PINSEL_SetHysMode
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:577    .text:000002f0 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:582    .text:000002f8 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:587    .text:000002f8 PINSEL_SetInvertInput
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:674    .text:00000370 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:679    .text:00000378 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:684    .text:00000378 PINSEL_SetSlewMode
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:775    .text:000003f8 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:780    .text:00000400 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:785    .text:00000400 PINSEL_SetI2CMode
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:1329   .text:000006ec PINSEL_SetI2CFilter
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:914    .text:000004c8 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:919    .text:000004d0 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:924    .text:000004d0 PINSEL_SetOpenDrainMode
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:1019   .text:00000554 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:1024   .text:0000055c $t
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:1029   .text:0000055c PINSEL_SetAnalogPinMode
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:1116   .text:000005d4 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:1121   .text:000005dc $t
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:1126   .text:000005dc PINSEL_DacEnable
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:1218   .text:0000065c $d
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:1223   .text:00000664 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:1228   .text:00000664 PINSEL_SetFilter
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:1319   .text:000006e4 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:1324   .text:000006ec $t
+C:\Users\YANGZH~1\AppData\Local\Temp\cclBixS3.s:1416   .text:00000764 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.1.9fa2be94b3b27131c651c32db681ca6e
+                           .group:00000000 wm4.stdint.h.10.90b695f550ca6cc3fb08fa83baf01e05
+                           .group:00000000 wm4.lpc_types.h.61.500abe635b953859f645467b1debaa34
+                           .group:00000000 wm4.lpc177x_8x_libcfg_default.h.42.c21d4d8531a15b96cd9ccfa94b76f68e
+                           .group:00000000 wm4.LPC177x_8x.h.34.ced9b468ef83bb68f280515946661353
+                           .group:00000000 wm4.core_cm3.h.32.790cc16ac64d67f02f3790c90a28e38c
+                           .group:00000000 wm4.core_cmInstr.h.25.dd98b40e8e0d1d9ee958eb9cce5e7898
+                           .group:00000000 wm4.core_cm3.h.132.82da42f2eaa4f3e645984b3550bd4c22
+                           .group:00000000 wm4.LPC177x_8x.h.1353.9b0a09b2831088a36b3e4060dcdc4532
+                           .group:00000000 wm4.lpc177x_8x_pinsel.h.55.97931d0d94ce6970b6da7ae4e4f192a0
+
+NO UNDEFINED SYMBOLS

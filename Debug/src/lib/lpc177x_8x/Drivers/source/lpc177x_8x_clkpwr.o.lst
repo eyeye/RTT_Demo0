@@ -1,0 +1,1126 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"lpc177x_8x_clkpwr.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global	USBFrequency
+  19              		.bss
+  20              		.align	2
+  23              	USBFrequency:
+  24 0000 00000000 		.space	4
+  25              		.text
+  26              		.align	2
+  27              		.global	CLKPWR_SetCLKDiv
+  28              		.thumb
+  29              		.thumb_func
+  31              	CLKPWR_SetCLKDiv:
+  32              	.LFB55:
+  33              		.file 1 "../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c"
+   1:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** /**********************************************************************
+   2:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * $Id$      lpc177x_8x_clkpwr.c         2011-06-02
+   3:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** *//**
+   4:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * @file     lpc177x_8x_clkpwr.c
+   5:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * @brief    Contains all functions support for Clock and Power Control
+   6:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** *           firmware library on LPC177x_8x
+   7:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * @version  1.0
+   8:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * @date     02. June. 2011
+   9:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * @author   NXP MCU SW Application Team
+  10:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * 
+  11:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * Copyright(C) 2011, NXP Semiconductor
+  12:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * All rights reserved.
+  13:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** *
+  14:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** ***********************************************************************
+  15:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * Software that is described herein is for illustrative purposes only
+  16:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * which provides customers with programming information regarding the
+  17:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * products. This software is supplied "AS IS" without any warranties.
+  18:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * NXP Semiconductors assumes no responsibility or liability for the
+  19:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * use of the software, conveys no license or title under any patent,
+  20:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * copyright, or mask work right to the product. NXP Semiconductors
+  21:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * reserves the right to make changes in the software without
+  22:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * notification. NXP Semiconductors also make no representation or
+  23:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * warranty that such application will be suitable for the specified
+  24:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * use without further testing or modification.
+  25:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * Permission to use, copy, modify, and distribute this software and its
+  26:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * documentation is hereby granted, under NXP Semiconductors'
+  27:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * relevant copyright in the software, without fee, provided that it
+  28:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * is used in conjunction with NXP Semiconductors microcontrollers.  This
+  29:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * copyright, permission, and disclaimer notice must appear in all copies of
+  30:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** * this code.
+  31:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** **********************************************************************/
+  32:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+  33:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** /* Peripheral group ----------------------------------------------------------- */
+  34:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** /** @addtogroup CLKPWR
+  35:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @{
+  36:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  */
+  37:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** #ifdef __BUILD_WITH_EXAMPLE__
+  38:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** #include "lpc177x_8x_libcfg.h"
+  39:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** #else
+  40:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** #include "lpc177x_8x_libcfg_default.h"
+  41:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** #endif /* __BUILD_WITH_EXAMPLE__ */
+  42:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** #ifdef _CLKPWR
+  43:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  
+  44:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** /* Includes ------------------------------------------------------------------- */
+  45:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** #include "lpc177x_8x_clkpwr.h"
+  46:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+  47:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** uint32_t USBFrequency = 0;
+  48:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+  49:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+  50:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** /* Public Functions ----------------------------------------------------------- */
+  51:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** /** @addtogroup CLKPWR_Public_Functions
+  52:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @{
+  53:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  */
+  54:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+  55:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** /*********************************************************************//**
+  56:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @brief       Set value of each Peripheral Clock Selection
+  57:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @param[in]   ClkType clock type that will be divided, should be:
+  58:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              - CLKPWR_CLKTYPE_CPU        : CPU clock
+  59:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              - CLKPWR_CLKTYPE_PER        : Peripheral clock
+  60:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              - CLKPWR_CLKTYPE_EMC        : EMC clock
+  61:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              - CLKPWR_CLKTYPE_USB        : USB clock
+  62:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @param[in]   DivVal  Value of divider. This value should be set as follows:
+  63:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *                  - CPU clock: DivVal must be in range: 0..31
+  64:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *                  - Peripheral clock: DivVal must be in range: 0..31
+  65:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *                  - EMC clock: DivVal must be:
+  66:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *                          + 0: The EMC uses the same clock as the CPU
+  67:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *                          + 1: The EMC uses a clock at half the rate of the CPU
+  68:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *                  - USB clock: DivVal must be:
+  69:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *                          + 0: the divider is turned off, no clock will
+  70:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *                               be provided to the USB subsystem
+  71:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *                          + 4: PLL0 output is divided by 4. PLL0 output must be 192MHz
+  72:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *                          + 6: PLL0 output is divided by 6. PLL0 output must be 288MHz
+  73:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @return none
+  74:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * Note: Pls assign right DivVal, this function will not check if it is illegal.
+  75:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  **********************************************************************/
+  76:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** void CLKPWR_SetCLKDiv (uint8_t ClkType, uint8_t DivVal)
+  77:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** {
+  34              		.loc 1 77 0
+  35              		.cfi_startproc
+  36              		@ args = 0, pretend = 0, frame = 16
+  37              		@ frame_needed = 1, uses_anonymous_args = 0
+  38 0000 80B5     		push	{r7, lr}
+  39              	.LCFI0:
+  40              		.cfi_def_cfa_offset 8
+  41              		.cfi_offset 7, -8
+  42              		.cfi_offset 14, -4
+  43 0002 84B0     		sub	sp, sp, #16
+  44              	.LCFI1:
+  45              		.cfi_def_cfa_offset 24
+  46 0004 00AF     		add	r7, sp, #0
+  47              	.LCFI2:
+  48              		.cfi_def_cfa_register 7
+  49 0006 0246     		mov	r2, r0
+  50 0008 0B46     		mov	r3, r1
+  51 000a FA71     		strb	r2, [r7, #7]
+  52 000c BB71     		strb	r3, [r7, #6]
+  78:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     uint32_t tmp;
+  79:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     switch(ClkType)
+  53              		.loc 1 79 0
+  54 000e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  55 0010 032B     		cmp	r3, #3
+  56 0012 5ED8     		bhi	.L2
+  57 0014 01A2     		adr	r2, .L7
+  58 0016 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+  59 001a 00BF     		.align	2
+  60              	.L7:
+  61 001c 2D000000 		.word	.L3+1
+  62 0020 53000000 		.word	.L4+1
+  63 0024 79000000 		.word	.L5+1
+  64 0028 9F000000 		.word	.L6+1
+  65              	.L3:
+  80:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     {
+  81:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     case CLKPWR_CLKTYPE_CPU:
+  82:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         tmp =   LPC_SC->CCLKSEL & ~(0x1F);
+  66              		.loc 1 82 0
+  67 002c 2B4B     		ldr	r3, .L9
+  68 002e D3F80431 		ldr	r3, [r3, #260]
+  69 0032 23F01F03 		bic	r3, r3, #31
+  70 0036 FB60     		str	r3, [r7, #12]
+  83:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         tmp |=  DivVal & 0x1F;
+  71              		.loc 1 83 0
+  72 0038 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+  73 003a 03F01F03 		and	r3, r3, #31
+  74 003e FA68     		ldr	r2, [r7, #12]
+  75 0040 1343     		orrs	r3, r3, r2
+  76 0042 FB60     		str	r3, [r7, #12]
+  84:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         LPC_SC->CCLKSEL = tmp;
+  77              		.loc 1 84 0
+  78 0044 254B     		ldr	r3, .L9
+  79 0046 FA68     		ldr	r2, [r7, #12]
+  80 0048 C3F80421 		str	r2, [r3, #260]
+  85:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         SystemCoreClockUpdate(); //Update clock
+  81              		.loc 1 85 0
+  82 004c FFF7FEFF 		bl	SystemCoreClockUpdate
+  86:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         break;
+  83              		.loc 1 86 0
+  84 0050 40E0     		b	.L1
+  85              	.L4:
+  87:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     case CLKPWR_CLKTYPE_PER:
+  88:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         tmp =   LPC_SC->PCLKSEL & ~(0x1F);
+  86              		.loc 1 88 0
+  87 0052 224B     		ldr	r3, .L9
+  88 0054 D3F8A831 		ldr	r3, [r3, #424]
+  89 0058 23F01F03 		bic	r3, r3, #31
+  90 005c FB60     		str	r3, [r7, #12]
+  89:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         tmp |=  DivVal & 0x1F;
+  91              		.loc 1 89 0
+  92 005e BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+  93 0060 03F01F03 		and	r3, r3, #31
+  94 0064 FA68     		ldr	r2, [r7, #12]
+  95 0066 1343     		orrs	r3, r3, r2
+  96 0068 FB60     		str	r3, [r7, #12]
+  90:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         LPC_SC->PCLKSEL = tmp;
+  97              		.loc 1 90 0
+  98 006a 1C4B     		ldr	r3, .L9
+  99 006c FA68     		ldr	r2, [r7, #12]
+ 100 006e C3F8A821 		str	r2, [r3, #424]
+  91:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         SystemCoreClockUpdate(); //Update clock
+ 101              		.loc 1 91 0
+ 102 0072 FFF7FEFF 		bl	SystemCoreClockUpdate
+  92:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         break;
+ 103              		.loc 1 92 0
+ 104 0076 2DE0     		b	.L1
+ 105              	.L5:
+  93:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     case CLKPWR_CLKTYPE_EMC:
+  94:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         tmp =   LPC_SC->EMCCLKSEL & ~(0x01);
+ 106              		.loc 1 94 0
+ 107 0078 184B     		ldr	r3, .L9
+ 108 007a D3F80031 		ldr	r3, [r3, #256]
+ 109 007e 23F00103 		bic	r3, r3, #1
+ 110 0082 FB60     		str	r3, [r7, #12]
+  95:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         tmp |=  DivVal & 0x01;
+ 111              		.loc 1 95 0
+ 112 0084 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 113 0086 03F00103 		and	r3, r3, #1
+ 114 008a FA68     		ldr	r2, [r7, #12]
+ 115 008c 1343     		orrs	r3, r3, r2
+ 116 008e FB60     		str	r3, [r7, #12]
+  96:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         LPC_SC->EMCCLKSEL = tmp;
+ 117              		.loc 1 96 0
+ 118 0090 124B     		ldr	r3, .L9
+ 119 0092 FA68     		ldr	r2, [r7, #12]
+ 120 0094 C3F80021 		str	r2, [r3, #256]
+  97:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         SystemCoreClockUpdate(); //Update clock
+ 121              		.loc 1 97 0
+ 122 0098 FFF7FEFF 		bl	SystemCoreClockUpdate
+  98:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         break;
+ 123              		.loc 1 98 0
+ 124 009c 1AE0     		b	.L1
+ 125              	.L6:
+  99:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     case CLKPWR_CLKTYPE_USB:
+ 100:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         tmp =   LPC_SC->USBCLKSEL & ~(0x1F);
+ 126              		.loc 1 100 0
+ 127 009e 0F4B     		ldr	r3, .L9
+ 128 00a0 D3F80831 		ldr	r3, [r3, #264]
+ 129 00a4 23F01F03 		bic	r3, r3, #31
+ 130 00a8 FB60     		str	r3, [r7, #12]
+ 101:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         tmp |=  DivVal & 0x1F;
+ 131              		.loc 1 101 0
+ 132 00aa BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 133 00ac 03F01F03 		and	r3, r3, #31
+ 134 00b0 FA68     		ldr	r2, [r7, #12]
+ 135 00b2 1343     		orrs	r3, r3, r2
+ 136 00b4 FB60     		str	r3, [r7, #12]
+ 102:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         LPC_SC->USBCLKSEL |= DivVal & 0x1F;
+ 137              		.loc 1 102 0
+ 138 00b6 094B     		ldr	r3, .L9
+ 139 00b8 084A     		ldr	r2, .L9
+ 140 00ba D2F80811 		ldr	r1, [r2, #264]
+ 141 00be BA79     		ldrb	r2, [r7, #6]	@ zero_extendqisi2
+ 142 00c0 02F01F02 		and	r2, r2, #31
+ 143 00c4 0A43     		orrs	r2, r2, r1
+ 144 00c6 C3F80821 		str	r2, [r3, #264]
+ 103:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         SystemCoreClockUpdate(); //Update clock
+ 145              		.loc 1 103 0
+ 146 00ca FFF7FEFF 		bl	SystemCoreClockUpdate
+ 104:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         break;
+ 147              		.loc 1 104 0
+ 148 00ce 00BF     		nop
+ 149 00d0 00E0     		b	.L1
+ 150              	.L2:
+ 105:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     default:
+ 106:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         while(1);//Error Loop;
+ 151              		.loc 1 106 0 discriminator 1
+ 152 00d2 FEE7     		b	.L2
+ 153              	.L1:
+ 107:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     }
+ 108:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** }
+ 154              		.loc 1 108 0
+ 155 00d4 07F11007 		add	r7, r7, #16
+ 156 00d8 BD46     		mov	sp, r7
+ 157 00da 80BD     		pop	{r7, pc}
+ 158              	.L10:
+ 159              		.align	2
+ 160              	.L9:
+ 161 00dc 00C00F40 		.word	1074774016
+ 162              		.cfi_endproc
+ 163              	.LFE55:
+ 165              		.align	2
+ 166              		.global	CLKPWR_GetCLK
+ 167              		.thumb
+ 168              		.thumb_func
+ 170              	CLKPWR_GetCLK:
+ 171              	.LFB56:
+ 109:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+ 110:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** /*********************************************************************//**
+ 111:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @brief       Get current clock value
+ 112:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @param[in]   ClkType clock type that will be divided, should be:
+ 113:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              - CLKPWR_CLKTYPE_CPU        : CPU clock
+ 114:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              - CLKPWR_CLKTYPE_PER        : Peripheral clock
+ 115:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              - CLKPWR_CLKTYPE_EMC        : EMC clock
+ 116:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              - CLKPWR_CLKTYPE_USB        : USB clock
+ 117:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  **********************************************************************/
+ 118:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** uint32_t CLKPWR_GetCLK (uint8_t ClkType)
+ 119:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** {
+ 172              		.loc 1 119 0
+ 173              		.cfi_startproc
+ 174              		@ args = 0, pretend = 0, frame = 8
+ 175              		@ frame_needed = 1, uses_anonymous_args = 0
+ 176              		@ link register save eliminated.
+ 177 00e0 80B4     		push	{r7}
+ 178              	.LCFI3:
+ 179              		.cfi_def_cfa_offset 4
+ 180              		.cfi_offset 7, -4
+ 181 00e2 83B0     		sub	sp, sp, #12
+ 182              	.LCFI4:
+ 183              		.cfi_def_cfa_offset 16
+ 184 00e4 00AF     		add	r7, sp, #0
+ 185              	.LCFI5:
+ 186              		.cfi_def_cfa_register 7
+ 187 00e6 0346     		mov	r3, r0
+ 188 00e8 FB71     		strb	r3, [r7, #7]
+ 120:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     switch(ClkType)
+ 189              		.loc 1 120 0
+ 190 00ea FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 191 00ec 032B     		cmp	r3, #3
+ 192 00ee 17D8     		bhi	.L12
+ 193 00f0 01A2     		adr	r2, .L17
+ 194 00f2 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 195 00f6 00BF     		.align	2
+ 196              	.L17:
+ 197 00f8 09010000 		.word	.L13+1
+ 198 00fc 0F010000 		.word	.L14+1
+ 199 0100 15010000 		.word	.L15+1
+ 200 0104 1B010000 		.word	.L16+1
+ 201              	.L13:
+ 121:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     {
+ 122:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         case CLKPWR_CLKTYPE_CPU:
+ 123:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****             return SystemCoreClock;
+ 202              		.loc 1 123 0
+ 203 0108 094B     		ldr	r3, .L19
+ 204 010a 1B68     		ldr	r3, [r3, #0]
+ 205 010c 09E0     		b	.L18
+ 206              	.L14:
+ 124:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+ 125:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         case CLKPWR_CLKTYPE_PER:
+ 126:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****             return PeripheralClock;
+ 207              		.loc 1 126 0
+ 208 010e 094B     		ldr	r3, .L19+4
+ 209 0110 1B68     		ldr	r3, [r3, #0]
+ 210 0112 06E0     		b	.L18
+ 211              	.L15:
+ 127:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+ 128:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         case CLKPWR_CLKTYPE_EMC:
+ 129:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****             return EMCClock;
+ 212              		.loc 1 129 0
+ 213 0114 084B     		ldr	r3, .L19+8
+ 214 0116 1B68     		ldr	r3, [r3, #0]
+ 215 0118 03E0     		b	.L18
+ 216              	.L16:
+ 130:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+ 131:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         case CLKPWR_CLKTYPE_USB:
+ 132:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****             return USBClock;
+ 217              		.loc 1 132 0
+ 218 011a 084B     		ldr	r3, .L19+12
+ 219 011c 1B68     		ldr	r3, [r3, #0]
+ 220 011e 00E0     		b	.L18
+ 221              	.L12:
+ 133:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+ 134:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         default:
+ 135:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****             while(1);//error loop
+ 222              		.loc 1 135 0 discriminator 1
+ 223 0120 FEE7     		b	.L12
+ 224              	.L18:
+ 136:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     }
+ 137:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** }
+ 225              		.loc 1 137 0
+ 226 0122 1846     		mov	r0, r3
+ 227 0124 07F10C07 		add	r7, r7, #12
+ 228 0128 BD46     		mov	sp, r7
+ 229 012a 80BC     		pop	{r7}
+ 230 012c 7047     		bx	lr
+ 231              	.L20:
+ 232 012e 00BF     		.align	2
+ 233              	.L19:
+ 234 0130 00000000 		.word	SystemCoreClock
+ 235 0134 00000000 		.word	PeripheralClock
+ 236 0138 00000000 		.word	EMCClock
+ 237 013c 00000000 		.word	USBClock
+ 238              		.cfi_endproc
+ 239              	.LFE56:
+ 241              		.align	2
+ 242              		.global	CLKPWR_ConfigPPWR
+ 243              		.thumb
+ 244              		.thumb_func
+ 246              	CLKPWR_ConfigPPWR:
+ 247              	.LFB57:
+ 138:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+ 139:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** /*********************************************************************//**
+ 140:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @brief       Configure power supply for each peripheral according to NewState
+ 141:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @param[in]   PPType  Type of peripheral used to enable power,
+ 142:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              should be one of the following:
+ 143:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCLCD       : LCD
+ 144:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCTIM0      : Timer 0
+ 145:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCTIM1      : Timer 1
+ 146:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCUART0     : UART 0
+ 147:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCUART1     : UART 1
+ 148:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCPWM0      : PWM 0
+ 149:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCPWM1      : PWM 1
+ 150:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCI2C0      : I2C 0
+ 151:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCUART4     : UART4
+ 152:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCLCD       : LCD
+ 153:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCTIM0      : Timer 0
+ 154:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCRTC       : RTC
+ 155:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCSSP1      : SSP 1
+ 156:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCEMC       : EMC
+ 157:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCADC       : ADC
+ 158:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCAN1       : CAN 1
+ 159:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCAN2       : CAN 2
+ 160:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCGPIO      : GPIO
+ 161:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCMC        : MCPWM
+ 162:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCQEI       : QEI
+ 163:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCI2C1      : I2C 1
+ 164:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCSSP2      : SSP 2
+ 165:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCSSP0      : SSP 0
+ 166:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCTIM2      : Timer 2
+ 167:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCTIM3      : Timer 3
+ 168:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCUART2     : UART 2
+ 169:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCUART3     : UART 3
+ 170:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCI2C2      : I2C 2
+ 171:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCI2S       : I2S
+ 172:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCSDC       : SDC
+ 173:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCGPDMA     : GPDMA
+ 174:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCENET      : Ethernet
+ 175:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_PCONP_PCUSB       : USB
+ 176:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *
+ 177:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @param[in]   NewState    New state of Peripheral Power, should be:
+ 178:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              - ENABLE    : Enable power for this peripheral
+ 179:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              - DISABLE   : Disable power for this peripheral
+ 180:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *
+ 181:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @return none
+ 182:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  **********************************************************************/
+ 183:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** void CLKPWR_ConfigPPWR (uint32_t PPType, FunctionalState NewState)
+ 184:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** {
+ 248              		.loc 1 184 0
+ 249              		.cfi_startproc
+ 250              		@ args = 0, pretend = 0, frame = 8
+ 251              		@ frame_needed = 1, uses_anonymous_args = 0
+ 252              		@ link register save eliminated.
+ 253 0140 80B4     		push	{r7}
+ 254              	.LCFI6:
+ 255              		.cfi_def_cfa_offset 4
+ 256              		.cfi_offset 7, -4
+ 257 0142 83B0     		sub	sp, sp, #12
+ 258              	.LCFI7:
+ 259              		.cfi_def_cfa_offset 16
+ 260 0144 00AF     		add	r7, sp, #0
+ 261              	.LCFI8:
+ 262              		.cfi_def_cfa_register 7
+ 263 0146 7860     		str	r0, [r7, #4]
+ 264 0148 0B46     		mov	r3, r1
+ 265 014a FB70     		strb	r3, [r7, #3]
+ 185:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     if (NewState == ENABLE)
+ 266              		.loc 1 185 0
+ 267 014c FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 268 014e 012B     		cmp	r3, #1
+ 269 0150 08D1     		bne	.L22
+ 186:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     {
+ 187:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         LPC_SC->PCONP |= PPType;
+ 270              		.loc 1 187 0
+ 271 0152 0D4B     		ldr	r3, .L24
+ 272 0154 0C4A     		ldr	r2, .L24
+ 273 0156 D2F8C410 		ldr	r1, [r2, #196]
+ 274 015a 7A68     		ldr	r2, [r7, #4]
+ 275 015c 0A43     		orrs	r2, r2, r1
+ 276 015e C3F8C420 		str	r2, [r3, #196]
+ 277 0162 0CE0     		b	.L21
+ 278              	.L22:
+ 188:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     }
+ 189:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     else if (NewState == DISABLE)
+ 279              		.loc 1 189 0
+ 280 0164 FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 281 0166 002B     		cmp	r3, #0
+ 282 0168 09D1     		bne	.L21
+ 190:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     {
+ 191:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         LPC_SC->PCONP &= ~PPType;
+ 283              		.loc 1 191 0
+ 284 016a 074B     		ldr	r3, .L24
+ 285 016c 064A     		ldr	r2, .L24
+ 286 016e D2F8C410 		ldr	r1, [r2, #196]
+ 287 0172 7A68     		ldr	r2, [r7, #4]
+ 288 0174 6FEA0202 		mvn	r2, r2
+ 289 0178 0A40     		ands	r2, r2, r1
+ 290 017a C3F8C420 		str	r2, [r3, #196]
+ 291              	.L21:
+ 192:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     }
+ 193:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** }
+ 292              		.loc 1 193 0
+ 293 017e 07F10C07 		add	r7, r7, #12
+ 294 0182 BD46     		mov	sp, r7
+ 295 0184 80BC     		pop	{r7}
+ 296 0186 7047     		bx	lr
+ 297              	.L25:
+ 298              		.align	2
+ 299              	.L24:
+ 300 0188 00C00F40 		.word	1074774016
+ 301              		.cfi_endproc
+ 302              	.LFE57:
+ 304              		.align	2
+ 305              		.global	CLKPWR_Sleep
+ 306              		.thumb
+ 307              		.thumb_func
+ 309              	CLKPWR_Sleep:
+ 310              	.LFB58:
+ 194:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+ 195:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** #if 0
+ 196:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** // nxp21346
+ 197:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** /*********************************************************************//**
+ 198:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @brief       Configure hardware reset for each peripheral according to NewState
+ 199:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @param[in]   PPType  Type of peripheral used to enable power,
+ 200:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              should be one of the following:
+ 201:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_RSTCON0_LCD       : LCD
+ 202:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              -  CLKPWR_RSTCON0_TIM0      : Timer 0
+ 203:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_TIM1      : Timer 1
+ 204:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_UART0     : UART 0
+ 205:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_UART1     : UART 1
+ 206:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_PWM0      : PWM 0
+ 207:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_PWM1      : PWM 1
+ 208:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_I2C0      : I2C 0
+ 209:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_UART4     : UART 4
+ 210:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_RTC       : RTC
+ 211:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_SSP1      : SSP 1
+ 212:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_EMC       : EMC
+ 213:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_ADC       : ADC
+ 214:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_CAN1      : CAN 1
+ 215:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_CAN2      : CAN 2
+ 216:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_GPIO      : GPIO
+ 217:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_MCPWM     : MCPWM
+ 218:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_QEI       : QEI
+ 219:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_I2C1      : I2C 1
+ 220:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_SSP2      : SSP 2
+ 221:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_SSP0      : SSP 0
+ 222:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_TIM2      : Timer 2
+ 223:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_TIM3      : Timer 3
+ 224:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_UART2     : UART 2
+ 225:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_UART3     : UART 3
+ 226:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_I2C2      : I2C 2
+ 227:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_I2S       : I2S
+ 228:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_SDC       : SDC
+ 229:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_GPDMA     : GPDMA
+ 230:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_ENET      : Ethernet
+ 231:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****                 -  CLKPWR_RSTCON0_USB       : USB
+ 232:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *
+ 233:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @param[in]   NewState    New state of Peripheral Power, should be:
+ 234:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              - ENABLE    : Enable power for this peripheral
+ 235:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *              - DISABLE   : Disable power for this peripheral
+ 236:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  *
+ 237:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @return none
+ 238:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  **********************************************************************/
+ 239:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** void CLKPWR_ConfigReset(uint8_t PType, FunctionalState NewState)
+ 240:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** {
+ 241:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     if(PType < 32)
+ 242:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     {
+ 243:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         if(NewState == ENABLE)
+ 244:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****             LPC_SC->RSTCON0 |=(1<<PType);
+ 245:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         else
+ 246:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****             LPC_SC->RSTCON0 &=~(1<<PType);
+ 247:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     }
+ 248:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     else
+ 249:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     {
+ 250:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         if(NewState == ENABLE)
+ 251:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****             LPC_SC->RSTCON1 |= (1<<(PType - 31));
+ 252:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****         else
+ 253:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****             LPC_SC->RSTCON1 &= ~(1<<(PType - 31));
+ 254:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     }
+ 255:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** }
+ 256:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** // nxp21346
+ 257:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** #endif
+ 258:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+ 259:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** /*********************************************************************//**
+ 260:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @brief       Enter Sleep mode with co-operated instruction by the Cortex-M3.
+ 261:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @param[in]   None
+ 262:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @return      None
+ 263:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  **********************************************************************/
+ 264:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** void CLKPWR_Sleep(void)
+ 265:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** {
+ 311              		.loc 1 265 0
+ 312              		.cfi_startproc
+ 313              		@ args = 0, pretend = 0, frame = 0
+ 314              		@ frame_needed = 1, uses_anonymous_args = 0
+ 315              		@ link register save eliminated.
+ 316 018c 80B4     		push	{r7}
+ 317              	.LCFI9:
+ 318              		.cfi_def_cfa_offset 4
+ 319              		.cfi_offset 7, -4
+ 320 018e 00AF     		add	r7, sp, #0
+ 321              	.LCFI10:
+ 322              		.cfi_def_cfa_register 7
+ 266:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     LPC_SC->PCON = 0x00;
+ 323              		.loc 1 266 0
+ 324 0190 044B     		ldr	r3, .L27
+ 325 0192 4FF00002 		mov	r2, #0
+ 326 0196 C3F8C020 		str	r2, [r3, #192]
+ 327              	.LBB10:
+ 328              	.LBB11:
+ 329              		.file 2 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Core\\CMSIS\\Include/core_cmInstr.h"
+   1:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /**************************************************************************//**
+   2:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  * @file     core_cmInstr.h
+   3:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  * @brief    CMSIS Cortex-M Core Instruction Access Header File
+   4:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  * @version  V2.10
+   5:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  * @date     19. July 2011
+   6:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  *
+   7:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  * @note
+   8:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  * Copyright (C) 2009-2011 ARM Limited. All rights reserved.
+   9:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  *
+  10:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  * @par
+  11:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  * ARM Limited (ARM) is supplying this software for use with Cortex-M 
+  12:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  * processor based microcontrollers.  This file can be freely distributed 
+  13:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  * within development tools that are supporting such ARM based processors. 
+  14:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  *
+  15:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  * @par
+  16:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  * THIS SOFTWARE IS PROVIDED "AS IS".  NO WARRANTIES, WHETHER EXPRESS, IMPLIED
+  17:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  * OR STATUTORY, INCLUDING, BUT NOT LIMITED TO, IMPLIED WARRANTIES OF
+  18:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE APPLY TO THIS SOFTWARE.
+  19:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  * ARM SHALL NOT, IN ANY CIRCUMSTANCES, BE LIABLE FOR SPECIAL, INCIDENTAL, OR
+  20:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  * CONSEQUENTIAL DAMAGES, FOR ANY REASON WHATSOEVER.
+  21:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  *
+  22:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  ******************************************************************************/
+  23:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  24:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #ifndef __CORE_CMINSTR_H
+  25:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __CORE_CMINSTR_H
+  26:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  27:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  28:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /* ##########################  Core Instruction Access  ######################### */
+  29:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \defgroup CMSIS_Core_InstructionInterface CMSIS Core Instruction Interface
+  30:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****   * @ingroup CMSIS_Core
+  31:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****   Access to dedicated instructions
+  32:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****   @{
+  33:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** */
+  34:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  35:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #if   defined ( __CC_ARM ) /*------------------RealView Compiler -----------------*/
+  36:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /* ARM armcc specific functions */
+  37:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  38:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #if (__ARMCC_VERSION < 400677)
+  39:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****   #error "Please use ARM Compiler Toolchain V4.0.677 or later!"
+  40:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #endif
+  41:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  42:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  43:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  No Operation
+  44:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  45:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     No Operation does nothing. This instruction can be used for code alignment purposes.
+  46:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+  47:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __NOP                             __nop
+  48:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  49:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  50:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  Wait For Interrupt
+  51:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  52:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     Wait For Interrupt is a hint instruction that suspends execution
+  53:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     until one of a number of events occurs.
+  54:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+  55:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __WFI                             __wfi
+  56:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  57:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  58:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  Wait For Event
+  59:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  60:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     Wait For Event is a hint instruction that permits the processor to enter
+  61:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     a low-power state until one of a number of events occurs.
+  62:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+  63:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __WFE                             __wfe
+  64:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  65:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  66:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  Send Event
+  67:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  68:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     Send Event is a hint instruction. It causes an event to be signaled to the CPU.
+  69:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+  70:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __SEV                             __sev
+  71:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  72:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  73:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  Instruction Synchronization Barrier
+  74:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  75:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     Instruction Synchronization Barrier flushes the pipeline in the processor, 
+  76:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     so that all instructions following the ISB are fetched from cache or 
+  77:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     memory, after the instruction has been completed.
+  78:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+  79:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __ISB()                           __isb(0xF)
+  80:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  81:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  82:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  Data Synchronization Barrier
+  83:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  84:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     This function acts as a special kind of Data Memory Barrier. 
+  85:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     It completes when all explicit memory accesses before this instruction complete.
+  86:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+  87:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __DSB()                           __dsb(0xF)
+  88:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  89:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  90:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  Data Memory Barrier
+  91:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  92:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     This function ensures the apparent order of the explicit memory operations before 
+  93:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     and after the instruction, without ensuring their completion.
+  94:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+  95:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __DMB()                           __dmb(0xF)
+  96:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  97:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+  98:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  Reverse byte order (32 bit)
+  99:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 100:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     This function reverses the byte order in integer value.
+ 101:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 102:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 103:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \return               Reversed value
+ 104:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+ 105:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __REV                             __rev
+ 106:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 107:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 108:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  Reverse byte order (16 bit)
+ 109:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 110:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     This function reverses the byte order in two unsigned short values.
+ 111:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 112:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 113:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \return               Reversed value
+ 114:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+ 115:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** static __INLINE __ASM uint32_t __REV16(uint32_t value)
+ 116:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** {
+ 117:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****   rev16 r0, r0
+ 118:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****   bx lr
+ 119:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** }
+ 120:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 121:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 122:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  Reverse byte order in signed short value
+ 123:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 124:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     This function reverses the byte order in a signed short value with sign extension to integer.
+ 125:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 126:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 127:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \return               Reversed value
+ 128:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+ 129:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** static __INLINE __ASM int32_t __REVSH(int32_t value)
+ 130:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** {
+ 131:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****   revsh r0, r0
+ 132:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****   bx lr
+ 133:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** }
+ 134:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 135:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 136:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #if       (__CORTEX_M >= 0x03)
+ 137:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 138:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  Reverse bit order of value
+ 139:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 140:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     This function reverses the bit order of the given value.
+ 141:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 142:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]    value  Value to reverse
+ 143:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \return               Reversed value
+ 144:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+ 145:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __RBIT                            __rbit
+ 146:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 147:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 148:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  LDR Exclusive (8 bit)
+ 149:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 150:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     This function performs a exclusive LDR command for 8 bit value.
+ 151:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 152:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 153:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \return             value of type uint8_t at (*ptr)
+ 154:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+ 155:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __LDREXB(ptr)                     ((uint8_t ) __ldrex(ptr))
+ 156:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 157:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 158:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  LDR Exclusive (16 bit)
+ 159:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 160:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     This function performs a exclusive LDR command for 16 bit values.
+ 161:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 162:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 163:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \return        value of type uint16_t at (*ptr)
+ 164:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+ 165:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __LDREXH(ptr)                     ((uint16_t) __ldrex(ptr))
+ 166:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 167:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 168:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  LDR Exclusive (32 bit)
+ 169:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 170:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     This function performs a exclusive LDR command for 32 bit values.
+ 171:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 172:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]    ptr  Pointer to data
+ 173:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \return        value of type uint32_t at (*ptr)
+ 174:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+ 175:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __LDREXW(ptr)                     ((uint32_t ) __ldrex(ptr))
+ 176:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 177:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 178:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  STR Exclusive (8 bit)
+ 179:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 180:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     This function performs a exclusive STR command for 8 bit values.
+ 181:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 182:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]  value  Value to store
+ 183:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ 184:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \return          0  Function succeeded
+ 185:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \return          1  Function failed
+ 186:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+ 187:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __STREXB(value, ptr)              __strex(value, ptr)
+ 188:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 189:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 190:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  STR Exclusive (16 bit)
+ 191:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 192:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     This function performs a exclusive STR command for 16 bit values.
+ 193:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 194:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]  value  Value to store
+ 195:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ 196:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \return          0  Function succeeded
+ 197:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \return          1  Function failed
+ 198:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+ 199:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __STREXH(value, ptr)              __strex(value, ptr)
+ 200:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 201:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 202:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  STR Exclusive (32 bit)
+ 203:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 204:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     This function performs a exclusive STR command for 32 bit values.
+ 205:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 206:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]  value  Value to store
+ 207:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]    ptr  Pointer to location
+ 208:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \return          0  Function succeeded
+ 209:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \return          1  Function failed
+ 210:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+ 211:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __STREXW(value, ptr)              __strex(value, ptr)
+ 212:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 213:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 214:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  Remove the exclusive lock
+ 215:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 216:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     This function removes the exclusive lock which is created by LDREX.
+ 217:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 218:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+ 219:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __CLREX                           __clrex
+ 220:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 221:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 222:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  Signed Saturate
+ 223:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 224:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     This function saturates a signed value.
+ 225:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 226:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]  value  Value to be saturated
+ 227:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]    sat  Bit position to saturate to (1..32)
+ 228:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \return             Saturated value
+ 229:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+ 230:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __SSAT                            __ssat
+ 231:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 232:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 233:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  Unsigned Saturate
+ 234:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 235:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     This function saturates an unsigned value.
+ 236:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 237:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]  value  Value to be saturated
+ 238:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]    sat  Bit position to saturate to (0..31)
+ 239:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \return             Saturated value
+ 240:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+ 241:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __USAT                            __usat
+ 242:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 243:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 244:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  Count leading zeros
+ 245:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 246:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     This function counts the number of leading zeros of a data value.
+ 247:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 248:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \param [in]  value  Value to count the leading zeros
+ 249:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     \return             number of leading zeros in value
+ 250:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+ 251:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #define __CLZ                             __clz 
+ 252:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 253:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #endif /* (__CORTEX_M >= 0x03) */
+ 254:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 255:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 256:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 257:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #elif defined ( __ICCARM__ ) /*------------------ ICC Compiler -------------------*/
+ 258:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /* IAR iccarm specific functions */
+ 259:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 260:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #include <cmsis_iar.h>
+ 261:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 262:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 263:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** #elif defined ( __GNUC__ ) /*------------------ GNU Compiler ---------------------*/
+ 264:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /* GNU gcc specific functions */
+ 265:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 266:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  No Operation
+ 267:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 268:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     No Operation does nothing. This instruction can be used for code alignment purposes.
+ 269:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+ 270:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** __attribute__( ( always_inline ) ) static __INLINE void __NOP(void)
+ 271:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** {
+ 272:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****   __ASM volatile ("nop");
+ 273:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** }
+ 274:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 275:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 276:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** /** \brief  Wait For Interrupt
+ 277:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** 
+ 278:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     Wait For Interrupt is a hint instruction that suspends execution
+ 279:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****     until one of a number of events occurs.
+ 280:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****  */
+ 281:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** __attribute__( ( always_inline ) ) static __INLINE void __WFI(void)
+ 282:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h **** {
+ 283:D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include\core_cmInstr.h ****   __ASM volatile ("wfi");
+ 330              		.loc 2 283 0
+ 331              	@ 283 "D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include/core_cmInstr.h" 1
+ 332 019a 30BF     		wfi
+ 333              	@ 0 "" 2
+ 334              		.thumb
+ 335              	.LBE11:
+ 336              	.LBE10:
+ 267:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     /* Sleep Mode*/
+ 268:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     __WFI();
+ 269:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** }
+ 337              		.loc 1 269 0
+ 338 019c BD46     		mov	sp, r7
+ 339 019e 80BC     		pop	{r7}
+ 340 01a0 7047     		bx	lr
+ 341              	.L28:
+ 342 01a2 00BF     		.align	2
+ 343              	.L27:
+ 344 01a4 00C00F40 		.word	1074774016
+ 345              		.cfi_endproc
+ 346              	.LFE58:
+ 348              		.align	2
+ 349              		.global	CLKPWR_DeepSleep
+ 350              		.thumb
+ 351              		.thumb_func
+ 353              	CLKPWR_DeepSleep:
+ 354              	.LFB59:
+ 270:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+ 271:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+ 272:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** /*********************************************************************//**
+ 273:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @brief       Enter Deep Sleep mode with co-operated instruction by the Cortex-M3.
+ 274:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @param[in]   None
+ 275:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @return      None
+ 276:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  **********************************************************************/
+ 277:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** void CLKPWR_DeepSleep(void)
+ 278:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** {
+ 355              		.loc 1 278 0
+ 356              		.cfi_startproc
+ 357              		@ args = 0, pretend = 0, frame = 0
+ 358              		@ frame_needed = 1, uses_anonymous_args = 0
+ 359              		@ link register save eliminated.
+ 360 01a8 80B4     		push	{r7}
+ 361              	.LCFI11:
+ 362              		.cfi_def_cfa_offset 4
+ 363              		.cfi_offset 7, -4
+ 364 01aa 00AF     		add	r7, sp, #0
+ 365              	.LCFI12:
+ 366              		.cfi_def_cfa_register 7
+ 279:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     /* Deep-Sleep Mode, set SLEEPDEEP bit */
+ 280:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     SCB->SCR = 0x4;
+ 367              		.loc 1 280 0
+ 368 01ac 064B     		ldr	r3, .L30
+ 369 01ae 4FF00402 		mov	r2, #4
+ 370 01b2 1A61     		str	r2, [r3, #16]
+ 281:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     LPC_SC->PCON = 0x00;
+ 371              		.loc 1 281 0
+ 372 01b4 054B     		ldr	r3, .L30+4
+ 373 01b6 4FF00002 		mov	r2, #0
+ 374 01ba C3F8C020 		str	r2, [r3, #192]
+ 375              	.LBB12:
+ 376              	.LBB13:
+ 377              		.loc 2 283 0
+ 378              	@ 283 "D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include/core_cmInstr.h" 1
+ 379 01be 30BF     		wfi
+ 380              	@ 0 "" 2
+ 381              		.thumb
+ 382              	.LBE13:
+ 383              	.LBE12:
+ 282:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     /* Deep Sleep Mode*/
+ 283:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     __WFI();
+ 284:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** }
+ 384              		.loc 1 284 0
+ 385 01c0 BD46     		mov	sp, r7
+ 386 01c2 80BC     		pop	{r7}
+ 387 01c4 7047     		bx	lr
+ 388              	.L31:
+ 389 01c6 00BF     		.align	2
+ 390              	.L30:
+ 391 01c8 00ED00E0 		.word	-536810240
+ 392 01cc 00C00F40 		.word	1074774016
+ 393              		.cfi_endproc
+ 394              	.LFE59:
+ 396              		.align	2
+ 397              		.global	CLKPWR_PowerDown
+ 398              		.thumb
+ 399              		.thumb_func
+ 401              	CLKPWR_PowerDown:
+ 402              	.LFB60:
+ 285:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+ 286:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+ 287:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** /*********************************************************************//**
+ 288:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @brief       Enter Power Down mode with co-operated instruction by the Cortex-M3.
+ 289:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @param[in]   None
+ 290:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @return      None
+ 291:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  **********************************************************************/
+ 292:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** void CLKPWR_PowerDown(void)
+ 293:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** {
+ 403              		.loc 1 293 0
+ 404              		.cfi_startproc
+ 405              		@ args = 0, pretend = 0, frame = 0
+ 406              		@ frame_needed = 1, uses_anonymous_args = 0
+ 407              		@ link register save eliminated.
+ 408 01d0 80B4     		push	{r7}
+ 409              	.LCFI13:
+ 410              		.cfi_def_cfa_offset 4
+ 411              		.cfi_offset 7, -4
+ 412 01d2 00AF     		add	r7, sp, #0
+ 413              	.LCFI14:
+ 414              		.cfi_def_cfa_register 7
+ 294:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     /* Deep-Sleep Mode, set SLEEPDEEP bit */
+ 295:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     SCB->SCR = 0x4;
+ 415              		.loc 1 295 0
+ 416 01d4 064B     		ldr	r3, .L33
+ 417 01d6 4FF00402 		mov	r2, #4
+ 418 01da 1A61     		str	r2, [r3, #16]
+ 296:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     LPC_SC->PCON = 0x01;
+ 419              		.loc 1 296 0
+ 420 01dc 054B     		ldr	r3, .L33+4
+ 421 01de 4FF00102 		mov	r2, #1
+ 422 01e2 C3F8C020 		str	r2, [r3, #192]
+ 423              	.LBB14:
+ 424              	.LBB15:
+ 425              		.loc 2 283 0
+ 426              	@ 283 "D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include/core_cmInstr.h" 1
+ 427 01e6 30BF     		wfi
+ 428              	@ 0 "" 2
+ 429              		.thumb
+ 430              	.LBE15:
+ 431              	.LBE14:
+ 297:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     /* Power Down Mode*/
+ 298:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     __WFI();
+ 299:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** }
+ 432              		.loc 1 299 0
+ 433 01e8 BD46     		mov	sp, r7
+ 434 01ea 80BC     		pop	{r7}
+ 435 01ec 7047     		bx	lr
+ 436              	.L34:
+ 437 01ee 00BF     		.align	2
+ 438              	.L33:
+ 439 01f0 00ED00E0 		.word	-536810240
+ 440 01f4 00C00F40 		.word	1074774016
+ 441              		.cfi_endproc
+ 442              	.LFE60:
+ 444              		.align	2
+ 445              		.global	CLKPWR_DeepPowerDown
+ 446              		.thumb
+ 447              		.thumb_func
+ 449              	CLKPWR_DeepPowerDown:
+ 450              	.LFB61:
+ 300:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+ 301:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** 
+ 302:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** /*********************************************************************//**
+ 303:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @brief       Enter Deep Power Down mode with co-operated instruction by the Cortex-M3.
+ 304:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @param[in]   None
+ 305:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  * @return      None
+ 306:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****  **********************************************************************/
+ 307:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** void CLKPWR_DeepPowerDown(void)
+ 308:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** {
+ 451              		.loc 1 308 0
+ 452              		.cfi_startproc
+ 453              		@ args = 0, pretend = 0, frame = 0
+ 454              		@ frame_needed = 1, uses_anonymous_args = 0
+ 455              		@ link register save eliminated.
+ 456 01f8 80B4     		push	{r7}
+ 457              	.LCFI15:
+ 458              		.cfi_def_cfa_offset 4
+ 459              		.cfi_offset 7, -4
+ 460 01fa 00AF     		add	r7, sp, #0
+ 461              	.LCFI16:
+ 462              		.cfi_def_cfa_register 7
+ 309:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     /* Deep-Sleep Mode, set SLEEPDEEP bit */
+ 310:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     SCB->SCR = 0x4;
+ 463              		.loc 1 310 0
+ 464 01fc 064B     		ldr	r3, .L36
+ 465 01fe 4FF00402 		mov	r2, #4
+ 466 0202 1A61     		str	r2, [r3, #16]
+ 311:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     LPC_SC->PCON = 0x03;
+ 467              		.loc 1 311 0
+ 468 0204 054B     		ldr	r3, .L36+4
+ 469 0206 4FF00302 		mov	r2, #3
+ 470 020a C3F8C020 		str	r2, [r3, #192]
+ 471              	.LBB16:
+ 472              	.LBB17:
+ 473              		.loc 2 283 0
+ 474              	@ 283 "D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include/core_cmInstr.h" 1
+ 475 020e 30BF     		wfi
+ 476              	@ 0 "" 2
+ 477              		.thumb
+ 478              	.LBE17:
+ 479              	.LBE16:
+ 312:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     /* Deep Power Down Mode*/
+ 313:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c ****     __WFI();
+ 314:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.c **** }
+ 480              		.loc 1 314 0
+ 481 0210 BD46     		mov	sp, r7
+ 482 0212 80BC     		pop	{r7}
+ 483 0214 7047     		bx	lr
+ 484              	.L37:
+ 485 0216 00BF     		.align	2
+ 486              	.L36:
+ 487 0218 00ED00E0 		.word	-536810240
+ 488 021c 00C00F40 		.word	1074774016
+ 489              		.cfi_endproc
+ 490              	.LFE61:
+ 492              	.Letext0:
+ 493              		.file 3 "g:\\program files\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/gcc/ar
+ 494              		.file 4 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Drivers\\include/lpc_types.h"
+ 495              		.file 5 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Core\\CMSIS\\Include/core_cm3.h"
+ 496              		.file 6 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Core\\Device\\NXP\\LPC177x_8x\\Includ
+ 497              		.file 7 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Drivers\\include/lpc177x_8x_clkpwr.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 lpc177x_8x_clkpwr.c
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:23     .bss:00000000 USBFrequency
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:20     .bss:00000000 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:26     .text:00000000 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:31     .text:00000000 CLKPWR_SetCLKDiv
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:61     .text:0000001c $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:67     .text:0000002c $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:161    .text:000000dc $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:165    .text:000000e0 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:170    .text:000000e0 CLKPWR_GetCLK
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:197    .text:000000f8 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:203    .text:00000108 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:234    .text:00000130 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:241    .text:00000140 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:246    .text:00000140 CLKPWR_ConfigPPWR
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:300    .text:00000188 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:304    .text:0000018c $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:309    .text:0000018c CLKPWR_Sleep
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:344    .text:000001a4 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:348    .text:000001a8 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:353    .text:000001a8 CLKPWR_DeepSleep
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:391    .text:000001c8 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:396    .text:000001d0 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:401    .text:000001d0 CLKPWR_PowerDown
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:439    .text:000001f0 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:444    .text:000001f8 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:449    .text:000001f8 CLKPWR_DeepPowerDown
+C:\Users\YANGZH~1\AppData\Local\Temp\ccfJxJZ5.s:487    .text:00000218 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.1.9fa2be94b3b27131c651c32db681ca6e
+                           .group:00000000 wm4.stdint.h.10.90b695f550ca6cc3fb08fa83baf01e05
+                           .group:00000000 wm4.lpc_types.h.61.500abe635b953859f645467b1debaa34
+                           .group:00000000 wm4.lpc177x_8x_libcfg_default.h.42.c21d4d8531a15b96cd9ccfa94b76f68e
+                           .group:00000000 wm4.LPC177x_8x.h.34.ced9b468ef83bb68f280515946661353
+                           .group:00000000 wm4.core_cm3.h.32.790cc16ac64d67f02f3790c90a28e38c
+                           .group:00000000 wm4.core_cmInstr.h.25.dd98b40e8e0d1d9ee958eb9cce5e7898
+                           .group:00000000 wm4.core_cm3.h.132.82da42f2eaa4f3e645984b3550bd4c22
+                           .group:00000000 wm4.LPC177x_8x.h.1353.9b0a09b2831088a36b3e4060dcdc4532
+                           .group:00000000 wm4.system_LPC177x_8x.h.34.e57b19a2859ef593a5974e6904d3f0ac
+                           .group:00000000 wm4.lpc177x_8x_clkpwr.h.61.8bfb9350f1be3b242e7e7c6f04f31221
+
+UNDEFINED SYMBOLS
+SystemCoreClockUpdate
+SystemCoreClock
+PeripheralClock
+EMCClock
+USBClock

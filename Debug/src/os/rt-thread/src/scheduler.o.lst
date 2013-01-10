@@ -1,0 +1,1871 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"scheduler.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.align	2
+  19              		.thumb
+  20              		.thumb_func
+  22              	rt_list_init:
+  23              	.LFB0:
+  24              		.file 1 "D:\\workspace_gnu\\RTT_Demo0\\src\\os\\rt-thread\\include/rtservice.h"
+   1:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** /*
+   2:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * File      : rtservice.h
+   3:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * This file is part of RT-Thread RTOS
+   4:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * COPYRIGHT (C) 2006 - 2012, RT-Thread Development Team
+   5:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  *
+   6:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * The license and distribution terms for this file may be
+   7:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * found in the file LICENSE in this distribution or at
+   8:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * http://www.rt-thread.org/license/LICENSE
+   9:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  *
+  10:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * Change Logs:
+  11:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * Date           Author       Notes
+  12:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * 2006-03-16     Bernard      the first version
+  13:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * 2006-09-07     Bernard      move the kservice APIs to rtthread.h
+  14:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * 2007-06-27     Bernard      fix the rt_list_remove bug
+  15:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * 2012-03-22     Bernard      rename kservice.h to rtservice.h
+  16:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  */
+  17:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  18:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** #ifndef __RT_SERVICE_H__
+  19:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** #define __RT_SERVICE_H__
+  20:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  21:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** #ifdef __cplusplus
+  22:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** extern "C" {
+  23:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** #endif
+  24:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  25:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** /**
+  26:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @addtogroup KernelService
+  27:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  */
+  28:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  29:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** /*@{*/
+  30:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  31:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** /**
+  32:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @brief initialize a list object
+  33:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  */
+  34:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** #define RT_LIST_OBJECT_INIT(object) { &(object), &(object) }
+  35:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  36:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** /**
+  37:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @brief initialize a list
+  38:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  *
+  39:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @param l list to be initialized
+  40:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  */
+  41:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** rt_inline void rt_list_init(rt_list_t *l)
+  42:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** {
+  25              		.loc 1 42 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 8
+  28              		@ frame_needed = 1, uses_anonymous_args = 0
+  29              		@ link register save eliminated.
+  30 0000 80B4     		push	{r7}
+  31              	.LCFI0:
+  32              		.cfi_def_cfa_offset 4
+  33              		.cfi_offset 7, -4
+  34 0002 83B0     		sub	sp, sp, #12
+  35              	.LCFI1:
+  36              		.cfi_def_cfa_offset 16
+  37 0004 00AF     		add	r7, sp, #0
+  38              	.LCFI2:
+  39              		.cfi_def_cfa_register 7
+  40 0006 7860     		str	r0, [r7, #4]
+  43:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     l->next = l->prev = l;
+  41              		.loc 1 43 0
+  42 0008 7B68     		ldr	r3, [r7, #4]
+  43 000a 7A68     		ldr	r2, [r7, #4]
+  44 000c 5A60     		str	r2, [r3, #4]
+  45 000e 7B68     		ldr	r3, [r7, #4]
+  46 0010 5A68     		ldr	r2, [r3, #4]
+  47 0012 7B68     		ldr	r3, [r7, #4]
+  48 0014 1A60     		str	r2, [r3, #0]
+  44:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** }
+  49              		.loc 1 44 0
+  50 0016 07F10C07 		add	r7, r7, #12
+  51 001a BD46     		mov	sp, r7
+  52 001c 80BC     		pop	{r7}
+  53 001e 7047     		bx	lr
+  54              		.cfi_endproc
+  55              	.LFE0:
+  57              		.align	2
+  58              		.thumb
+  59              		.thumb_func
+  61              	rt_list_insert_before:
+  62              	.LFB2:
+  45:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  46:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** /**
+  47:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @brief insert a node after a list
+  48:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  *
+  49:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @param l list to insert it
+  50:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @param n new node to be inserted
+  51:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  */
+  52:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** rt_inline void rt_list_insert_after(rt_list_t *l, rt_list_t *n)
+  53:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** {
+  54:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     l->next->prev = n;
+  55:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     n->next = l->next;
+  56:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  57:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     l->next = n;
+  58:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     n->prev = l;
+  59:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** }
+  60:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  61:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** /**
+  62:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @brief insert a node before a list
+  63:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  *
+  64:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @param n new node to be inserted
+  65:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @param l list to insert it
+  66:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  */
+  67:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** rt_inline void rt_list_insert_before(rt_list_t *l, rt_list_t *n)
+  68:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** {
+  63              		.loc 1 68 0
+  64              		.cfi_startproc
+  65              		@ args = 0, pretend = 0, frame = 8
+  66              		@ frame_needed = 1, uses_anonymous_args = 0
+  67              		@ link register save eliminated.
+  68 0020 80B4     		push	{r7}
+  69              	.LCFI3:
+  70              		.cfi_def_cfa_offset 4
+  71              		.cfi_offset 7, -4
+  72 0022 83B0     		sub	sp, sp, #12
+  73              	.LCFI4:
+  74              		.cfi_def_cfa_offset 16
+  75 0024 00AF     		add	r7, sp, #0
+  76              	.LCFI5:
+  77              		.cfi_def_cfa_register 7
+  78 0026 7860     		str	r0, [r7, #4]
+  79 0028 3960     		str	r1, [r7, #0]
+  69:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     l->prev->next = n;
+  80              		.loc 1 69 0
+  81 002a 7B68     		ldr	r3, [r7, #4]
+  82 002c 5B68     		ldr	r3, [r3, #4]
+  83 002e 3A68     		ldr	r2, [r7, #0]
+  84 0030 1A60     		str	r2, [r3, #0]
+  70:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     n->prev = l->prev;
+  85              		.loc 1 70 0
+  86 0032 7B68     		ldr	r3, [r7, #4]
+  87 0034 5A68     		ldr	r2, [r3, #4]
+  88 0036 3B68     		ldr	r3, [r7, #0]
+  89 0038 5A60     		str	r2, [r3, #4]
+  71:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  72:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     l->prev = n;
+  90              		.loc 1 72 0
+  91 003a 7B68     		ldr	r3, [r7, #4]
+  92 003c 3A68     		ldr	r2, [r7, #0]
+  93 003e 5A60     		str	r2, [r3, #4]
+  73:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     n->next = l;
+  94              		.loc 1 73 0
+  95 0040 3B68     		ldr	r3, [r7, #0]
+  96 0042 7A68     		ldr	r2, [r7, #4]
+  97 0044 1A60     		str	r2, [r3, #0]
+  74:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** }
+  98              		.loc 1 74 0
+  99 0046 07F10C07 		add	r7, r7, #12
+ 100 004a BD46     		mov	sp, r7
+ 101 004c 80BC     		pop	{r7}
+ 102 004e 7047     		bx	lr
+ 103              		.cfi_endproc
+ 104              	.LFE2:
+ 106              		.align	2
+ 107              		.thumb
+ 108              		.thumb_func
+ 110              	rt_list_remove:
+ 111              	.LFB3:
+  75:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  76:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** /**
+  77:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @brief remove node from list.
+  78:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @param n the node to remove from the list.
+  79:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  */
+  80:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** rt_inline void rt_list_remove(rt_list_t *n)
+  81:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** {
+ 112              		.loc 1 81 0
+ 113              		.cfi_startproc
+ 114              		@ args = 0, pretend = 0, frame = 8
+ 115              		@ frame_needed = 1, uses_anonymous_args = 0
+ 116              		@ link register save eliminated.
+ 117 0050 80B4     		push	{r7}
+ 118              	.LCFI6:
+ 119              		.cfi_def_cfa_offset 4
+ 120              		.cfi_offset 7, -4
+ 121 0052 83B0     		sub	sp, sp, #12
+ 122              	.LCFI7:
+ 123              		.cfi_def_cfa_offset 16
+ 124 0054 00AF     		add	r7, sp, #0
+ 125              	.LCFI8:
+ 126              		.cfi_def_cfa_register 7
+ 127 0056 7860     		str	r0, [r7, #4]
+  82:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     n->next->prev = n->prev;
+ 128              		.loc 1 82 0
+ 129 0058 7B68     		ldr	r3, [r7, #4]
+ 130 005a 1B68     		ldr	r3, [r3, #0]
+ 131 005c 7A68     		ldr	r2, [r7, #4]
+ 132 005e 5268     		ldr	r2, [r2, #4]
+ 133 0060 5A60     		str	r2, [r3, #4]
+  83:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     n->prev->next = n->next;
+ 134              		.loc 1 83 0
+ 135 0062 7B68     		ldr	r3, [r7, #4]
+ 136 0064 5B68     		ldr	r3, [r3, #4]
+ 137 0066 7A68     		ldr	r2, [r7, #4]
+ 138 0068 1268     		ldr	r2, [r2, #0]
+ 139 006a 1A60     		str	r2, [r3, #0]
+  84:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  85:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     n->next = n->prev = n;
+ 140              		.loc 1 85 0
+ 141 006c 7B68     		ldr	r3, [r7, #4]
+ 142 006e 7A68     		ldr	r2, [r7, #4]
+ 143 0070 5A60     		str	r2, [r3, #4]
+ 144 0072 7B68     		ldr	r3, [r7, #4]
+ 145 0074 5A68     		ldr	r2, [r3, #4]
+ 146 0076 7B68     		ldr	r3, [r7, #4]
+ 147 0078 1A60     		str	r2, [r3, #0]
+  86:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** }
+ 148              		.loc 1 86 0
+ 149 007a 07F10C07 		add	r7, r7, #12
+ 150 007e BD46     		mov	sp, r7
+ 151 0080 80BC     		pop	{r7}
+ 152 0082 7047     		bx	lr
+ 153              		.cfi_endproc
+ 154              	.LFE3:
+ 156              		.align	2
+ 157              		.thumb
+ 158              		.thumb_func
+ 160              	rt_list_isempty:
+ 161              	.LFB4:
+  87:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  88:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** /**
+  89:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @brief tests whether a list is empty
+  90:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @param l the list to test.
+  91:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  */
+  92:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** rt_inline int rt_list_isempty(const rt_list_t *l)
+  93:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** {
+ 162              		.loc 1 93 0
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 8
+ 165              		@ frame_needed = 1, uses_anonymous_args = 0
+ 166              		@ link register save eliminated.
+ 167 0084 80B4     		push	{r7}
+ 168              	.LCFI9:
+ 169              		.cfi_def_cfa_offset 4
+ 170              		.cfi_offset 7, -4
+ 171 0086 83B0     		sub	sp, sp, #12
+ 172              	.LCFI10:
+ 173              		.cfi_def_cfa_offset 16
+ 174 0088 00AF     		add	r7, sp, #0
+ 175              	.LCFI11:
+ 176              		.cfi_def_cfa_register 7
+ 177 008a 7860     		str	r0, [r7, #4]
+  94:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     return l->next == l;
+ 178              		.loc 1 94 0
+ 179 008c 7B68     		ldr	r3, [r7, #4]
+ 180 008e 1A68     		ldr	r2, [r3, #0]
+ 181 0090 7B68     		ldr	r3, [r7, #4]
+ 182 0092 9A42     		cmp	r2, r3
+ 183 0094 14BF     		ite	ne
+ 184 0096 0023     		movne	r3, #0
+ 185 0098 0123     		moveq	r3, #1
+ 186 009a DBB2     		uxtb	r3, r3
+  95:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** }
+ 187              		.loc 1 95 0
+ 188 009c 1846     		mov	r0, r3
+ 189 009e 07F10C07 		add	r7, r7, #12
+ 190 00a2 BD46     		mov	sp, r7
+ 191 00a4 80BC     		pop	{r7}
+ 192 00a6 7047     		bx	lr
+ 193              		.cfi_endproc
+ 194              	.LFE4:
+ 196              		.bss
+ 197              		.align	1
+ 198              	rt_scheduler_lock_nest:
+ 199 0000 0000     		.space	2
+ 200              		.comm	rt_thread_priority_table,256,4
+ 201              		.comm	rt_current_thread,4,4
+ 202              		.comm	rt_current_priority,1,1
+ 203              		.comm	rt_thread_ready_priority_group,4,4
+ 204              		.comm	rt_thread_defunct,8,4
+ 205              		.global	rt_lowest_bitmap
+ 206              		.section	.rodata
+ 207              		.align	2
+ 210              	rt_lowest_bitmap:
+ 211 0000 00       		.byte	0
+ 212 0001 00       		.byte	0
+ 213 0002 01       		.byte	1
+ 214 0003 00       		.byte	0
+ 215 0004 02       		.byte	2
+ 216 0005 00       		.byte	0
+ 217 0006 01       		.byte	1
+ 218 0007 00       		.byte	0
+ 219 0008 03       		.byte	3
+ 220 0009 00       		.byte	0
+ 221 000a 01       		.byte	1
+ 222 000b 00       		.byte	0
+ 223 000c 02       		.byte	2
+ 224 000d 00       		.byte	0
+ 225 000e 01       		.byte	1
+ 226 000f 00       		.byte	0
+ 227 0010 04       		.byte	4
+ 228 0011 00       		.byte	0
+ 229 0012 01       		.byte	1
+ 230 0013 00       		.byte	0
+ 231 0014 02       		.byte	2
+ 232 0015 00       		.byte	0
+ 233 0016 01       		.byte	1
+ 234 0017 00       		.byte	0
+ 235 0018 03       		.byte	3
+ 236 0019 00       		.byte	0
+ 237 001a 01       		.byte	1
+ 238 001b 00       		.byte	0
+ 239 001c 02       		.byte	2
+ 240 001d 00       		.byte	0
+ 241 001e 01       		.byte	1
+ 242 001f 00       		.byte	0
+ 243 0020 05       		.byte	5
+ 244 0021 00       		.byte	0
+ 245 0022 01       		.byte	1
+ 246 0023 00       		.byte	0
+ 247 0024 02       		.byte	2
+ 248 0025 00       		.byte	0
+ 249 0026 01       		.byte	1
+ 250 0027 00       		.byte	0
+ 251 0028 03       		.byte	3
+ 252 0029 00       		.byte	0
+ 253 002a 01       		.byte	1
+ 254 002b 00       		.byte	0
+ 255 002c 02       		.byte	2
+ 256 002d 00       		.byte	0
+ 257 002e 01       		.byte	1
+ 258 002f 00       		.byte	0
+ 259 0030 04       		.byte	4
+ 260 0031 00       		.byte	0
+ 261 0032 01       		.byte	1
+ 262 0033 00       		.byte	0
+ 263 0034 02       		.byte	2
+ 264 0035 00       		.byte	0
+ 265 0036 01       		.byte	1
+ 266 0037 00       		.byte	0
+ 267 0038 03       		.byte	3
+ 268 0039 00       		.byte	0
+ 269 003a 01       		.byte	1
+ 270 003b 00       		.byte	0
+ 271 003c 02       		.byte	2
+ 272 003d 00       		.byte	0
+ 273 003e 01       		.byte	1
+ 274 003f 00       		.byte	0
+ 275 0040 06       		.byte	6
+ 276 0041 00       		.byte	0
+ 277 0042 01       		.byte	1
+ 278 0043 00       		.byte	0
+ 279 0044 02       		.byte	2
+ 280 0045 00       		.byte	0
+ 281 0046 01       		.byte	1
+ 282 0047 00       		.byte	0
+ 283 0048 03       		.byte	3
+ 284 0049 00       		.byte	0
+ 285 004a 01       		.byte	1
+ 286 004b 00       		.byte	0
+ 287 004c 02       		.byte	2
+ 288 004d 00       		.byte	0
+ 289 004e 01       		.byte	1
+ 290 004f 00       		.byte	0
+ 291 0050 04       		.byte	4
+ 292 0051 00       		.byte	0
+ 293 0052 01       		.byte	1
+ 294 0053 00       		.byte	0
+ 295 0054 02       		.byte	2
+ 296 0055 00       		.byte	0
+ 297 0056 01       		.byte	1
+ 298 0057 00       		.byte	0
+ 299 0058 03       		.byte	3
+ 300 0059 00       		.byte	0
+ 301 005a 01       		.byte	1
+ 302 005b 00       		.byte	0
+ 303 005c 02       		.byte	2
+ 304 005d 00       		.byte	0
+ 305 005e 01       		.byte	1
+ 306 005f 00       		.byte	0
+ 307 0060 05       		.byte	5
+ 308 0061 00       		.byte	0
+ 309 0062 01       		.byte	1
+ 310 0063 00       		.byte	0
+ 311 0064 02       		.byte	2
+ 312 0065 00       		.byte	0
+ 313 0066 01       		.byte	1
+ 314 0067 00       		.byte	0
+ 315 0068 03       		.byte	3
+ 316 0069 00       		.byte	0
+ 317 006a 01       		.byte	1
+ 318 006b 00       		.byte	0
+ 319 006c 02       		.byte	2
+ 320 006d 00       		.byte	0
+ 321 006e 01       		.byte	1
+ 322 006f 00       		.byte	0
+ 323 0070 04       		.byte	4
+ 324 0071 00       		.byte	0
+ 325 0072 01       		.byte	1
+ 326 0073 00       		.byte	0
+ 327 0074 02       		.byte	2
+ 328 0075 00       		.byte	0
+ 329 0076 01       		.byte	1
+ 330 0077 00       		.byte	0
+ 331 0078 03       		.byte	3
+ 332 0079 00       		.byte	0
+ 333 007a 01       		.byte	1
+ 334 007b 00       		.byte	0
+ 335 007c 02       		.byte	2
+ 336 007d 00       		.byte	0
+ 337 007e 01       		.byte	1
+ 338 007f 00       		.byte	0
+ 339 0080 07       		.byte	7
+ 340 0081 00       		.byte	0
+ 341 0082 01       		.byte	1
+ 342 0083 00       		.byte	0
+ 343 0084 02       		.byte	2
+ 344 0085 00       		.byte	0
+ 345 0086 01       		.byte	1
+ 346 0087 00       		.byte	0
+ 347 0088 03       		.byte	3
+ 348 0089 00       		.byte	0
+ 349 008a 01       		.byte	1
+ 350 008b 00       		.byte	0
+ 351 008c 02       		.byte	2
+ 352 008d 00       		.byte	0
+ 353 008e 01       		.byte	1
+ 354 008f 00       		.byte	0
+ 355 0090 04       		.byte	4
+ 356 0091 00       		.byte	0
+ 357 0092 01       		.byte	1
+ 358 0093 00       		.byte	0
+ 359 0094 02       		.byte	2
+ 360 0095 00       		.byte	0
+ 361 0096 01       		.byte	1
+ 362 0097 00       		.byte	0
+ 363 0098 03       		.byte	3
+ 364 0099 00       		.byte	0
+ 365 009a 01       		.byte	1
+ 366 009b 00       		.byte	0
+ 367 009c 02       		.byte	2
+ 368 009d 00       		.byte	0
+ 369 009e 01       		.byte	1
+ 370 009f 00       		.byte	0
+ 371 00a0 05       		.byte	5
+ 372 00a1 00       		.byte	0
+ 373 00a2 01       		.byte	1
+ 374 00a3 00       		.byte	0
+ 375 00a4 02       		.byte	2
+ 376 00a5 00       		.byte	0
+ 377 00a6 01       		.byte	1
+ 378 00a7 00       		.byte	0
+ 379 00a8 03       		.byte	3
+ 380 00a9 00       		.byte	0
+ 381 00aa 01       		.byte	1
+ 382 00ab 00       		.byte	0
+ 383 00ac 02       		.byte	2
+ 384 00ad 00       		.byte	0
+ 385 00ae 01       		.byte	1
+ 386 00af 00       		.byte	0
+ 387 00b0 04       		.byte	4
+ 388 00b1 00       		.byte	0
+ 389 00b2 01       		.byte	1
+ 390 00b3 00       		.byte	0
+ 391 00b4 02       		.byte	2
+ 392 00b5 00       		.byte	0
+ 393 00b6 01       		.byte	1
+ 394 00b7 00       		.byte	0
+ 395 00b8 03       		.byte	3
+ 396 00b9 00       		.byte	0
+ 397 00ba 01       		.byte	1
+ 398 00bb 00       		.byte	0
+ 399 00bc 02       		.byte	2
+ 400 00bd 00       		.byte	0
+ 401 00be 01       		.byte	1
+ 402 00bf 00       		.byte	0
+ 403 00c0 06       		.byte	6
+ 404 00c1 00       		.byte	0
+ 405 00c2 01       		.byte	1
+ 406 00c3 00       		.byte	0
+ 407 00c4 02       		.byte	2
+ 408 00c5 00       		.byte	0
+ 409 00c6 01       		.byte	1
+ 410 00c7 00       		.byte	0
+ 411 00c8 03       		.byte	3
+ 412 00c9 00       		.byte	0
+ 413 00ca 01       		.byte	1
+ 414 00cb 00       		.byte	0
+ 415 00cc 02       		.byte	2
+ 416 00cd 00       		.byte	0
+ 417 00ce 01       		.byte	1
+ 418 00cf 00       		.byte	0
+ 419 00d0 04       		.byte	4
+ 420 00d1 00       		.byte	0
+ 421 00d2 01       		.byte	1
+ 422 00d3 00       		.byte	0
+ 423 00d4 02       		.byte	2
+ 424 00d5 00       		.byte	0
+ 425 00d6 01       		.byte	1
+ 426 00d7 00       		.byte	0
+ 427 00d8 03       		.byte	3
+ 428 00d9 00       		.byte	0
+ 429 00da 01       		.byte	1
+ 430 00db 00       		.byte	0
+ 431 00dc 02       		.byte	2
+ 432 00dd 00       		.byte	0
+ 433 00de 01       		.byte	1
+ 434 00df 00       		.byte	0
+ 435 00e0 05       		.byte	5
+ 436 00e1 00       		.byte	0
+ 437 00e2 01       		.byte	1
+ 438 00e3 00       		.byte	0
+ 439 00e4 02       		.byte	2
+ 440 00e5 00       		.byte	0
+ 441 00e6 01       		.byte	1
+ 442 00e7 00       		.byte	0
+ 443 00e8 03       		.byte	3
+ 444 00e9 00       		.byte	0
+ 445 00ea 01       		.byte	1
+ 446 00eb 00       		.byte	0
+ 447 00ec 02       		.byte	2
+ 448 00ed 00       		.byte	0
+ 449 00ee 01       		.byte	1
+ 450 00ef 00       		.byte	0
+ 451 00f0 04       		.byte	4
+ 452 00f1 00       		.byte	0
+ 453 00f2 01       		.byte	1
+ 454 00f3 00       		.byte	0
+ 455 00f4 02       		.byte	2
+ 456 00f5 00       		.byte	0
+ 457 00f6 01       		.byte	1
+ 458 00f7 00       		.byte	0
+ 459 00f8 03       		.byte	3
+ 460 00f9 00       		.byte	0
+ 461 00fa 01       		.byte	1
+ 462 00fb 00       		.byte	0
+ 463 00fc 02       		.byte	2
+ 464 00fd 00       		.byte	0
+ 465 00fe 01       		.byte	1
+ 466 00ff 00       		.byte	0
+ 467              		.bss
+ 468 0002 0000     		.align	2
+ 469              	rt_scheduler_hook:
+ 470 0004 00000000 		.space	4
+ 471              		.text
+ 472              		.align	2
+ 473              		.global	rt_scheduler_sethook
+ 474              		.thumb
+ 475              		.thumb_func
+ 477              	rt_scheduler_sethook:
+ 478              	.LFB5:
+ 479              		.file 2 "../src/os/rt-thread/src/scheduler.c"
+   1:../src/os/rt-thread/src/scheduler.c **** /*
+   2:../src/os/rt-thread/src/scheduler.c ****  * File      : scheduler.c
+   3:../src/os/rt-thread/src/scheduler.c ****  * This file is part of RT-Thread RTOS
+   4:../src/os/rt-thread/src/scheduler.c ****  * COPYRIGHT (C) 2006 - 2012, RT-Thread Development Team
+   5:../src/os/rt-thread/src/scheduler.c ****  *
+   6:../src/os/rt-thread/src/scheduler.c ****  * The license and distribution terms for this file may be
+   7:../src/os/rt-thread/src/scheduler.c ****  * found in the file LICENSE in this distribution or at
+   8:../src/os/rt-thread/src/scheduler.c ****  * http://www.rt-thread.org/license/LICENSE
+   9:../src/os/rt-thread/src/scheduler.c ****  *
+  10:../src/os/rt-thread/src/scheduler.c ****  * Change Logs:
+  11:../src/os/rt-thread/src/scheduler.c ****  * Date           Author       Notes
+  12:../src/os/rt-thread/src/scheduler.c ****  * 2006-03-17     Bernard      the first version
+  13:../src/os/rt-thread/src/scheduler.c ****  * 2006-04-28     Bernard      fix the scheduler algorthm
+  14:../src/os/rt-thread/src/scheduler.c ****  * 2006-04-30     Bernard      add SCHEDULER_DEBUG
+  15:../src/os/rt-thread/src/scheduler.c ****  * 2006-05-27     Bernard      fix the scheduler algorthm for same priority thread
+  16:../src/os/rt-thread/src/scheduler.c ****  *                             schedule
+  17:../src/os/rt-thread/src/scheduler.c ****  * 2006-06-04     Bernard      rewrite the scheduler algorithm
+  18:../src/os/rt-thread/src/scheduler.c ****  * 2006-08-03     Bernard      add hook support
+  19:../src/os/rt-thread/src/scheduler.c ****  * 2006-09-05     Bernard      add 32 priority level support
+  20:../src/os/rt-thread/src/scheduler.c ****  * 2006-09-24     Bernard      add rt_system_scheduler_start function
+  21:../src/os/rt-thread/src/scheduler.c ****  * 2009-09-16     Bernard      fix _rt_scheduler_stack_check
+  22:../src/os/rt-thread/src/scheduler.c ****  * 2010-04-11     yi.qiu       add module feature
+  23:../src/os/rt-thread/src/scheduler.c ****  * 2010-07-13     Bernard      fix the maximal number of rt_scheduler_lock_nest 
+  24:../src/os/rt-thread/src/scheduler.c ****  *                             issue found by kuronca
+  25:../src/os/rt-thread/src/scheduler.c ****  * 2010-12-13     Bernard      add defunct list initialization even if not use heap.
+  26:../src/os/rt-thread/src/scheduler.c ****  * 2011-05-10     Bernard      clean scheduler debug log.
+  27:../src/os/rt-thread/src/scheduler.c ****  */
+  28:../src/os/rt-thread/src/scheduler.c **** 
+  29:../src/os/rt-thread/src/scheduler.c **** #include <rtthread.h>
+  30:../src/os/rt-thread/src/scheduler.c **** #include <rthw.h>
+  31:../src/os/rt-thread/src/scheduler.c **** 
+  32:../src/os/rt-thread/src/scheduler.c **** static rt_int16_t rt_scheduler_lock_nest;
+  33:../src/os/rt-thread/src/scheduler.c **** extern volatile rt_uint8_t rt_interrupt_nest;
+  34:../src/os/rt-thread/src/scheduler.c **** 
+  35:../src/os/rt-thread/src/scheduler.c **** rt_list_t rt_thread_priority_table[RT_THREAD_PRIORITY_MAX];
+  36:../src/os/rt-thread/src/scheduler.c **** struct rt_thread *rt_current_thread;
+  37:../src/os/rt-thread/src/scheduler.c **** 
+  38:../src/os/rt-thread/src/scheduler.c **** rt_uint8_t rt_current_priority;
+  39:../src/os/rt-thread/src/scheduler.c **** 
+  40:../src/os/rt-thread/src/scheduler.c **** #if RT_THREAD_PRIORITY_MAX > 32
+  41:../src/os/rt-thread/src/scheduler.c **** /* Maximum priority level, 256 */
+  42:../src/os/rt-thread/src/scheduler.c **** rt_uint32_t rt_thread_ready_priority_group;
+  43:../src/os/rt-thread/src/scheduler.c **** rt_uint8_t rt_thread_ready_table[32];
+  44:../src/os/rt-thread/src/scheduler.c **** #else
+  45:../src/os/rt-thread/src/scheduler.c **** /* Maximum priority level, 32 */
+  46:../src/os/rt-thread/src/scheduler.c **** rt_uint32_t rt_thread_ready_priority_group;
+  47:../src/os/rt-thread/src/scheduler.c **** #endif
+  48:../src/os/rt-thread/src/scheduler.c **** 
+  49:../src/os/rt-thread/src/scheduler.c **** rt_list_t rt_thread_defunct;
+  50:../src/os/rt-thread/src/scheduler.c **** 
+  51:../src/os/rt-thread/src/scheduler.c **** const rt_uint8_t rt_lowest_bitmap[] =
+  52:../src/os/rt-thread/src/scheduler.c **** {
+  53:../src/os/rt-thread/src/scheduler.c ****     /* 00 */ 0, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+  54:../src/os/rt-thread/src/scheduler.c ****     /* 10 */ 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+  55:../src/os/rt-thread/src/scheduler.c ****     /* 20 */ 5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+  56:../src/os/rt-thread/src/scheduler.c ****     /* 30 */ 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+  57:../src/os/rt-thread/src/scheduler.c ****     /* 40 */ 6, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+  58:../src/os/rt-thread/src/scheduler.c ****     /* 50 */ 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+  59:../src/os/rt-thread/src/scheduler.c ****     /* 60 */ 5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+  60:../src/os/rt-thread/src/scheduler.c ****     /* 70 */ 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+  61:../src/os/rt-thread/src/scheduler.c ****     /* 80 */ 7, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+  62:../src/os/rt-thread/src/scheduler.c ****     /* 90 */ 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+  63:../src/os/rt-thread/src/scheduler.c ****     /* A0 */ 5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+  64:../src/os/rt-thread/src/scheduler.c ****     /* B0 */ 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+  65:../src/os/rt-thread/src/scheduler.c ****     /* C0 */ 6, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+  66:../src/os/rt-thread/src/scheduler.c ****     /* D0 */ 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+  67:../src/os/rt-thread/src/scheduler.c ****     /* E0 */ 5, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0,
+  68:../src/os/rt-thread/src/scheduler.c ****     /* F0 */ 4, 0, 1, 0, 2, 0, 1, 0, 3, 0, 1, 0, 2, 0, 1, 0
+  69:../src/os/rt-thread/src/scheduler.c **** };
+  70:../src/os/rt-thread/src/scheduler.c **** 
+  71:../src/os/rt-thread/src/scheduler.c **** #ifdef RT_USING_HOOK
+  72:../src/os/rt-thread/src/scheduler.c **** static void (*rt_scheduler_hook)(struct rt_thread *from, struct rt_thread *to);
+  73:../src/os/rt-thread/src/scheduler.c **** 
+  74:../src/os/rt-thread/src/scheduler.c **** /**
+  75:../src/os/rt-thread/src/scheduler.c ****  * @addtogroup Hook
+  76:../src/os/rt-thread/src/scheduler.c ****  */
+  77:../src/os/rt-thread/src/scheduler.c **** 
+  78:../src/os/rt-thread/src/scheduler.c **** /*@{*/
+  79:../src/os/rt-thread/src/scheduler.c **** 
+  80:../src/os/rt-thread/src/scheduler.c **** /**
+  81:../src/os/rt-thread/src/scheduler.c ****  * This function will set a hook function, which will be invoked when thread
+  82:../src/os/rt-thread/src/scheduler.c ****  * switch happens.
+  83:../src/os/rt-thread/src/scheduler.c ****  *
+  84:../src/os/rt-thread/src/scheduler.c ****  * @param hook the hook function
+  85:../src/os/rt-thread/src/scheduler.c ****  */
+  86:../src/os/rt-thread/src/scheduler.c **** void rt_scheduler_sethook(void (*hook)(struct rt_thread *from, struct rt_thread *to))
+  87:../src/os/rt-thread/src/scheduler.c **** {
+ 480              		.loc 2 87 0
+ 481              		.cfi_startproc
+ 482              		@ args = 0, pretend = 0, frame = 8
+ 483              		@ frame_needed = 1, uses_anonymous_args = 0
+ 484              		@ link register save eliminated.
+ 485 00a8 80B4     		push	{r7}
+ 486              	.LCFI12:
+ 487              		.cfi_def_cfa_offset 4
+ 488              		.cfi_offset 7, -4
+ 489 00aa 83B0     		sub	sp, sp, #12
+ 490              	.LCFI13:
+ 491              		.cfi_def_cfa_offset 16
+ 492 00ac 00AF     		add	r7, sp, #0
+ 493              	.LCFI14:
+ 494              		.cfi_def_cfa_register 7
+ 495 00ae 7860     		str	r0, [r7, #4]
+  88:../src/os/rt-thread/src/scheduler.c **** 	rt_scheduler_hook = hook;
+ 496              		.loc 2 88 0
+ 497 00b0 034B     		ldr	r3, .L7
+ 498 00b2 7A68     		ldr	r2, [r7, #4]
+ 499 00b4 1A60     		str	r2, [r3, #0]
+  89:../src/os/rt-thread/src/scheduler.c **** }
+ 500              		.loc 2 89 0
+ 501 00b6 07F10C07 		add	r7, r7, #12
+ 502 00ba BD46     		mov	sp, r7
+ 503 00bc 80BC     		pop	{r7}
+ 504 00be 7047     		bx	lr
+ 505              	.L8:
+ 506              		.align	2
+ 507              	.L7:
+ 508 00c0 04000000 		.word	rt_scheduler_hook
+ 509              		.cfi_endproc
+ 510              	.LFE5:
+ 512              		.section	.rodata
+ 513              		.align	2
+ 514              	.LC0:
+ 515 0100 28257329 		.ascii	"(%s) assert failed at %s:%d \012\000"
+ 515      20617373 
+ 515      65727420 
+ 515      6661696C 
+ 515      65642061 
+ 516 011e 0000     		.align	2
+ 517              	.LC1:
+ 518 0120 74687265 		.ascii	"thread != RT_NULL\000"
+ 518      61642021 
+ 518      3D205254 
+ 518      5F4E554C 
+ 518      4C00
+ 519 0132 0000     		.align	2
+ 520              	.LC2:
+ 521 0134 74687265 		.ascii	"thread:%s stack overflow\012\000"
+ 521      61643A25 
+ 521      73207374 
+ 521      61636B20 
+ 521      6F766572 
+ 522 014e 0000     		.align	2
+ 523              	.LC3:
+ 524 0150 7761726E 		.ascii	"warning: %s stack is close to end of stack address."
+ 524      696E673A 
+ 524      20257320 
+ 524      73746163 
+ 524      6B206973 
+ 525 0183 0A00     		.ascii	"\012\000"
+ 526              		.text
+ 527              		.align	2
+ 528              		.thumb
+ 529              		.thumb_func
+ 531              	_rt_scheduler_stack_check:
+ 532              	.LFB6:
+  90:../src/os/rt-thread/src/scheduler.c **** 
+  91:../src/os/rt-thread/src/scheduler.c **** /*@}*/
+  92:../src/os/rt-thread/src/scheduler.c **** #endif
+  93:../src/os/rt-thread/src/scheduler.c **** 
+  94:../src/os/rt-thread/src/scheduler.c **** #ifdef RT_USING_OVERFLOW_CHECK
+  95:../src/os/rt-thread/src/scheduler.c **** static void _rt_scheduler_stack_check(struct rt_thread *thread)
+  96:../src/os/rt-thread/src/scheduler.c **** {
+ 533              		.loc 2 96 0
+ 534              		.cfi_startproc
+ 535              		@ args = 0, pretend = 0, frame = 16
+ 536              		@ frame_needed = 1, uses_anonymous_args = 0
+ 537 00c4 80B5     		push	{r7, lr}
+ 538              	.LCFI15:
+ 539              		.cfi_def_cfa_offset 8
+ 540              		.cfi_offset 7, -8
+ 541              		.cfi_offset 14, -4
+ 542 00c6 84B0     		sub	sp, sp, #16
+ 543              	.LCFI16:
+ 544              		.cfi_def_cfa_offset 24
+ 545 00c8 00AF     		add	r7, sp, #0
+ 546              	.LCFI17:
+ 547              		.cfi_def_cfa_register 7
+ 548 00ca 7860     		str	r0, [r7, #4]
+  97:../src/os/rt-thread/src/scheduler.c **** 	RT_ASSERT(thread != RT_NULL);
+ 549              		.loc 2 97 0
+ 550 00cc 7B68     		ldr	r3, [r7, #4]
+ 551 00ce 002B     		cmp	r3, #0
+ 552 00d0 0DD1     		bne	.L10
+ 553              	.LBB2:
+ 554              		.loc 2 97 0 is_stmt 0 discriminator 1
+ 555 00d2 4FF00003 		mov	r3, #0
+ 556 00d6 FB72     		strb	r3, [r7, #11]
+ 557 00d8 1D48     		ldr	r0, .L16
+ 558 00da 1E49     		ldr	r1, .L16+4
+ 559 00dc 1E4A     		ldr	r2, .L16+8
+ 560 00de 4FF06103 		mov	r3, #97
+ 561 00e2 FFF7FEFF 		bl	rt_kprintf
+ 562              	.L11:
+ 563              		.loc 2 97 0 discriminator 2
+ 564 00e6 FB7A     		ldrb	r3, [r7, #11]
+ 565 00e8 DBB2     		uxtb	r3, r3
+ 566 00ea 002B     		cmp	r3, #0
+ 567 00ec FBD0     		beq	.L11
+ 568              	.L10:
+ 569              	.LBE2:
+  98:../src/os/rt-thread/src/scheduler.c **** 
+  99:../src/os/rt-thread/src/scheduler.c **** 	if ((rt_uint32_t)thread->sp <= (rt_uint32_t)thread->stack_addr ||
+ 570              		.loc 2 99 0 is_stmt 1
+ 571 00ee 7B68     		ldr	r3, [r7, #4]
+ 572 00f0 9B69     		ldr	r3, [r3, #24]
+ 573 00f2 1A46     		mov	r2, r3
+ 574 00f4 7B68     		ldr	r3, [r7, #4]
+ 575 00f6 5B6A     		ldr	r3, [r3, #36]
+ 576 00f8 9A42     		cmp	r2, r3
+ 577 00fa 0AD9     		bls	.L12
+ 100:../src/os/rt-thread/src/scheduler.c **** 			(rt_uint32_t)thread->sp >
+ 578              		.loc 2 100 0 discriminator 1
+ 579 00fc 7B68     		ldr	r3, [r7, #4]
+ 580 00fe 9B69     		ldr	r3, [r3, #24]
+ 581 0100 1A46     		mov	r2, r3
+ 101:../src/os/rt-thread/src/scheduler.c **** 			(rt_uint32_t)thread->stack_addr + (rt_uint32_t)thread->stack_size)
+ 582              		.loc 2 101 0 discriminator 1
+ 583 0102 7B68     		ldr	r3, [r7, #4]
+ 584 0104 5B6A     		ldr	r3, [r3, #36]
+ 585 0106 1946     		mov	r1, r3
+ 586 0108 7B68     		ldr	r3, [r7, #4]
+ 587 010a 1B8D     		ldrh	r3, [r3, #40]
+ 588 010c CB18     		adds	r3, r1, r3
+  99:../src/os/rt-thread/src/scheduler.c **** 	if ((rt_uint32_t)thread->sp <= (rt_uint32_t)thread->stack_addr ||
+ 589              		.loc 2 99 0 discriminator 1
+ 590 010e 9A42     		cmp	r2, r3
+ 591 0110 0CD9     		bls	.L13
+ 592              	.L12:
+ 593              	.LBB3:
+ 102:../src/os/rt-thread/src/scheduler.c **** 	{
+ 103:../src/os/rt-thread/src/scheduler.c **** 		rt_uint32_t level;
+ 104:../src/os/rt-thread/src/scheduler.c **** 
+ 105:../src/os/rt-thread/src/scheduler.c **** 		rt_kprintf("thread:%s stack overflow\n", thread->name);
+ 594              		.loc 2 105 0
+ 595 0112 7B68     		ldr	r3, [r7, #4]
+ 596 0114 1148     		ldr	r0, .L16+12
+ 597 0116 1946     		mov	r1, r3
+ 598 0118 FFF7FEFF 		bl	rt_kprintf
+ 106:../src/os/rt-thread/src/scheduler.c **** 		#ifdef RT_USING_FINSH
+ 107:../src/os/rt-thread/src/scheduler.c **** 		{
+ 108:../src/os/rt-thread/src/scheduler.c **** 			extern long list_thread(void);
+ 109:../src/os/rt-thread/src/scheduler.c **** 			list_thread();
+ 110:../src/os/rt-thread/src/scheduler.c **** 		}
+ 111:../src/os/rt-thread/src/scheduler.c **** 		#endif
+ 112:../src/os/rt-thread/src/scheduler.c **** 		level = rt_hw_interrupt_disable();
+ 599              		.loc 2 112 0
+ 600 011c FFF7FEFF 		bl	rt_hw_interrupt_disable
+ 601 0120 0346     		mov	r3, r0
+ 602 0122 FB60     		str	r3, [r7, #12]
+ 603              	.L14:
+ 113:../src/os/rt-thread/src/scheduler.c **** 		while (level);
+ 604              		.loc 2 113 0 discriminator 1
+ 605 0124 FB68     		ldr	r3, [r7, #12]
+ 606 0126 002B     		cmp	r3, #0
+ 607 0128 FCD1     		bne	.L14
+ 608              	.LBE3:
+ 102:../src/os/rt-thread/src/scheduler.c **** 	{
+ 609              		.loc 2 102 0
+ 610 012a 0DE0     		b	.L9
+ 611              	.L13:
+ 114:../src/os/rt-thread/src/scheduler.c **** 	}
+ 115:../src/os/rt-thread/src/scheduler.c **** 	else if ((rt_uint32_t)thread->sp <= ((rt_uint32_t)thread->stack_addr + 32))
+ 612              		.loc 2 115 0
+ 613 012c 7B68     		ldr	r3, [r7, #4]
+ 614 012e 9B69     		ldr	r3, [r3, #24]
+ 615 0130 1A46     		mov	r2, r3
+ 616 0132 7B68     		ldr	r3, [r7, #4]
+ 617 0134 5B6A     		ldr	r3, [r3, #36]
+ 618 0136 03F12003 		add	r3, r3, #32
+ 619 013a 9A42     		cmp	r2, r3
+ 620 013c 04D8     		bhi	.L9
+ 116:../src/os/rt-thread/src/scheduler.c **** 	{
+ 117:../src/os/rt-thread/src/scheduler.c **** 		rt_kprintf("warning: %s stack is close to end of stack address.\n", thread->name);
+ 621              		.loc 2 117 0
+ 622 013e 7B68     		ldr	r3, [r7, #4]
+ 623 0140 0748     		ldr	r0, .L16+16
+ 624 0142 1946     		mov	r1, r3
+ 625 0144 FFF7FEFF 		bl	rt_kprintf
+ 626              	.L9:
+ 118:../src/os/rt-thread/src/scheduler.c **** 	}
+ 119:../src/os/rt-thread/src/scheduler.c **** }
+ 627              		.loc 2 119 0
+ 628 0148 07F11007 		add	r7, r7, #16
+ 629 014c BD46     		mov	sp, r7
+ 630 014e 80BD     		pop	{r7, pc}
+ 631              	.L17:
+ 632              		.align	2
+ 633              	.L16:
+ 634 0150 00010000 		.word	.LC0
+ 635 0154 20010000 		.word	.LC1
+ 636 0158 C0010000 		.word	__FUNCTION__.4857
+ 637 015c 34010000 		.word	.LC2
+ 638 0160 50010000 		.word	.LC3
+ 639              		.cfi_endproc
+ 640              	.LFE6:
+ 642              		.align	2
+ 643              		.global	rt_system_scheduler_init
+ 644              		.thumb
+ 645              		.thumb_func
+ 647              	rt_system_scheduler_init:
+ 648              	.LFB7:
+ 120:../src/os/rt-thread/src/scheduler.c **** #endif
+ 121:../src/os/rt-thread/src/scheduler.c **** 
+ 122:../src/os/rt-thread/src/scheduler.c **** /**
+ 123:../src/os/rt-thread/src/scheduler.c ****  * @ingroup SystemInit
+ 124:../src/os/rt-thread/src/scheduler.c ****  * This function will initialize the system scheduler
+ 125:../src/os/rt-thread/src/scheduler.c ****  */
+ 126:../src/os/rt-thread/src/scheduler.c **** void rt_system_scheduler_init(void)
+ 127:../src/os/rt-thread/src/scheduler.c **** {
+ 649              		.loc 2 127 0
+ 650              		.cfi_startproc
+ 651              		@ args = 0, pretend = 0, frame = 0
+ 652              		@ frame_needed = 1, uses_anonymous_args = 0
+ 653 0164 98B5     		push	{r3, r4, r7, lr}
+ 654              	.LCFI18:
+ 655              		.cfi_def_cfa_offset 16
+ 656              		.cfi_offset 3, -16
+ 657              		.cfi_offset 4, -12
+ 658              		.cfi_offset 7, -8
+ 659              		.cfi_offset 14, -4
+ 660 0166 00AF     		add	r7, sp, #0
+ 661              	.LCFI19:
+ 662              		.cfi_def_cfa_register 7
+ 128:../src/os/rt-thread/src/scheduler.c **** 	register rt_base_t offset;
+ 129:../src/os/rt-thread/src/scheduler.c **** 
+ 130:../src/os/rt-thread/src/scheduler.c **** 	rt_scheduler_lock_nest = 0;
+ 663              		.loc 2 130 0
+ 664 0168 104B     		ldr	r3, .L21
+ 665 016a 4FF00002 		mov	r2, #0
+ 666 016e 1A80     		strh	r2, [r3, #0]	@ movhi
+ 131:../src/os/rt-thread/src/scheduler.c **** 
+ 132:../src/os/rt-thread/src/scheduler.c **** 	RT_DEBUG_LOG(RT_DEBUG_SCHEDULER,
+ 133:../src/os/rt-thread/src/scheduler.c **** 		("start scheduler: max priority 0x%02x\n", RT_THREAD_PRIORITY_MAX));
+ 134:../src/os/rt-thread/src/scheduler.c **** 
+ 135:../src/os/rt-thread/src/scheduler.c **** 	for (offset = 0; offset < RT_THREAD_PRIORITY_MAX; offset ++)
+ 667              		.loc 2 135 0
+ 668 0170 4FF00004 		mov	r4, #0
+ 669 0174 08E0     		b	.L19
+ 670              	.L20:
+ 136:../src/os/rt-thread/src/scheduler.c **** 	{
+ 137:../src/os/rt-thread/src/scheduler.c **** 		rt_list_init(&rt_thread_priority_table[offset]);
+ 671              		.loc 2 137 0 discriminator 2
+ 672 0176 4FEAC402 		lsl	r2, r4, #3
+ 673 017a 0D4B     		ldr	r3, .L21+4
+ 674 017c D318     		adds	r3, r2, r3
+ 675 017e 1846     		mov	r0, r3
+ 676 0180 FFF73EFF 		bl	rt_list_init
+ 135:../src/os/rt-thread/src/scheduler.c **** 	for (offset = 0; offset < RT_THREAD_PRIORITY_MAX; offset ++)
+ 677              		.loc 2 135 0 discriminator 2
+ 678 0184 04F10104 		add	r4, r4, #1
+ 679              	.L19:
+ 135:../src/os/rt-thread/src/scheduler.c **** 	for (offset = 0; offset < RT_THREAD_PRIORITY_MAX; offset ++)
+ 680              		.loc 2 135 0 is_stmt 0 discriminator 1
+ 681 0188 1F2C     		cmp	r4, #31
+ 682 018a F4DD     		ble	.L20
+ 138:../src/os/rt-thread/src/scheduler.c **** 	}
+ 139:../src/os/rt-thread/src/scheduler.c **** 
+ 140:../src/os/rt-thread/src/scheduler.c **** 	rt_current_priority = RT_THREAD_PRIORITY_MAX - 1;
+ 683              		.loc 2 140 0 is_stmt 1
+ 684 018c 094B     		ldr	r3, .L21+8
+ 685 018e 4FF01F02 		mov	r2, #31
+ 686 0192 1A70     		strb	r2, [r3, #0]
+ 141:../src/os/rt-thread/src/scheduler.c **** 	rt_current_thread = RT_NULL;
+ 687              		.loc 2 141 0
+ 688 0194 084B     		ldr	r3, .L21+12
+ 689 0196 4FF00002 		mov	r2, #0
+ 690 019a 1A60     		str	r2, [r3, #0]
+ 142:../src/os/rt-thread/src/scheduler.c **** 
+ 143:../src/os/rt-thread/src/scheduler.c **** 	/* initialize ready priority group */
+ 144:../src/os/rt-thread/src/scheduler.c **** 	rt_thread_ready_priority_group = 0;
+ 691              		.loc 2 144 0
+ 692 019c 074B     		ldr	r3, .L21+16
+ 693 019e 4FF00002 		mov	r2, #0
+ 694 01a2 1A60     		str	r2, [r3, #0]
+ 145:../src/os/rt-thread/src/scheduler.c **** 
+ 146:../src/os/rt-thread/src/scheduler.c **** #if RT_THREAD_PRIORITY_MAX > 32
+ 147:../src/os/rt-thread/src/scheduler.c **** 	/* initialize ready table */
+ 148:../src/os/rt-thread/src/scheduler.c **** 	rt_memset(rt_thread_ready_table, 0, sizeof(rt_thread_ready_table));
+ 149:../src/os/rt-thread/src/scheduler.c **** #endif
+ 150:../src/os/rt-thread/src/scheduler.c **** 
+ 151:../src/os/rt-thread/src/scheduler.c **** 	/* initialize thread defunct */
+ 152:../src/os/rt-thread/src/scheduler.c **** 	rt_list_init(&rt_thread_defunct);
+ 695              		.loc 2 152 0
+ 696 01a4 0648     		ldr	r0, .L21+20
+ 697 01a6 FFF72BFF 		bl	rt_list_init
+ 153:../src/os/rt-thread/src/scheduler.c **** }
+ 698              		.loc 2 153 0
+ 699 01aa 98BD     		pop	{r3, r4, r7, pc}
+ 700              	.L22:
+ 701              		.align	2
+ 702              	.L21:
+ 703 01ac 00000000 		.word	rt_scheduler_lock_nest
+ 704 01b0 00000000 		.word	rt_thread_priority_table
+ 705 01b4 00000000 		.word	rt_current_priority
+ 706 01b8 00000000 		.word	rt_current_thread
+ 707 01bc 00000000 		.word	rt_thread_ready_priority_group
+ 708 01c0 00000000 		.word	rt_thread_defunct
+ 709              		.cfi_endproc
+ 710              	.LFE7:
+ 712              		.align	2
+ 713              		.global	rt_system_scheduler_start
+ 714              		.thumb
+ 715              		.thumb_func
+ 717              	rt_system_scheduler_start:
+ 718              	.LFB8:
+ 154:../src/os/rt-thread/src/scheduler.c **** 
+ 155:../src/os/rt-thread/src/scheduler.c **** /**
+ 156:../src/os/rt-thread/src/scheduler.c ****  * @ingroup SystemInit
+ 157:../src/os/rt-thread/src/scheduler.c ****  * This function will startup scheduler. It will select one thread
+ 158:../src/os/rt-thread/src/scheduler.c ****  * with the highest priority level, then switch to it.
+ 159:../src/os/rt-thread/src/scheduler.c ****  */
+ 160:../src/os/rt-thread/src/scheduler.c **** void rt_system_scheduler_start(void)
+ 161:../src/os/rt-thread/src/scheduler.c **** {
+ 719              		.loc 2 161 0
+ 720              		.cfi_startproc
+ 721              		@ args = 0, pretend = 0, frame = 0
+ 722              		@ frame_needed = 1, uses_anonymous_args = 0
+ 723 01c4 98B5     		push	{r3, r4, r7, lr}
+ 724              	.LCFI20:
+ 725              		.cfi_def_cfa_offset 16
+ 726              		.cfi_offset 3, -16
+ 727              		.cfi_offset 4, -12
+ 728              		.cfi_offset 7, -8
+ 729              		.cfi_offset 14, -4
+ 730 01c6 00AF     		add	r7, sp, #0
+ 731              	.LCFI21:
+ 732              		.cfi_def_cfa_register 7
+ 162:../src/os/rt-thread/src/scheduler.c **** 	register struct rt_thread *to_thread;
+ 163:../src/os/rt-thread/src/scheduler.c **** 	register rt_ubase_t highest_ready_priority;
+ 164:../src/os/rt-thread/src/scheduler.c **** 
+ 165:../src/os/rt-thread/src/scheduler.c **** #if RT_THREAD_PRIORITY_MAX == 8
+ 166:../src/os/rt-thread/src/scheduler.c **** 	highest_ready_priority = rt_lowest_bitmap[rt_thread_ready_priority_group];
+ 167:../src/os/rt-thread/src/scheduler.c **** #else
+ 168:../src/os/rt-thread/src/scheduler.c **** 	register rt_ubase_t number;
+ 169:../src/os/rt-thread/src/scheduler.c **** 	/* find out the highest priority task */
+ 170:../src/os/rt-thread/src/scheduler.c **** 	if (rt_thread_ready_priority_group & 0xff)
+ 733              		.loc 2 170 0
+ 734 01c8 214B     		ldr	r3, .L28
+ 735 01ca 1B68     		ldr	r3, [r3, #0]
+ 736 01cc DBB2     		uxtb	r3, r3
+ 737 01ce 002B     		cmp	r3, #0
+ 738 01d0 06D0     		beq	.L24
+ 171:../src/os/rt-thread/src/scheduler.c **** 	{
+ 172:../src/os/rt-thread/src/scheduler.c **** 		number = rt_lowest_bitmap[rt_thread_ready_priority_group & 0xff];
+ 739              		.loc 2 172 0
+ 740 01d2 1F4B     		ldr	r3, .L28
+ 741 01d4 1B68     		ldr	r3, [r3, #0]
+ 742 01d6 DBB2     		uxtb	r3, r3
+ 743 01d8 1E4A     		ldr	r2, .L28+4
+ 744 01da D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 745 01dc 1C46     		mov	r4, r3
+ 746 01de 2AE0     		b	.L25
+ 747              	.L24:
+ 173:../src/os/rt-thread/src/scheduler.c **** 	}
+ 174:../src/os/rt-thread/src/scheduler.c **** 	else if (rt_thread_ready_priority_group & 0xff00)
+ 748              		.loc 2 174 0
+ 749 01e0 1B4B     		ldr	r3, .L28
+ 750 01e2 1B68     		ldr	r3, [r3, #0]
+ 751 01e4 03F47F43 		and	r3, r3, #65280
+ 752 01e8 002B     		cmp	r3, #0
+ 753 01ea 0AD0     		beq	.L26
+ 175:../src/os/rt-thread/src/scheduler.c **** 	{
+ 176:../src/os/rt-thread/src/scheduler.c **** 		number = rt_lowest_bitmap[(rt_thread_ready_priority_group >> 8) & 0xff] + 8;
+ 754              		.loc 2 176 0
+ 755 01ec 184B     		ldr	r3, .L28
+ 756 01ee 1B68     		ldr	r3, [r3, #0]
+ 757 01f0 4FEA1323 		lsr	r3, r3, #8
+ 758 01f4 DBB2     		uxtb	r3, r3
+ 759 01f6 174A     		ldr	r2, .L28+4
+ 760 01f8 D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 761 01fa 03F10803 		add	r3, r3, #8
+ 762 01fe 1C46     		mov	r4, r3
+ 763 0200 19E0     		b	.L25
+ 764              	.L26:
+ 177:../src/os/rt-thread/src/scheduler.c **** 	}
+ 178:../src/os/rt-thread/src/scheduler.c **** 	else if (rt_thread_ready_priority_group & 0xff0000)
+ 765              		.loc 2 178 0
+ 766 0202 134B     		ldr	r3, .L28
+ 767 0204 1B68     		ldr	r3, [r3, #0]
+ 768 0206 03F47F03 		and	r3, r3, #16711680
+ 769 020a 002B     		cmp	r3, #0
+ 770 020c 0AD0     		beq	.L27
+ 179:../src/os/rt-thread/src/scheduler.c **** 	{
+ 180:../src/os/rt-thread/src/scheduler.c **** 		number = rt_lowest_bitmap[(rt_thread_ready_priority_group >> 16) & 0xff] + 16;
+ 771              		.loc 2 180 0
+ 772 020e 104B     		ldr	r3, .L28
+ 773 0210 1B68     		ldr	r3, [r3, #0]
+ 774 0212 4FEA1343 		lsr	r3, r3, #16
+ 775 0216 DBB2     		uxtb	r3, r3
+ 776 0218 0E4A     		ldr	r2, .L28+4
+ 777 021a D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 778 021c 03F11003 		add	r3, r3, #16
+ 779 0220 1C46     		mov	r4, r3
+ 780 0222 08E0     		b	.L25
+ 781              	.L27:
+ 181:../src/os/rt-thread/src/scheduler.c **** 	}
+ 182:../src/os/rt-thread/src/scheduler.c **** 	else
+ 183:../src/os/rt-thread/src/scheduler.c **** 	{
+ 184:../src/os/rt-thread/src/scheduler.c **** 		number = rt_lowest_bitmap[(rt_thread_ready_priority_group >> 24) & 0xff] + 24;
+ 782              		.loc 2 184 0
+ 783 0224 0A4B     		ldr	r3, .L28
+ 784 0226 1B68     		ldr	r3, [r3, #0]
+ 785 0228 4FEA1363 		lsr	r3, r3, #24
+ 786 022c 094A     		ldr	r2, .L28+4
+ 787 022e D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 788 0230 03F11803 		add	r3, r3, #24
+ 789 0234 1C46     		mov	r4, r3
+ 790              	.L25:
+ 185:../src/os/rt-thread/src/scheduler.c **** 	}
+ 186:../src/os/rt-thread/src/scheduler.c **** 
+ 187:../src/os/rt-thread/src/scheduler.c **** #if RT_THREAD_PRIORITY_MAX > 32
+ 188:../src/os/rt-thread/src/scheduler.c **** 	highest_ready_priority = (number << 3) + rt_lowest_bitmap[rt_thread_ready_table[number]];
+ 189:../src/os/rt-thread/src/scheduler.c **** #else
+ 190:../src/os/rt-thread/src/scheduler.c **** 	highest_ready_priority = number;
+ 191:../src/os/rt-thread/src/scheduler.c **** #endif
+ 192:../src/os/rt-thread/src/scheduler.c **** #endif
+ 193:../src/os/rt-thread/src/scheduler.c **** 
+ 194:../src/os/rt-thread/src/scheduler.c **** 	/* get switch to thread */
+ 195:../src/os/rt-thread/src/scheduler.c **** 	to_thread = rt_list_entry(rt_thread_priority_table[highest_ready_priority].next,
+ 791              		.loc 2 195 0
+ 792 0236 084B     		ldr	r3, .L28+8
+ 793 0238 53F83430 		ldr	r3, [r3, r4, lsl #3]
+ 794 023c A3F11004 		sub	r4, r3, #16
+ 196:../src/os/rt-thread/src/scheduler.c **** 					struct rt_thread, tlist);
+ 197:../src/os/rt-thread/src/scheduler.c **** 
+ 198:../src/os/rt-thread/src/scheduler.c **** 	rt_current_thread = to_thread;
+ 795              		.loc 2 198 0
+ 796 0240 064B     		ldr	r3, .L28+12
+ 797 0242 1C60     		str	r4, [r3, #0]
+ 199:../src/os/rt-thread/src/scheduler.c **** 
+ 200:../src/os/rt-thread/src/scheduler.c **** 	/* switch to new thread */
+ 201:../src/os/rt-thread/src/scheduler.c **** 	rt_hw_context_switch_to((rt_uint32_t)&to_thread->sp);
+ 798              		.loc 2 201 0
+ 799 0244 04F11803 		add	r3, r4, #24
+ 800 0248 1846     		mov	r0, r3
+ 801 024a FFF7FEFF 		bl	rt_hw_context_switch_to
+ 202:../src/os/rt-thread/src/scheduler.c **** 
+ 203:../src/os/rt-thread/src/scheduler.c **** 	/* never come back */
+ 204:../src/os/rt-thread/src/scheduler.c **** }
+ 802              		.loc 2 204 0
+ 803 024e 98BD     		pop	{r3, r4, r7, pc}
+ 804              	.L29:
+ 805              		.align	2
+ 806              	.L28:
+ 807 0250 00000000 		.word	rt_thread_ready_priority_group
+ 808 0254 00000000 		.word	rt_lowest_bitmap
+ 809 0258 00000000 		.word	rt_thread_priority_table
+ 810 025c 00000000 		.word	rt_current_thread
+ 811              		.cfi_endproc
+ 812              	.LFE8:
+ 814              		.align	2
+ 815              		.global	rt_schedule
+ 816              		.thumb
+ 817              		.thumb_func
+ 819              	rt_schedule:
+ 820              	.LFB9:
+ 205:../src/os/rt-thread/src/scheduler.c **** 
+ 206:../src/os/rt-thread/src/scheduler.c **** /**
+ 207:../src/os/rt-thread/src/scheduler.c ****  * @addtogroup Thread
+ 208:../src/os/rt-thread/src/scheduler.c ****  */
+ 209:../src/os/rt-thread/src/scheduler.c **** 
+ 210:../src/os/rt-thread/src/scheduler.c **** /*@{*/
+ 211:../src/os/rt-thread/src/scheduler.c **** 
+ 212:../src/os/rt-thread/src/scheduler.c **** /**
+ 213:../src/os/rt-thread/src/scheduler.c ****  * This function will perform one schedule. It will select one thread
+ 214:../src/os/rt-thread/src/scheduler.c ****  * with the highest priority level, then switch to it.
+ 215:../src/os/rt-thread/src/scheduler.c ****  */
+ 216:../src/os/rt-thread/src/scheduler.c **** void rt_schedule(void)
+ 217:../src/os/rt-thread/src/scheduler.c **** {
+ 821              		.loc 2 217 0
+ 822              		.cfi_startproc
+ 823              		@ args = 0, pretend = 0, frame = 16
+ 824              		@ frame_needed = 1, uses_anonymous_args = 0
+ 825 0260 90B5     		push	{r4, r7, lr}
+ 826              	.LCFI22:
+ 827              		.cfi_def_cfa_offset 12
+ 828              		.cfi_offset 4, -12
+ 829              		.cfi_offset 7, -8
+ 830              		.cfi_offset 14, -4
+ 831 0262 85B0     		sub	sp, sp, #20
+ 832              	.LCFI23:
+ 833              		.cfi_def_cfa_offset 32
+ 834 0264 00AF     		add	r7, sp, #0
+ 835              	.LCFI24:
+ 836              		.cfi_def_cfa_register 7
+ 218:../src/os/rt-thread/src/scheduler.c **** 	rt_base_t level;
+ 219:../src/os/rt-thread/src/scheduler.c **** 	struct rt_thread *to_thread;
+ 220:../src/os/rt-thread/src/scheduler.c **** 	struct rt_thread *from_thread;
+ 221:../src/os/rt-thread/src/scheduler.c **** 
+ 222:../src/os/rt-thread/src/scheduler.c **** 	/* disable interrupt */
+ 223:../src/os/rt-thread/src/scheduler.c **** 	level = rt_hw_interrupt_disable();
+ 837              		.loc 2 223 0
+ 838 0266 FFF7FEFF 		bl	rt_hw_interrupt_disable
+ 839 026a F860     		str	r0, [r7, #12]
+ 224:../src/os/rt-thread/src/scheduler.c **** 
+ 225:../src/os/rt-thread/src/scheduler.c **** 	/* check the scheduler is enabled or not */
+ 226:../src/os/rt-thread/src/scheduler.c **** 	if (rt_scheduler_lock_nest == 0)
+ 840              		.loc 2 226 0
+ 841 026c 3E4B     		ldr	r3, .L38
+ 842 026e 1B88     		ldrh	r3, [r3, #0]
+ 843 0270 002B     		cmp	r3, #0
+ 844 0272 72D1     		bne	.L31
+ 845              	.LBB4:
+ 227:../src/os/rt-thread/src/scheduler.c **** 	{
+ 228:../src/os/rt-thread/src/scheduler.c **** 		register rt_ubase_t highest_ready_priority;
+ 229:../src/os/rt-thread/src/scheduler.c **** 
+ 230:../src/os/rt-thread/src/scheduler.c **** #if RT_THREAD_PRIORITY_MAX == 8
+ 231:../src/os/rt-thread/src/scheduler.c **** 		highest_ready_priority = rt_lowest_bitmap[rt_thread_ready_priority_group];
+ 232:../src/os/rt-thread/src/scheduler.c **** #else
+ 233:../src/os/rt-thread/src/scheduler.c **** 		register rt_ubase_t number;
+ 234:../src/os/rt-thread/src/scheduler.c **** 		/* find out the highest priority task */
+ 235:../src/os/rt-thread/src/scheduler.c **** 		if (rt_thread_ready_priority_group & 0xff)
+ 846              		.loc 2 235 0
+ 847 0274 3D4B     		ldr	r3, .L38+4
+ 848 0276 1B68     		ldr	r3, [r3, #0]
+ 849 0278 DBB2     		uxtb	r3, r3
+ 850 027a 002B     		cmp	r3, #0
+ 851 027c 06D0     		beq	.L32
+ 236:../src/os/rt-thread/src/scheduler.c **** 		{
+ 237:../src/os/rt-thread/src/scheduler.c **** 			number = rt_lowest_bitmap[rt_thread_ready_priority_group & 0xff];
+ 852              		.loc 2 237 0
+ 853 027e 3B4B     		ldr	r3, .L38+4
+ 854 0280 1B68     		ldr	r3, [r3, #0]
+ 855 0282 DBB2     		uxtb	r3, r3
+ 856 0284 3A4A     		ldr	r2, .L38+8
+ 857 0286 D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 858 0288 1C46     		mov	r4, r3
+ 859 028a 2AE0     		b	.L33
+ 860              	.L32:
+ 238:../src/os/rt-thread/src/scheduler.c **** 		}
+ 239:../src/os/rt-thread/src/scheduler.c **** 		else if (rt_thread_ready_priority_group & 0xff00)
+ 861              		.loc 2 239 0
+ 862 028c 374B     		ldr	r3, .L38+4
+ 863 028e 1B68     		ldr	r3, [r3, #0]
+ 864 0290 03F47F43 		and	r3, r3, #65280
+ 865 0294 002B     		cmp	r3, #0
+ 866 0296 0AD0     		beq	.L34
+ 240:../src/os/rt-thread/src/scheduler.c **** 		{
+ 241:../src/os/rt-thread/src/scheduler.c **** 			number = rt_lowest_bitmap[(rt_thread_ready_priority_group >> 8) & 0xff] + 8;
+ 867              		.loc 2 241 0
+ 868 0298 344B     		ldr	r3, .L38+4
+ 869 029a 1B68     		ldr	r3, [r3, #0]
+ 870 029c 4FEA1323 		lsr	r3, r3, #8
+ 871 02a0 DBB2     		uxtb	r3, r3
+ 872 02a2 334A     		ldr	r2, .L38+8
+ 873 02a4 D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 874 02a6 03F10803 		add	r3, r3, #8
+ 875 02aa 1C46     		mov	r4, r3
+ 876 02ac 19E0     		b	.L33
+ 877              	.L34:
+ 242:../src/os/rt-thread/src/scheduler.c **** 		}
+ 243:../src/os/rt-thread/src/scheduler.c **** 		else if (rt_thread_ready_priority_group & 0xff0000)
+ 878              		.loc 2 243 0
+ 879 02ae 2F4B     		ldr	r3, .L38+4
+ 880 02b0 1B68     		ldr	r3, [r3, #0]
+ 881 02b2 03F47F03 		and	r3, r3, #16711680
+ 882 02b6 002B     		cmp	r3, #0
+ 883 02b8 0AD0     		beq	.L35
+ 244:../src/os/rt-thread/src/scheduler.c **** 		{
+ 245:../src/os/rt-thread/src/scheduler.c **** 			number = rt_lowest_bitmap[(rt_thread_ready_priority_group >> 16) & 0xff] + 16;
+ 884              		.loc 2 245 0
+ 885 02ba 2C4B     		ldr	r3, .L38+4
+ 886 02bc 1B68     		ldr	r3, [r3, #0]
+ 887 02be 4FEA1343 		lsr	r3, r3, #16
+ 888 02c2 DBB2     		uxtb	r3, r3
+ 889 02c4 2A4A     		ldr	r2, .L38+8
+ 890 02c6 D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 891 02c8 03F11003 		add	r3, r3, #16
+ 892 02cc 1C46     		mov	r4, r3
+ 893 02ce 08E0     		b	.L33
+ 894              	.L35:
+ 246:../src/os/rt-thread/src/scheduler.c **** 		}
+ 247:../src/os/rt-thread/src/scheduler.c **** 		else
+ 248:../src/os/rt-thread/src/scheduler.c **** 		{
+ 249:../src/os/rt-thread/src/scheduler.c **** 			number = rt_lowest_bitmap[(rt_thread_ready_priority_group >> 24) & 0xff] + 24;
+ 895              		.loc 2 249 0
+ 896 02d0 264B     		ldr	r3, .L38+4
+ 897 02d2 1B68     		ldr	r3, [r3, #0]
+ 898 02d4 4FEA1363 		lsr	r3, r3, #24
+ 899 02d8 254A     		ldr	r2, .L38+8
+ 900 02da D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 901 02dc 03F11803 		add	r3, r3, #24
+ 902 02e0 1C46     		mov	r4, r3
+ 903              	.L33:
+ 250:../src/os/rt-thread/src/scheduler.c **** 		}
+ 251:../src/os/rt-thread/src/scheduler.c **** 
+ 252:../src/os/rt-thread/src/scheduler.c **** #if RT_THREAD_PRIORITY_MAX > 32
+ 253:../src/os/rt-thread/src/scheduler.c **** 		highest_ready_priority = (number << 3) + rt_lowest_bitmap[rt_thread_ready_table[number]];
+ 254:../src/os/rt-thread/src/scheduler.c **** #else
+ 255:../src/os/rt-thread/src/scheduler.c **** 		highest_ready_priority = number;
+ 256:../src/os/rt-thread/src/scheduler.c **** #endif
+ 257:../src/os/rt-thread/src/scheduler.c **** #endif
+ 258:../src/os/rt-thread/src/scheduler.c **** 		/* get switch to thread */
+ 259:../src/os/rt-thread/src/scheduler.c **** 		to_thread = rt_list_entry(rt_thread_priority_table[highest_ready_priority].next,
+ 904              		.loc 2 259 0
+ 905 02e2 244B     		ldr	r3, .L38+12
+ 906 02e4 53F83430 		ldr	r3, [r3, r4, lsl #3]
+ 907 02e8 A3F11003 		sub	r3, r3, #16
+ 908 02ec BB60     		str	r3, [r7, #8]
+ 260:../src/os/rt-thread/src/scheduler.c **** 						struct rt_thread, tlist);
+ 261:../src/os/rt-thread/src/scheduler.c **** 
+ 262:../src/os/rt-thread/src/scheduler.c **** 		/* if the destination thread is not the same as current thread */
+ 263:../src/os/rt-thread/src/scheduler.c **** 		if (to_thread != rt_current_thread)
+ 909              		.loc 2 263 0
+ 910 02ee 224B     		ldr	r3, .L38+16
+ 911 02f0 1B68     		ldr	r3, [r3, #0]
+ 912 02f2 BA68     		ldr	r2, [r7, #8]
+ 913 02f4 9A42     		cmp	r2, r3
+ 914 02f6 30D0     		beq	.L31
+ 264:../src/os/rt-thread/src/scheduler.c **** 		{
+ 265:../src/os/rt-thread/src/scheduler.c **** 			rt_current_priority = highest_ready_priority;
+ 915              		.loc 2 265 0
+ 916 02f8 E2B2     		uxtb	r2, r4
+ 917 02fa 204B     		ldr	r3, .L38+20
+ 918 02fc 1A70     		strb	r2, [r3, #0]
+ 266:../src/os/rt-thread/src/scheduler.c **** 			from_thread = rt_current_thread;
+ 919              		.loc 2 266 0
+ 920 02fe 1E4B     		ldr	r3, .L38+16
+ 921 0300 1B68     		ldr	r3, [r3, #0]
+ 922 0302 7B60     		str	r3, [r7, #4]
+ 267:../src/os/rt-thread/src/scheduler.c **** 			rt_current_thread = to_thread;
+ 923              		.loc 2 267 0
+ 924 0304 1C4B     		ldr	r3, .L38+16
+ 925 0306 BA68     		ldr	r2, [r7, #8]
+ 926 0308 1A60     		str	r2, [r3, #0]
+ 268:../src/os/rt-thread/src/scheduler.c **** 
+ 269:../src/os/rt-thread/src/scheduler.c **** 			RT_OBJECT_HOOK_CALL(rt_scheduler_hook, (from_thread, to_thread));
+ 927              		.loc 2 269 0
+ 928 030a 1D4B     		ldr	r3, .L38+24
+ 929 030c 1B68     		ldr	r3, [r3, #0]
+ 930 030e 002B     		cmp	r3, #0
+ 931 0310 04D0     		beq	.L36
+ 932              		.loc 2 269 0 is_stmt 0 discriminator 1
+ 933 0312 1B4B     		ldr	r3, .L38+24
+ 934 0314 1B68     		ldr	r3, [r3, #0]
+ 935 0316 7868     		ldr	r0, [r7, #4]
+ 936 0318 B968     		ldr	r1, [r7, #8]
+ 937 031a 9847     		blx	r3
+ 938              	.L36:
+ 270:../src/os/rt-thread/src/scheduler.c **** 
+ 271:../src/os/rt-thread/src/scheduler.c **** 			/* switch to new thread */
+ 272:../src/os/rt-thread/src/scheduler.c **** 			RT_DEBUG_LOG(RT_DEBUG_SCHEDULER,
+ 273:../src/os/rt-thread/src/scheduler.c **** 						("[%d]switch to priority#%d thread:%s\n", rt_interrupt_nest,
+ 274:../src/os/rt-thread/src/scheduler.c **** 						highest_ready_priority, to_thread->name));
+ 275:../src/os/rt-thread/src/scheduler.c **** 
+ 276:../src/os/rt-thread/src/scheduler.c **** #ifdef RT_USING_OVERFLOW_CHECK
+ 277:../src/os/rt-thread/src/scheduler.c **** 			_rt_scheduler_stack_check(to_thread);
+ 939              		.loc 2 277 0 is_stmt 1
+ 940 031c B868     		ldr	r0, [r7, #8]
+ 941 031e FFF7D1FE 		bl	_rt_scheduler_stack_check
+ 278:../src/os/rt-thread/src/scheduler.c **** #endif
+ 279:../src/os/rt-thread/src/scheduler.c **** 
+ 280:../src/os/rt-thread/src/scheduler.c **** 			if (rt_interrupt_nest == 0)
+ 942              		.loc 2 280 0
+ 943 0322 184B     		ldr	r3, .L38+28
+ 944 0324 1B78     		ldrb	r3, [r3, #0]
+ 945 0326 DBB2     		uxtb	r3, r3
+ 946 0328 002B     		cmp	r3, #0
+ 947 032a 0BD1     		bne	.L37
+ 281:../src/os/rt-thread/src/scheduler.c **** 			{
+ 282:../src/os/rt-thread/src/scheduler.c **** 				rt_hw_context_switch((rt_uint32_t)&from_thread->sp, (rt_uint32_t)&to_thread->sp);
+ 948              		.loc 2 282 0
+ 949 032c 7B68     		ldr	r3, [r7, #4]
+ 950 032e 03F11803 		add	r3, r3, #24
+ 951 0332 1A46     		mov	r2, r3
+ 952 0334 BB68     		ldr	r3, [r7, #8]
+ 953 0336 03F11803 		add	r3, r3, #24
+ 954 033a 1046     		mov	r0, r2
+ 955 033c 1946     		mov	r1, r3
+ 956 033e FFF7FEFF 		bl	rt_hw_context_switch
+ 957 0342 0AE0     		b	.L31
+ 958              	.L37:
+ 283:../src/os/rt-thread/src/scheduler.c **** 			}
+ 284:../src/os/rt-thread/src/scheduler.c **** 			else
+ 285:../src/os/rt-thread/src/scheduler.c **** 			{
+ 286:../src/os/rt-thread/src/scheduler.c **** 				RT_DEBUG_LOG(RT_DEBUG_SCHEDULER, ("switch in interrupt\n"));
+ 287:../src/os/rt-thread/src/scheduler.c **** 
+ 288:../src/os/rt-thread/src/scheduler.c **** 				rt_hw_context_switch_interrupt((rt_uint32_t)&from_thread->sp, (rt_uint32_t)&to_thread->sp);
+ 959              		.loc 2 288 0
+ 960 0344 7B68     		ldr	r3, [r7, #4]
+ 961 0346 03F11803 		add	r3, r3, #24
+ 962 034a 1A46     		mov	r2, r3
+ 963 034c BB68     		ldr	r3, [r7, #8]
+ 964 034e 03F11803 		add	r3, r3, #24
+ 965 0352 1046     		mov	r0, r2
+ 966 0354 1946     		mov	r1, r3
+ 967 0356 FFF7FEFF 		bl	rt_hw_context_switch_interrupt
+ 968              	.L31:
+ 969              	.LBE4:
+ 289:../src/os/rt-thread/src/scheduler.c **** 			}
+ 290:../src/os/rt-thread/src/scheduler.c **** 		}
+ 291:../src/os/rt-thread/src/scheduler.c **** 	}
+ 292:../src/os/rt-thread/src/scheduler.c **** 
+ 293:../src/os/rt-thread/src/scheduler.c **** 	/* enable interrupt */
+ 294:../src/os/rt-thread/src/scheduler.c **** 	rt_hw_interrupt_enable(level);
+ 970              		.loc 2 294 0
+ 971 035a F868     		ldr	r0, [r7, #12]
+ 972 035c FFF7FEFF 		bl	rt_hw_interrupt_enable
+ 295:../src/os/rt-thread/src/scheduler.c **** }
+ 973              		.loc 2 295 0
+ 974 0360 07F11407 		add	r7, r7, #20
+ 975 0364 BD46     		mov	sp, r7
+ 976 0366 90BD     		pop	{r4, r7, pc}
+ 977              	.L39:
+ 978              		.align	2
+ 979              	.L38:
+ 980 0368 00000000 		.word	rt_scheduler_lock_nest
+ 981 036c 00000000 		.word	rt_thread_ready_priority_group
+ 982 0370 00000000 		.word	rt_lowest_bitmap
+ 983 0374 00000000 		.word	rt_thread_priority_table
+ 984 0378 00000000 		.word	rt_current_thread
+ 985 037c 00000000 		.word	rt_current_priority
+ 986 0380 04000000 		.word	rt_scheduler_hook
+ 987 0384 00000000 		.word	rt_interrupt_nest
+ 988              		.cfi_endproc
+ 989              	.LFE9:
+ 991              		.align	2
+ 992              		.global	rt_schedule_insert_thread
+ 993              		.thumb
+ 994              		.thumb_func
+ 996              	rt_schedule_insert_thread:
+ 997              	.LFB10:
+ 296:../src/os/rt-thread/src/scheduler.c **** 
+ 297:../src/os/rt-thread/src/scheduler.c **** /*
+ 298:../src/os/rt-thread/src/scheduler.c ****  * This function will insert a thread to system ready queue. The state of
+ 299:../src/os/rt-thread/src/scheduler.c ****  * thread will be set as READY and remove from suspend queue.
+ 300:../src/os/rt-thread/src/scheduler.c ****  *
+ 301:../src/os/rt-thread/src/scheduler.c ****  * @param thread the thread to be inserted
+ 302:../src/os/rt-thread/src/scheduler.c ****  * @note Please do not invoke this function in user application.
+ 303:../src/os/rt-thread/src/scheduler.c ****  */
+ 304:../src/os/rt-thread/src/scheduler.c **** void rt_schedule_insert_thread(struct rt_thread *thread)
+ 305:../src/os/rt-thread/src/scheduler.c **** {
+ 998              		.loc 2 305 0
+ 999              		.cfi_startproc
+ 1000              		@ args = 0, pretend = 0, frame = 16
+ 1001              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1002 0388 90B5     		push	{r4, r7, lr}
+ 1003              	.LCFI25:
+ 1004              		.cfi_def_cfa_offset 12
+ 1005              		.cfi_offset 4, -12
+ 1006              		.cfi_offset 7, -8
+ 1007              		.cfi_offset 14, -4
+ 1008 038a 85B0     		sub	sp, sp, #20
+ 1009              	.LCFI26:
+ 1010              		.cfi_def_cfa_offset 32
+ 1011 038c 00AF     		add	r7, sp, #0
+ 1012              	.LCFI27:
+ 1013              		.cfi_def_cfa_register 7
+ 1014 038e 7860     		str	r0, [r7, #4]
+ 306:../src/os/rt-thread/src/scheduler.c **** 	register rt_base_t temp;
+ 307:../src/os/rt-thread/src/scheduler.c **** 
+ 308:../src/os/rt-thread/src/scheduler.c **** 	RT_ASSERT(thread != RT_NULL);
+ 1015              		.loc 2 308 0
+ 1016 0390 7B68     		ldr	r3, [r7, #4]
+ 1017 0392 002B     		cmp	r3, #0
+ 1018 0394 0DD1     		bne	.L41
+ 1019              	.LBB5:
+ 1020              		.loc 2 308 0 is_stmt 0 discriminator 1
+ 1021 0396 4FF00003 		mov	r3, #0
+ 1022 039a FB73     		strb	r3, [r7, #15]
+ 1023 039c 1748     		ldr	r0, .L43
+ 1024 039e 1849     		ldr	r1, .L43+4
+ 1025 03a0 184A     		ldr	r2, .L43+8
+ 1026 03a2 4FF49A73 		mov	r3, #308
+ 1027 03a6 FFF7FEFF 		bl	rt_kprintf
+ 1028              	.L42:
+ 1029              		.loc 2 308 0 discriminator 2
+ 1030 03aa FB7B     		ldrb	r3, [r7, #15]
+ 1031 03ac DBB2     		uxtb	r3, r3
+ 1032 03ae 002B     		cmp	r3, #0
+ 1033 03b0 FBD0     		beq	.L42
+ 1034              	.L41:
+ 1035              	.LBE5:
+ 309:../src/os/rt-thread/src/scheduler.c **** 
+ 310:../src/os/rt-thread/src/scheduler.c **** 	/* disable interrupt */
+ 311:../src/os/rt-thread/src/scheduler.c **** 	temp = rt_hw_interrupt_disable();
+ 1036              		.loc 2 311 0 is_stmt 1
+ 1037 03b2 FFF7FEFF 		bl	rt_hw_interrupt_disable
+ 1038 03b6 0446     		mov	r4, r0
+ 312:../src/os/rt-thread/src/scheduler.c **** 
+ 313:../src/os/rt-thread/src/scheduler.c **** 	/* change stat */
+ 314:../src/os/rt-thread/src/scheduler.c **** 	thread->stat = RT_THREAD_READY;
+ 1039              		.loc 2 314 0
+ 1040 03b8 7B68     		ldr	r3, [r7, #4]
+ 1041 03ba 4FF00102 		mov	r2, #1
+ 1042 03be 83F83020 		strb	r2, [r3, #48]
+ 315:../src/os/rt-thread/src/scheduler.c **** 
+ 316:../src/os/rt-thread/src/scheduler.c **** 	/* insert thread to ready list */
+ 317:../src/os/rt-thread/src/scheduler.c **** 	rt_list_insert_before(&(rt_thread_priority_table[thread->current_priority]), &(thread->tlist));
+ 1043              		.loc 2 317 0
+ 1044 03c2 7B68     		ldr	r3, [r7, #4]
+ 1045 03c4 93F83130 		ldrb	r3, [r3, #49]	@ zero_extendqisi2
+ 1046 03c8 4FEAC302 		lsl	r2, r3, #3
+ 1047 03cc 0E4B     		ldr	r3, .L43+12
+ 1048 03ce D218     		adds	r2, r2, r3
+ 1049 03d0 7B68     		ldr	r3, [r7, #4]
+ 1050 03d2 03F11003 		add	r3, r3, #16
+ 1051 03d6 1046     		mov	r0, r2
+ 1052 03d8 1946     		mov	r1, r3
+ 1053 03da FFF721FE 		bl	rt_list_insert_before
+ 318:../src/os/rt-thread/src/scheduler.c **** 
+ 319:../src/os/rt-thread/src/scheduler.c **** 	/* set priority mask */
+ 320:../src/os/rt-thread/src/scheduler.c **** #if RT_THREAD_PRIORITY_MAX <= 32
+ 321:../src/os/rt-thread/src/scheduler.c **** 	RT_DEBUG_LOG(RT_DEBUG_SCHEDULER, ("insert thread[%s], the priority: %d\n", 
+ 322:../src/os/rt-thread/src/scheduler.c **** 		thread->name, thread->current_priority));
+ 323:../src/os/rt-thread/src/scheduler.c **** #else
+ 324:../src/os/rt-thread/src/scheduler.c **** 	RT_DEBUG_LOG(RT_DEBUG_SCHEDULER, ("insert thread[%s], the priority: %d 0x%x %d\n", 
+ 325:../src/os/rt-thread/src/scheduler.c **** 		thread->name, thread->number, thread->number_mask, thread->high_mask));
+ 326:../src/os/rt-thread/src/scheduler.c **** #endif
+ 327:../src/os/rt-thread/src/scheduler.c **** 
+ 328:../src/os/rt-thread/src/scheduler.c **** #if RT_THREAD_PRIORITY_MAX > 32
+ 329:../src/os/rt-thread/src/scheduler.c **** 	rt_thread_ready_table[thread->number] |= thread->high_mask;
+ 330:../src/os/rt-thread/src/scheduler.c **** #endif
+ 331:../src/os/rt-thread/src/scheduler.c **** 	rt_thread_ready_priority_group |= thread->number_mask;
+ 1054              		.loc 2 331 0
+ 1055 03de 7B68     		ldr	r3, [r7, #4]
+ 1056 03e0 5A6B     		ldr	r2, [r3, #52]
+ 1057 03e2 0A4B     		ldr	r3, .L43+16
+ 1058 03e4 1B68     		ldr	r3, [r3, #0]
+ 1059 03e6 1A43     		orrs	r2, r2, r3
+ 1060 03e8 084B     		ldr	r3, .L43+16
+ 1061 03ea 1A60     		str	r2, [r3, #0]
+ 332:../src/os/rt-thread/src/scheduler.c **** 
+ 333:../src/os/rt-thread/src/scheduler.c **** 	/* enable interrupt */
+ 334:../src/os/rt-thread/src/scheduler.c **** 	rt_hw_interrupt_enable(temp);
+ 1062              		.loc 2 334 0
+ 1063 03ec 2046     		mov	r0, r4
+ 1064 03ee FFF7FEFF 		bl	rt_hw_interrupt_enable
+ 335:../src/os/rt-thread/src/scheduler.c **** }
+ 1065              		.loc 2 335 0
+ 1066 03f2 07F11407 		add	r7, r7, #20
+ 1067 03f6 BD46     		mov	sp, r7
+ 1068 03f8 90BD     		pop	{r4, r7, pc}
+ 1069              	.L44:
+ 1070 03fa 00BF     		.align	2
+ 1071              	.L43:
+ 1072 03fc 00010000 		.word	.LC0
+ 1073 0400 20010000 		.word	.LC1
+ 1074 0404 A4010000 		.word	__FUNCTION__.4891
+ 1075 0408 00000000 		.word	rt_thread_priority_table
+ 1076 040c 00000000 		.word	rt_thread_ready_priority_group
+ 1077              		.cfi_endproc
+ 1078              	.LFE10:
+ 1080              		.align	2
+ 1081              		.global	rt_schedule_remove_thread
+ 1082              		.thumb
+ 1083              		.thumb_func
+ 1085              	rt_schedule_remove_thread:
+ 1086              	.LFB11:
+ 336:../src/os/rt-thread/src/scheduler.c **** 
+ 337:../src/os/rt-thread/src/scheduler.c **** /*
+ 338:../src/os/rt-thread/src/scheduler.c ****  * This function will remove a thread from system ready queue.
+ 339:../src/os/rt-thread/src/scheduler.c ****  *
+ 340:../src/os/rt-thread/src/scheduler.c ****  * @param thread the thread to be removed
+ 341:../src/os/rt-thread/src/scheduler.c ****  *
+ 342:../src/os/rt-thread/src/scheduler.c ****  * @note Please do not invoke this function in user application.
+ 343:../src/os/rt-thread/src/scheduler.c ****  */
+ 344:../src/os/rt-thread/src/scheduler.c **** void rt_schedule_remove_thread(struct rt_thread *thread)
+ 345:../src/os/rt-thread/src/scheduler.c **** {
+ 1087              		.loc 2 345 0
+ 1088              		.cfi_startproc
+ 1089              		@ args = 0, pretend = 0, frame = 16
+ 1090              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1091 0410 90B5     		push	{r4, r7, lr}
+ 1092              	.LCFI28:
+ 1093              		.cfi_def_cfa_offset 12
+ 1094              		.cfi_offset 4, -12
+ 1095              		.cfi_offset 7, -8
+ 1096              		.cfi_offset 14, -4
+ 1097 0412 85B0     		sub	sp, sp, #20
+ 1098              	.LCFI29:
+ 1099              		.cfi_def_cfa_offset 32
+ 1100 0414 00AF     		add	r7, sp, #0
+ 1101              	.LCFI30:
+ 1102              		.cfi_def_cfa_register 7
+ 1103 0416 7860     		str	r0, [r7, #4]
+ 346:../src/os/rt-thread/src/scheduler.c **** 	register rt_base_t temp;
+ 347:../src/os/rt-thread/src/scheduler.c **** 
+ 348:../src/os/rt-thread/src/scheduler.c **** 	RT_ASSERT(thread != RT_NULL);
+ 1104              		.loc 2 348 0
+ 1105 0418 7B68     		ldr	r3, [r7, #4]
+ 1106 041a 002B     		cmp	r3, #0
+ 1107 041c 0DD1     		bne	.L46
+ 1108              	.LBB6:
+ 1109              		.loc 2 348 0 is_stmt 0 discriminator 1
+ 1110 041e 4FF00003 		mov	r3, #0
+ 1111 0422 FB73     		strb	r3, [r7, #15]
+ 1112 0424 1848     		ldr	r0, .L49
+ 1113 0426 1949     		ldr	r1, .L49+4
+ 1114 0428 194A     		ldr	r2, .L49+8
+ 1115 042a 4FF4AE73 		mov	r3, #348
+ 1116 042e FFF7FEFF 		bl	rt_kprintf
+ 1117              	.L47:
+ 1118              		.loc 2 348 0 discriminator 2
+ 1119 0432 FB7B     		ldrb	r3, [r7, #15]
+ 1120 0434 DBB2     		uxtb	r3, r3
+ 1121 0436 002B     		cmp	r3, #0
+ 1122 0438 FBD0     		beq	.L47
+ 1123              	.L46:
+ 1124              	.LBE6:
+ 349:../src/os/rt-thread/src/scheduler.c **** 
+ 350:../src/os/rt-thread/src/scheduler.c **** 	/* disable interrupt */
+ 351:../src/os/rt-thread/src/scheduler.c **** 	temp = rt_hw_interrupt_disable();
+ 1125              		.loc 2 351 0 is_stmt 1
+ 1126 043a FFF7FEFF 		bl	rt_hw_interrupt_disable
+ 1127 043e 0446     		mov	r4, r0
+ 352:../src/os/rt-thread/src/scheduler.c **** 
+ 353:../src/os/rt-thread/src/scheduler.c **** #if RT_THREAD_PRIORITY_MAX <= 32
+ 354:../src/os/rt-thread/src/scheduler.c **** 	RT_DEBUG_LOG(RT_DEBUG_SCHEDULER, ("remove thread[%s], the priority: %d\n", 
+ 355:../src/os/rt-thread/src/scheduler.c **** 		thread->name, thread->current_priority));
+ 356:../src/os/rt-thread/src/scheduler.c **** #else
+ 357:../src/os/rt-thread/src/scheduler.c **** 	RT_DEBUG_LOG(RT_DEBUG_SCHEDULER, ("remove thread[%s], the priority: %d 0x%x %d\n", 
+ 358:../src/os/rt-thread/src/scheduler.c **** 		thread->name, thread->number, thread->number_mask, thread->high_mask));
+ 359:../src/os/rt-thread/src/scheduler.c **** #endif
+ 360:../src/os/rt-thread/src/scheduler.c **** 
+ 361:../src/os/rt-thread/src/scheduler.c **** 	/* remove thread from ready list */
+ 362:../src/os/rt-thread/src/scheduler.c **** 	rt_list_remove(&(thread->tlist));
+ 1128              		.loc 2 362 0
+ 1129 0440 7B68     		ldr	r3, [r7, #4]
+ 1130 0442 03F11003 		add	r3, r3, #16
+ 1131 0446 1846     		mov	r0, r3
+ 1132 0448 FFF702FE 		bl	rt_list_remove
+ 363:../src/os/rt-thread/src/scheduler.c **** 	if (rt_list_isempty(&(rt_thread_priority_table[thread->current_priority])))
+ 1133              		.loc 2 363 0
+ 1134 044c 7B68     		ldr	r3, [r7, #4]
+ 1135 044e 93F83130 		ldrb	r3, [r3, #49]	@ zero_extendqisi2
+ 1136 0452 4FEAC302 		lsl	r2, r3, #3
+ 1137 0456 0F4B     		ldr	r3, .L49+12
+ 1138 0458 D318     		adds	r3, r2, r3
+ 1139 045a 1846     		mov	r0, r3
+ 1140 045c FFF712FE 		bl	rt_list_isempty
+ 1141 0460 0346     		mov	r3, r0
+ 1142 0462 002B     		cmp	r3, #0
+ 1143 0464 08D0     		beq	.L48
+ 364:../src/os/rt-thread/src/scheduler.c **** 	{
+ 365:../src/os/rt-thread/src/scheduler.c **** #if RT_THREAD_PRIORITY_MAX > 32
+ 366:../src/os/rt-thread/src/scheduler.c **** 		rt_thread_ready_table[thread->number] &= ~thread->high_mask;
+ 367:../src/os/rt-thread/src/scheduler.c **** 		if (rt_thread_ready_table[thread->number] == 0)
+ 368:../src/os/rt-thread/src/scheduler.c **** 		{
+ 369:../src/os/rt-thread/src/scheduler.c **** 			rt_thread_ready_priority_group &= ~thread->number_mask;
+ 370:../src/os/rt-thread/src/scheduler.c **** 		}
+ 371:../src/os/rt-thread/src/scheduler.c **** #else
+ 372:../src/os/rt-thread/src/scheduler.c **** 		rt_thread_ready_priority_group &= ~thread->number_mask;
+ 1144              		.loc 2 372 0
+ 1145 0466 7B68     		ldr	r3, [r7, #4]
+ 1146 0468 5B6B     		ldr	r3, [r3, #52]
+ 1147 046a 6FEA0302 		mvn	r2, r3
+ 1148 046e 0A4B     		ldr	r3, .L49+16
+ 1149 0470 1B68     		ldr	r3, [r3, #0]
+ 1150 0472 1A40     		ands	r2, r2, r3
+ 1151 0474 084B     		ldr	r3, .L49+16
+ 1152 0476 1A60     		str	r2, [r3, #0]
+ 1153              	.L48:
+ 373:../src/os/rt-thread/src/scheduler.c **** #endif
+ 374:../src/os/rt-thread/src/scheduler.c **** 	}
+ 375:../src/os/rt-thread/src/scheduler.c **** 
+ 376:../src/os/rt-thread/src/scheduler.c **** 	/* enable interrupt */
+ 377:../src/os/rt-thread/src/scheduler.c **** 	rt_hw_interrupt_enable(temp);
+ 1154              		.loc 2 377 0
+ 1155 0478 2046     		mov	r0, r4
+ 1156 047a FFF7FEFF 		bl	rt_hw_interrupt_enable
+ 378:../src/os/rt-thread/src/scheduler.c **** }
+ 1157              		.loc 2 378 0
+ 1158 047e 07F11407 		add	r7, r7, #20
+ 1159 0482 BD46     		mov	sp, r7
+ 1160 0484 90BD     		pop	{r4, r7, pc}
+ 1161              	.L50:
+ 1162 0486 00BF     		.align	2
+ 1163              	.L49:
+ 1164 0488 00010000 		.word	.LC0
+ 1165 048c 20010000 		.word	.LC1
+ 1166 0490 88010000 		.word	__FUNCTION__.4900
+ 1167 0494 00000000 		.word	rt_thread_priority_table
+ 1168 0498 00000000 		.word	rt_thread_ready_priority_group
+ 1169              		.cfi_endproc
+ 1170              	.LFE11:
+ 1172              		.align	2
+ 1173              		.global	rt_enter_critical
+ 1174              		.thumb
+ 1175              		.thumb_func
+ 1177              	rt_enter_critical:
+ 1178              	.LFB12:
+ 379:../src/os/rt-thread/src/scheduler.c **** 
+ 380:../src/os/rt-thread/src/scheduler.c **** /**
+ 381:../src/os/rt-thread/src/scheduler.c ****  * This function will lock the thread scheduler.
+ 382:../src/os/rt-thread/src/scheduler.c ****  */
+ 383:../src/os/rt-thread/src/scheduler.c **** void rt_enter_critical(void)
+ 384:../src/os/rt-thread/src/scheduler.c **** {
+ 1179              		.loc 2 384 0
+ 1180              		.cfi_startproc
+ 1181              		@ args = 0, pretend = 0, frame = 0
+ 1182              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1183 049c 98B5     		push	{r3, r4, r7, lr}
+ 1184              	.LCFI31:
+ 1185              		.cfi_def_cfa_offset 16
+ 1186              		.cfi_offset 3, -16
+ 1187              		.cfi_offset 4, -12
+ 1188              		.cfi_offset 7, -8
+ 1189              		.cfi_offset 14, -4
+ 1190 049e 00AF     		add	r7, sp, #0
+ 1191              	.LCFI32:
+ 1192              		.cfi_def_cfa_register 7
+ 385:../src/os/rt-thread/src/scheduler.c **** 	register rt_base_t level;
+ 386:../src/os/rt-thread/src/scheduler.c **** 
+ 387:../src/os/rt-thread/src/scheduler.c **** 	/* disable interrupt */
+ 388:../src/os/rt-thread/src/scheduler.c **** 	level = rt_hw_interrupt_disable();
+ 1193              		.loc 2 388 0
+ 1194 04a0 FFF7FEFF 		bl	rt_hw_interrupt_disable
+ 1195 04a4 0446     		mov	r4, r0
+ 389:../src/os/rt-thread/src/scheduler.c **** 
+ 390:../src/os/rt-thread/src/scheduler.c **** 	/* the maximal number of nest is RT_UINT16_MAX, which is big 
+ 391:../src/os/rt-thread/src/scheduler.c **** 	 * enough and does not check here */
+ 392:../src/os/rt-thread/src/scheduler.c **** 	rt_scheduler_lock_nest ++;
+ 1196              		.loc 2 392 0
+ 1197 04a6 054B     		ldr	r3, .L52
+ 1198 04a8 1B88     		ldrh	r3, [r3, #0]
+ 1199 04aa 03F10103 		add	r3, r3, #1
+ 1200 04ae 9AB2     		uxth	r2, r3
+ 1201 04b0 024B     		ldr	r3, .L52
+ 1202 04b2 1A80     		strh	r2, [r3, #0]	@ movhi
+ 393:../src/os/rt-thread/src/scheduler.c **** 
+ 394:../src/os/rt-thread/src/scheduler.c **** 	/* enable interrupt */
+ 395:../src/os/rt-thread/src/scheduler.c **** 	rt_hw_interrupt_enable(level);
+ 1203              		.loc 2 395 0
+ 1204 04b4 2046     		mov	r0, r4
+ 1205 04b6 FFF7FEFF 		bl	rt_hw_interrupt_enable
+ 396:../src/os/rt-thread/src/scheduler.c **** }
+ 1206              		.loc 2 396 0
+ 1207 04ba 98BD     		pop	{r3, r4, r7, pc}
+ 1208              	.L53:
+ 1209              		.align	2
+ 1210              	.L52:
+ 1211 04bc 00000000 		.word	rt_scheduler_lock_nest
+ 1212              		.cfi_endproc
+ 1213              	.LFE12:
+ 1215              		.align	2
+ 1216              		.global	rt_exit_critical
+ 1217              		.thumb
+ 1218              		.thumb_func
+ 1220              	rt_exit_critical:
+ 1221              	.LFB13:
+ 397:../src/os/rt-thread/src/scheduler.c **** 
+ 398:../src/os/rt-thread/src/scheduler.c **** /**
+ 399:../src/os/rt-thread/src/scheduler.c ****  * This function will unlock the thread scheduler.
+ 400:../src/os/rt-thread/src/scheduler.c ****  */
+ 401:../src/os/rt-thread/src/scheduler.c **** void rt_exit_critical(void)
+ 402:../src/os/rt-thread/src/scheduler.c **** {
+ 1222              		.loc 2 402 0
+ 1223              		.cfi_startproc
+ 1224              		@ args = 0, pretend = 0, frame = 0
+ 1225              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1226 04c0 98B5     		push	{r3, r4, r7, lr}
+ 1227              	.LCFI33:
+ 1228              		.cfi_def_cfa_offset 16
+ 1229              		.cfi_offset 3, -16
+ 1230              		.cfi_offset 4, -12
+ 1231              		.cfi_offset 7, -8
+ 1232              		.cfi_offset 14, -4
+ 1233 04c2 00AF     		add	r7, sp, #0
+ 1234              	.LCFI34:
+ 1235              		.cfi_def_cfa_register 7
+ 403:../src/os/rt-thread/src/scheduler.c **** 	register rt_base_t level;
+ 404:../src/os/rt-thread/src/scheduler.c **** 
+ 405:../src/os/rt-thread/src/scheduler.c **** 	/* disable interrupt */
+ 406:../src/os/rt-thread/src/scheduler.c **** 	level = rt_hw_interrupt_disable();
+ 1236              		.loc 2 406 0
+ 1237 04c4 FFF7FEFF 		bl	rt_hw_interrupt_disable
+ 1238 04c8 0446     		mov	r4, r0
+ 407:../src/os/rt-thread/src/scheduler.c **** 
+ 408:../src/os/rt-thread/src/scheduler.c **** 	rt_scheduler_lock_nest --;
+ 1239              		.loc 2 408 0
+ 1240 04ca 0D4B     		ldr	r3, .L57
+ 1241 04cc 1B88     		ldrh	r3, [r3, #0]
+ 1242 04ce 03F1FF33 		add	r3, r3, #-1
+ 1243 04d2 9AB2     		uxth	r2, r3
+ 1244 04d4 0A4B     		ldr	r3, .L57
+ 1245 04d6 1A80     		strh	r2, [r3, #0]	@ movhi
+ 409:../src/os/rt-thread/src/scheduler.c **** 
+ 410:../src/os/rt-thread/src/scheduler.c **** 	if (rt_scheduler_lock_nest <= 0)
+ 1246              		.loc 2 410 0
+ 1247 04d8 094B     		ldr	r3, .L57
+ 1248 04da 1B88     		ldrh	r3, [r3, #0]
+ 1249 04dc 1BB2     		sxth	r3, r3
+ 1250 04de 002B     		cmp	r3, #0
+ 1251 04e0 09DC     		bgt	.L55
+ 411:../src/os/rt-thread/src/scheduler.c **** 	{
+ 412:../src/os/rt-thread/src/scheduler.c **** 		rt_scheduler_lock_nest = 0;
+ 1252              		.loc 2 412 0
+ 1253 04e2 074B     		ldr	r3, .L57
+ 1254 04e4 4FF00002 		mov	r2, #0
+ 1255 04e8 1A80     		strh	r2, [r3, #0]	@ movhi
+ 413:../src/os/rt-thread/src/scheduler.c **** 		/* enable interrupt */
+ 414:../src/os/rt-thread/src/scheduler.c **** 		rt_hw_interrupt_enable(level);
+ 1256              		.loc 2 414 0
+ 1257 04ea 2046     		mov	r0, r4
+ 1258 04ec FFF7FEFF 		bl	rt_hw_interrupt_enable
+ 415:../src/os/rt-thread/src/scheduler.c **** 
+ 416:../src/os/rt-thread/src/scheduler.c **** 		rt_schedule();
+ 1259              		.loc 2 416 0
+ 1260 04f0 FFF7FEFF 		bl	rt_schedule
+ 1261 04f4 02E0     		b	.L54
+ 1262              	.L55:
+ 417:../src/os/rt-thread/src/scheduler.c **** 	}
+ 418:../src/os/rt-thread/src/scheduler.c **** 	else
+ 419:../src/os/rt-thread/src/scheduler.c **** 	{
+ 420:../src/os/rt-thread/src/scheduler.c **** 		/* enable interrupt */
+ 421:../src/os/rt-thread/src/scheduler.c **** 		rt_hw_interrupt_enable(level);
+ 1263              		.loc 2 421 0
+ 1264 04f6 2046     		mov	r0, r4
+ 1265 04f8 FFF7FEFF 		bl	rt_hw_interrupt_enable
+ 1266              	.L54:
+ 422:../src/os/rt-thread/src/scheduler.c **** 	}
+ 423:../src/os/rt-thread/src/scheduler.c **** }
+ 1267              		.loc 2 423 0
+ 1268 04fc 98BD     		pop	{r3, r4, r7, pc}
+ 1269              	.L58:
+ 1270 04fe 00BF     		.align	2
+ 1271              	.L57:
+ 1272 0500 00000000 		.word	rt_scheduler_lock_nest
+ 1273              		.cfi_endproc
+ 1274              	.LFE13:
+ 1276              		.section	.rodata
+ 1277 0185 000000   		.align	2
+ 1280              	__FUNCTION__.4900:
+ 1281 0188 72745F73 		.ascii	"rt_schedule_remove_thread\000"
+ 1281      63686564 
+ 1281      756C655F 
+ 1281      72656D6F 
+ 1281      76655F74 
+ 1282 01a2 0000     		.align	2
+ 1285              	__FUNCTION__.4891:
+ 1286 01a4 72745F73 		.ascii	"rt_schedule_insert_thread\000"
+ 1286      63686564 
+ 1286      756C655F 
+ 1286      696E7365 
+ 1286      72745F74 
+ 1287 01be 0000     		.align	2
+ 1290              	__FUNCTION__.4857:
+ 1291 01c0 5F72745F 		.ascii	"_rt_scheduler_stack_check\000"
+ 1291      73636865 
+ 1291      64756C65 
+ 1291      725F7374 
+ 1291      61636B5F 
+ 1292 01da 0000     		.text
+ 1293              	.Letext0:
+ 1294              		.file 3 "D:\\workspace_gnu\\RTT_Demo0\\src\\os\\rt-thread\\include/rtdef.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 scheduler.c
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:18     .text:00000000 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:22     .text:00000000 rt_list_init
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:61     .text:00000020 rt_list_insert_before
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:110    .text:00000050 rt_list_remove
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:160    .text:00000084 rt_list_isempty
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:197    .bss:00000000 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:198    .bss:00000000 rt_scheduler_lock_nest
+                            *COM*:00000100 rt_thread_priority_table
+                            *COM*:00000004 rt_current_thread
+                            *COM*:00000001 rt_current_priority
+                            *COM*:00000004 rt_thread_ready_priority_group
+                            *COM*:00000008 rt_thread_defunct
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:210    .rodata:00000000 rt_lowest_bitmap
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:207    .rodata:00000000 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:469    .bss:00000004 rt_scheduler_hook
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:477    .text:000000a8 rt_scheduler_sethook
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:508    .text:000000c0 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:527    .text:000000c4 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:531    .text:000000c4 _rt_scheduler_stack_check
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:634    .text:00000150 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:1290   .rodata:000001c0 __FUNCTION__.4857
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:642    .text:00000164 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:647    .text:00000164 rt_system_scheduler_init
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:703    .text:000001ac $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:712    .text:000001c4 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:717    .text:000001c4 rt_system_scheduler_start
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:807    .text:00000250 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:814    .text:00000260 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:819    .text:00000260 rt_schedule
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:980    .text:00000368 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:991    .text:00000388 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:996    .text:00000388 rt_schedule_insert_thread
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:1072   .text:000003fc $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:1285   .rodata:000001a4 __FUNCTION__.4891
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:1080   .text:00000410 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:1085   .text:00000410 rt_schedule_remove_thread
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:1164   .text:00000488 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:1280   .rodata:00000188 __FUNCTION__.4900
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:1172   .text:0000049c $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:1177   .text:0000049c rt_enter_critical
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:1211   .text:000004bc $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:1215   .text:000004c0 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:1220   .text:000004c0 rt_exit_critical
+C:\Users\YANGZH~1\AppData\Local\Temp\ccwXnnLk.s:1272   .text:00000500 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.1.9fa2be94b3b27131c651c32db681ca6e
+                           .group:00000000 wm4.rtconfig.h.3.5a4bd5c079694966fb1e9ee3a4751929
+                           .group:00000000 wm4.rtdef.h.36.f520ed9310a9e6fa8719d7b7d81c046a
+                           .group:00000000 wm4.rtdebug.h.12.1fd584faa18c8d5ccd4774b9c31afcd0
+                           .group:00000000 wm4.rtservice.h.19.f6999772500f0a8f811ba3fba5581f34
+
+UNDEFINED SYMBOLS
+rt_kprintf
+rt_hw_interrupt_disable
+rt_hw_context_switch_to
+rt_hw_context_switch
+rt_hw_context_switch_interrupt
+rt_hw_interrupt_enable
+rt_interrupt_nest

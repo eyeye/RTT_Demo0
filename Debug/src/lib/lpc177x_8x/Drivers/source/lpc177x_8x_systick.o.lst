@@ -1,0 +1,583 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"lpc177x_8x_systick.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global	__aeabi_ui2f
+  19              		.global	__aeabi_fcmpgt
+  20              		.align	2
+  21              		.global	SYSTICK_InternalInit
+  22              		.thumb
+  23              		.thumb_func
+  25              	SYSTICK_InternalInit:
+  26              	.LFB55:
+  27              		.file 1 "../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c"
+   1:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** /**********************************************************************
+   2:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * $Id$      lpc177x_8x_systick.c            2011-06-02
+   3:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** *//**
+   4:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * @file     lpc177x_8x_systick.c
+   5:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * @brief    Contains all functions support for SysTick firmware library
+   6:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** *           on LPC177x_8x
+   7:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * @version  1.0
+   8:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * @date     02. June. 2011
+   9:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * @author   NXP MCU SW Application Team
+  10:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * 
+  11:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * Copyright(C) 2011, NXP Semiconductor
+  12:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * All rights reserved.
+  13:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** *
+  14:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** ***********************************************************************
+  15:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * Software that is described herein is for illustrative purposes only
+  16:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * which provides customers with programming information regarding the
+  17:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * products. This software is supplied "AS IS" without any warranties.
+  18:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * NXP Semiconductors assumes no responsibility or liability for the
+  19:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * use of the software, conveys no license or title under any patent,
+  20:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * copyright, or mask work right to the product. NXP Semiconductors
+  21:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * reserves the right to make changes in the software without
+  22:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * notification. NXP Semiconductors also make no representation or
+  23:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * warranty that such application will be suitable for the specified
+  24:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * use without further testing or modification.
+  25:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * Permission to use, copy, modify, and distribute this software and its
+  26:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * documentation is hereby granted, under NXP Semiconductors'
+  27:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * relevant copyright in the software, without fee, provided that it
+  28:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * is used in conjunction with NXP Semiconductors microcontrollers.  This
+  29:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * copyright, permission, and disclaimer notice must appear in all copies of
+  30:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** * this code.
+  31:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** **********************************************************************/
+  32:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** 
+  33:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** /* Peripheral group ----------------------------------------------------------- */
+  34:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** /** @addtogroup SYSTICK
+  35:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @{
+  36:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  */
+  37:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** #ifdef __BUILD_WITH_EXAMPLE__
+  38:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** #include "lpc177x_8x_libcfg.h"
+  39:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** #else
+  40:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** #include "lpc177x_8x_libcfg_default.h"
+  41:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** #endif /* __BUILD_WITH_EXAMPLE__ */
+  42:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** #ifdef _SYSTICK
+  43:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** 
+  44:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** /* Includes ------------------------------------------------------------------- */
+  45:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** #include "lpc177x_8x_systick.h"
+  46:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** #include "lpc177x_8x_clkpwr.h"
+  47:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** 
+  48:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** 
+  49:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** /* Public Functions ----------------------------------------------------------- */
+  50:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** /** @addtogroup SYSTICK_Public_Functions
+  51:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @{
+  52:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  */
+  53:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** /*********************************************************************//**
+  54:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @brief       Initial System Tick with using internal CPU clock source
+  55:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @param[in]   time    time interval(ms)
+  56:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @return      None
+  57:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * Note: time interval parameter should be less than:
+  58:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  *      1/cclk * (2^24) * 1000 (ms)
+  59:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * In this case, with cclk = 96Mhz, time interval value < 174ms
+  60:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  **********************************************************************/
+  61:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** void SYSTICK_InternalInit(uint32_t time)
+  62:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** {
+  28              		.loc 1 62 0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 16
+  31              		@ frame_needed = 1, uses_anonymous_args = 0
+  32 0000 80B5     		push	{r7, lr}
+  33              	.LCFI0:
+  34              		.cfi_def_cfa_offset 8
+  35              		.cfi_offset 7, -8
+  36              		.cfi_offset 14, -4
+  37 0002 84B0     		sub	sp, sp, #16
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 24
+  40 0004 00AF     		add	r7, sp, #0
+  41              	.LCFI2:
+  42              		.cfi_def_cfa_register 7
+  43 0006 7860     		str	r0, [r7, #4]
+  63:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     uint32_t cclk;
+  64:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     float maxtime;
+  65:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** 
+  66:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     cclk = CLKPWR_GetCLK(CLKPWR_CLKTYPE_CPU);
+  44              		.loc 1 66 0
+  45 0008 4FF00000 		mov	r0, #0
+  46 000c FFF7FEFF 		bl	CLKPWR_GetCLK
+  47 0010 F860     		str	r0, [r7, #12]
+  67:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** 
+  68:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     /* With internal CPU clock frequency for LPC178X is 'SystemCoreClock'
+  69:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****      * And limit 24 bit for RELOAD value
+  70:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****      * So the maximum time can be set:
+  71:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****      * 1/SystemCoreClock * (2^24) * 1000 (ms)
+  72:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****      */
+  73:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     //check time value is available or not
+  74:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     maxtime = (1<<24)/(cclk / 1000) ;
+  48              		.loc 1 74 0
+  49 0012 FA68     		ldr	r2, [r7, #12]
+  50 0014 184B     		ldr	r3, .L6
+  51 0016 A3FB0203 		umull	r0, r3, r3, r2
+  52 001a 4FEA9313 		lsr	r3, r3, #6
+  53 001e 4FF08072 		mov	r2, #16777216
+  54 0022 B2FBF3F3 		udiv	r3, r2, r3
+  55 0026 1846     		mov	r0, r3
+  56 0028 FFF7FEFF 		bl	__aeabi_ui2f
+  57 002c 0346     		mov	r3, r0
+  58 002e BB60     		str	r3, [r7, #8]	@ float
+  75:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** 
+  76:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     if(time > maxtime)
+  59              		.loc 1 76 0
+  60 0030 7868     		ldr	r0, [r7, #4]
+  61 0032 FFF7FEFF 		bl	__aeabi_ui2f
+  62 0036 0346     		mov	r3, r0
+  63 0038 1846     		mov	r0, r3
+  64 003a B968     		ldr	r1, [r7, #8]	@ float
+  65 003c FFF7FEFF 		bl	__aeabi_fcmpgt
+  66 0040 0346     		mov	r3, r0
+  67 0042 002B     		cmp	r3, #0
+  68 0044 00D0     		beq	.L5
+  69              	.L3:
+  70              	.L4:
+  77:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     {
+  78:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         //Error loop
+  79:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         while(1);
+  71              		.loc 1 79 0 discriminator 1
+  72 0046 FEE7     		b	.L4
+  73              	.L5:
+  80:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     }
+  81:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     else
+  82:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     {
+  83:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         //Select CPU clock is System Tick clock source
+  84:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         SysTick->CTRL |= ST_CTRL_CLKSOURCE;
+  74              		.loc 1 84 0
+  75 0048 0C4B     		ldr	r3, .L6+4
+  76 004a 0C4A     		ldr	r2, .L6+4
+  77 004c 1268     		ldr	r2, [r2, #0]
+  78 004e 42F00402 		orr	r2, r2, #4
+  79 0052 1A60     		str	r2, [r3, #0]
+  85:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** 
+  86:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         /* Set RELOAD value
+  87:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****          * RELOAD = (SystemCoreClock/1000) * time - 1
+  88:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****          * with time base is millisecond
+  89:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****          */
+  90:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         SysTick->LOAD = (cclk/1000)*time - 1;
+  80              		.loc 1 90 0
+  81 0054 094B     		ldr	r3, .L6+4
+  82 0056 F968     		ldr	r1, [r7, #12]
+  83 0058 074A     		ldr	r2, .L6
+  84 005a A2FB0102 		umull	r0, r2, r2, r1
+  85 005e 4FEA9212 		lsr	r2, r2, #6
+  86 0062 7968     		ldr	r1, [r7, #4]
+  87 0064 01FB02F2 		mul	r2, r1, r2
+  88 0068 02F1FF32 		add	r2, r2, #-1
+  89 006c 5A60     		str	r2, [r3, #4]
+  91:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     }
+  92:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** }
+  90              		.loc 1 92 0
+  91 006e 07F11007 		add	r7, r7, #16
+  92 0072 BD46     		mov	sp, r7
+  93 0074 80BD     		pop	{r7, pc}
+  94              	.L7:
+  95 0076 00BF     		.align	2
+  96              	.L6:
+  97 0078 D34D6210 		.word	274877907
+  98 007c 10E000E0 		.word	-536813552
+  99              		.cfi_endproc
+ 100              	.LFE55:
+ 102              		.align	2
+ 103              		.global	SYSTICK_ExternalInit
+ 104              		.thumb
+ 105              		.thumb_func
+ 107              	SYSTICK_ExternalInit:
+ 108              	.LFB56:
+  93:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** 
+  94:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** /*********************************************************************//**
+  95:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @brief       Initial System Tick with using external clock source
+  96:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @param[in]   freq    external clock frequency(Hz)
+  97:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @param[in]   time    time interval(ms)
+  98:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @return      None
+  99:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  **********************************************************************/
+ 100:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** void SYSTICK_ExternalInit(uint32_t freq, uint32_t time)
+ 101:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** {
+ 109              		.loc 1 101 0
+ 110              		.cfi_startproc
+ 111              		@ args = 0, pretend = 0, frame = 16
+ 112              		@ frame_needed = 1, uses_anonymous_args = 0
+ 113 0080 80B5     		push	{r7, lr}
+ 114              	.LCFI3:
+ 115              		.cfi_def_cfa_offset 8
+ 116              		.cfi_offset 7, -8
+ 117              		.cfi_offset 14, -4
+ 118 0082 84B0     		sub	sp, sp, #16
+ 119              	.LCFI4:
+ 120              		.cfi_def_cfa_offset 24
+ 121 0084 00AF     		add	r7, sp, #0
+ 122              	.LCFI5:
+ 123              		.cfi_def_cfa_register 7
+ 124 0086 7860     		str	r0, [r7, #4]
+ 125 0088 3960     		str	r1, [r7, #0]
+ 102:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     float maxtime;
+ 103:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** 
+ 104:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     /* With external clock frequency for LPC178X is 'freq'
+ 105:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****      * And limit 24 bit for RELOAD value
+ 106:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****      * So the maximum time can be set:
+ 107:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****      * 1/freq * (2^24) * 1000 (ms)
+ 108:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****      */
+ 109:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     //check time value is available or not
+ 110:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     maxtime = (1<<24)/(freq / 1000) ;
+ 126              		.loc 1 110 0
+ 127 008a 7A68     		ldr	r2, [r7, #4]
+ 128 008c 204B     		ldr	r3, .L13
+ 129 008e A3FB0203 		umull	r0, r3, r3, r2
+ 130 0092 4FEA9313 		lsr	r3, r3, #6
+ 131 0096 4FF08072 		mov	r2, #16777216
+ 132 009a B2FBF3F3 		udiv	r3, r2, r3
+ 133 009e 1846     		mov	r0, r3
+ 134 00a0 FFF7FEFF 		bl	__aeabi_ui2f
+ 135 00a4 0346     		mov	r3, r0
+ 136 00a6 FB60     		str	r3, [r7, #12]	@ float
+ 111:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     if (time>maxtime)
+ 137              		.loc 1 111 0
+ 138 00a8 3868     		ldr	r0, [r7, #0]
+ 139 00aa FFF7FEFF 		bl	__aeabi_ui2f
+ 140 00ae 0346     		mov	r3, r0
+ 141 00b0 1846     		mov	r0, r3
+ 142 00b2 F968     		ldr	r1, [r7, #12]	@ float
+ 143 00b4 FFF7FEFF 		bl	__aeabi_fcmpgt
+ 144 00b8 0346     		mov	r3, r0
+ 145 00ba 002B     		cmp	r3, #0
+ 146 00bc 00D0     		beq	.L12
+ 147              	.L10:
+ 148              	.L11:
+ 112:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     {
+ 113:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         //Error Loop
+ 114:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         while(1);
+ 149              		.loc 1 114 0 discriminator 1
+ 150 00be FEE7     		b	.L11
+ 151              	.L12:
+ 115:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     }
+ 116:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     else
+ 117:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     {
+ 118:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         //Select external clock is System Tick clock source
+ 119:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         SysTick->CTRL &= ~ ST_CTRL_CLKSOURCE;
+ 152              		.loc 1 119 0
+ 153 00c0 144B     		ldr	r3, .L13+4
+ 154 00c2 144A     		ldr	r2, .L13+4
+ 155 00c4 1268     		ldr	r2, [r2, #0]
+ 156 00c6 22F00402 		bic	r2, r2, #4
+ 157 00ca 1A60     		str	r2, [r3, #0]
+ 120:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** 
+ 121:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         /* Set RELOAD value
+ 122:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****          * RELOAD = (freq/1000) * time - 1
+ 123:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****          * with time base is millisecond
+ 124:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****          */
+ 125:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         maxtime = (freq/1000)*time - 1;
+ 158              		.loc 1 125 0
+ 159 00cc 7A68     		ldr	r2, [r7, #4]
+ 160 00ce 104B     		ldr	r3, .L13
+ 161 00d0 A3FB0213 		umull	r1, r3, r3, r2
+ 162 00d4 4FEA9313 		lsr	r3, r3, #6
+ 163 00d8 3A68     		ldr	r2, [r7, #0]
+ 164 00da 02FB03F3 		mul	r3, r2, r3
+ 165 00de 03F1FF33 		add	r3, r3, #-1
+ 166 00e2 1846     		mov	r0, r3
+ 167 00e4 FFF7FEFF 		bl	__aeabi_ui2f
+ 168 00e8 0346     		mov	r3, r0
+ 169 00ea FB60     		str	r3, [r7, #12]	@ float
+ 126:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         SysTick->LOAD = (freq/1000)*time - 1;
+ 170              		.loc 1 126 0
+ 171 00ec 094B     		ldr	r3, .L13+4
+ 172 00ee 7968     		ldr	r1, [r7, #4]
+ 173 00f0 074A     		ldr	r2, .L13
+ 174 00f2 A2FB0102 		umull	r0, r2, r2, r1
+ 175 00f6 4FEA9212 		lsr	r2, r2, #6
+ 176 00fa 3968     		ldr	r1, [r7, #0]
+ 177 00fc 01FB02F2 		mul	r2, r1, r2
+ 178 0100 02F1FF32 		add	r2, r2, #-1
+ 179 0104 5A60     		str	r2, [r3, #4]
+ 127:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     }
+ 128:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** }
+ 180              		.loc 1 128 0
+ 181 0106 07F11007 		add	r7, r7, #16
+ 182 010a BD46     		mov	sp, r7
+ 183 010c 80BD     		pop	{r7, pc}
+ 184              	.L14:
+ 185 010e 00BF     		.align	2
+ 186              	.L13:
+ 187 0110 D34D6210 		.word	274877907
+ 188 0114 10E000E0 		.word	-536813552
+ 189              		.cfi_endproc
+ 190              	.LFE56:
+ 192              		.align	2
+ 193              		.global	SYSTICK_Cmd
+ 194              		.thumb
+ 195              		.thumb_func
+ 197              	SYSTICK_Cmd:
+ 198              	.LFB57:
+ 129:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** 
+ 130:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** /*********************************************************************//**
+ 131:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @brief       Enable/disable System Tick counter
+ 132:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @param[in]   NewState    System Tick counter status, should be:
+ 133:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  *                  - ENABLE
+ 134:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  *                  - DISABLE
+ 135:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @return      None
+ 136:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  **********************************************************************/
+ 137:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** void SYSTICK_Cmd(FunctionalState NewState)
+ 138:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** {
+ 199              		.loc 1 138 0
+ 200              		.cfi_startproc
+ 201              		@ args = 0, pretend = 0, frame = 8
+ 202              		@ frame_needed = 1, uses_anonymous_args = 0
+ 203              		@ link register save eliminated.
+ 204 0118 80B4     		push	{r7}
+ 205              	.LCFI6:
+ 206              		.cfi_def_cfa_offset 4
+ 207              		.cfi_offset 7, -4
+ 208 011a 83B0     		sub	sp, sp, #12
+ 209              	.LCFI7:
+ 210              		.cfi_def_cfa_offset 16
+ 211 011c 00AF     		add	r7, sp, #0
+ 212              	.LCFI8:
+ 213              		.cfi_def_cfa_register 7
+ 214 011e 0346     		mov	r3, r0
+ 215 0120 FB71     		strb	r3, [r7, #7]
+ 139:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     if(NewState == ENABLE)
+ 216              		.loc 1 139 0
+ 217 0122 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 218 0124 012B     		cmp	r3, #1
+ 219 0126 06D1     		bne	.L16
+ 140:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         //Enable System Tick counter
+ 141:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         SysTick->CTRL |= ST_CTRL_ENABLE;
+ 220              		.loc 1 141 0
+ 221 0128 084B     		ldr	r3, .L18
+ 222 012a 084A     		ldr	r2, .L18
+ 223 012c 1268     		ldr	r2, [r2, #0]
+ 224 012e 42F00102 		orr	r2, r2, #1
+ 225 0132 1A60     		str	r2, [r3, #0]
+ 226 0134 05E0     		b	.L15
+ 227              	.L16:
+ 142:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     else
+ 143:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         //Disable System Tick counter
+ 144:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         SysTick->CTRL &= ~ST_CTRL_ENABLE;
+ 228              		.loc 1 144 0
+ 229 0136 054B     		ldr	r3, .L18
+ 230 0138 044A     		ldr	r2, .L18
+ 231 013a 1268     		ldr	r2, [r2, #0]
+ 232 013c 22F00102 		bic	r2, r2, #1
+ 233 0140 1A60     		str	r2, [r3, #0]
+ 234              	.L15:
+ 145:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** }
+ 235              		.loc 1 145 0
+ 236 0142 07F10C07 		add	r7, r7, #12
+ 237 0146 BD46     		mov	sp, r7
+ 238 0148 80BC     		pop	{r7}
+ 239 014a 7047     		bx	lr
+ 240              	.L19:
+ 241              		.align	2
+ 242              	.L18:
+ 243 014c 10E000E0 		.word	-536813552
+ 244              		.cfi_endproc
+ 245              	.LFE57:
+ 247              		.align	2
+ 248              		.global	SYSTICK_IntCmd
+ 249              		.thumb
+ 250              		.thumb_func
+ 252              	SYSTICK_IntCmd:
+ 253              	.LFB58:
+ 146:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** 
+ 147:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** /*********************************************************************//**
+ 148:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @brief       Enable/disable System Tick interrupt
+ 149:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @param[in]   NewState    System Tick interrupt status, should be:
+ 150:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  *                  - ENABLE
+ 151:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  *                  - DISABLE
+ 152:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @return      None
+ 153:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  **********************************************************************/
+ 154:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** void SYSTICK_IntCmd(FunctionalState NewState)
+ 155:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** {
+ 254              		.loc 1 155 0
+ 255              		.cfi_startproc
+ 256              		@ args = 0, pretend = 0, frame = 8
+ 257              		@ frame_needed = 1, uses_anonymous_args = 0
+ 258              		@ link register save eliminated.
+ 259 0150 80B4     		push	{r7}
+ 260              	.LCFI9:
+ 261              		.cfi_def_cfa_offset 4
+ 262              		.cfi_offset 7, -4
+ 263 0152 83B0     		sub	sp, sp, #12
+ 264              	.LCFI10:
+ 265              		.cfi_def_cfa_offset 16
+ 266 0154 00AF     		add	r7, sp, #0
+ 267              	.LCFI11:
+ 268              		.cfi_def_cfa_register 7
+ 269 0156 0346     		mov	r3, r0
+ 270 0158 FB71     		strb	r3, [r7, #7]
+ 156:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     if(NewState == ENABLE)
+ 271              		.loc 1 156 0
+ 272 015a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 273 015c 012B     		cmp	r3, #1
+ 274 015e 06D1     		bne	.L21
+ 157:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         //Enable System Tick counter
+ 158:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         SysTick->CTRL |= ST_CTRL_TICKINT;
+ 275              		.loc 1 158 0
+ 276 0160 084B     		ldr	r3, .L23
+ 277 0162 084A     		ldr	r2, .L23
+ 278 0164 1268     		ldr	r2, [r2, #0]
+ 279 0166 42F00202 		orr	r2, r2, #2
+ 280 016a 1A60     		str	r2, [r3, #0]
+ 281 016c 05E0     		b	.L20
+ 282              	.L21:
+ 159:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     else
+ 160:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         //Disable System Tick counter
+ 161:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****         SysTick->CTRL &= ~ST_CTRL_TICKINT;
+ 283              		.loc 1 161 0
+ 284 016e 054B     		ldr	r3, .L23
+ 285 0170 044A     		ldr	r2, .L23
+ 286 0172 1268     		ldr	r2, [r2, #0]
+ 287 0174 22F00202 		bic	r2, r2, #2
+ 288 0178 1A60     		str	r2, [r3, #0]
+ 289              	.L20:
+ 162:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** }
+ 290              		.loc 1 162 0
+ 291 017a 07F10C07 		add	r7, r7, #12
+ 292 017e BD46     		mov	sp, r7
+ 293 0180 80BC     		pop	{r7}
+ 294 0182 7047     		bx	lr
+ 295              	.L24:
+ 296              		.align	2
+ 297              	.L23:
+ 298 0184 10E000E0 		.word	-536813552
+ 299              		.cfi_endproc
+ 300              	.LFE58:
+ 302              		.align	2
+ 303              		.global	SYSTICK_GetCurrentValue
+ 304              		.thumb
+ 305              		.thumb_func
+ 307              	SYSTICK_GetCurrentValue:
+ 308              	.LFB59:
+ 163:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** 
+ 164:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** /*********************************************************************//**
+ 165:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @brief       Get current value of System Tick counter
+ 166:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @param[in]   None
+ 167:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @return      current value of System Tick counter
+ 168:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  **********************************************************************/
+ 169:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** uint32_t SYSTICK_GetCurrentValue(void)
+ 170:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** {
+ 309              		.loc 1 170 0
+ 310              		.cfi_startproc
+ 311              		@ args = 0, pretend = 0, frame = 0
+ 312              		@ frame_needed = 1, uses_anonymous_args = 0
+ 313              		@ link register save eliminated.
+ 314 0188 80B4     		push	{r7}
+ 315              	.LCFI12:
+ 316              		.cfi_def_cfa_offset 4
+ 317              		.cfi_offset 7, -4
+ 318 018a 00AF     		add	r7, sp, #0
+ 319              	.LCFI13:
+ 320              		.cfi_def_cfa_register 7
+ 171:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     return (SysTick->VAL);
+ 321              		.loc 1 171 0
+ 322 018c 024B     		ldr	r3, .L27
+ 323 018e 9B68     		ldr	r3, [r3, #8]
+ 172:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** }
+ 324              		.loc 1 172 0
+ 325 0190 1846     		mov	r0, r3
+ 326 0192 BD46     		mov	sp, r7
+ 327 0194 80BC     		pop	{r7}
+ 328 0196 7047     		bx	lr
+ 329              	.L28:
+ 330              		.align	2
+ 331              	.L27:
+ 332 0198 10E000E0 		.word	-536813552
+ 333              		.cfi_endproc
+ 334              	.LFE59:
+ 336              		.align	2
+ 337              		.global	SYSTICK_ClearCounterFlag
+ 338              		.thumb
+ 339              		.thumb_func
+ 341              	SYSTICK_ClearCounterFlag:
+ 342              	.LFB60:
+ 173:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** 
+ 174:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** /*********************************************************************//**
+ 175:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @brief       Clear Counter flag
+ 176:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @param[in]   None
+ 177:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  * @return      None
+ 178:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****  **********************************************************************/
+ 179:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** void SYSTICK_ClearCounterFlag(void)
+ 180:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** {
+ 343              		.loc 1 180 0
+ 344              		.cfi_startproc
+ 345              		@ args = 0, pretend = 0, frame = 0
+ 346              		@ frame_needed = 1, uses_anonymous_args = 0
+ 347              		@ link register save eliminated.
+ 348 019c 80B4     		push	{r7}
+ 349              	.LCFI14:
+ 350              		.cfi_def_cfa_offset 4
+ 351              		.cfi_offset 7, -4
+ 352 019e 00AF     		add	r7, sp, #0
+ 353              	.LCFI15:
+ 354              		.cfi_def_cfa_register 7
+ 181:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c ****     SysTick->CTRL &= ~ST_CTRL_COUNTFLAG;
+ 355              		.loc 1 181 0
+ 356 01a0 044B     		ldr	r3, .L30
+ 357 01a2 044A     		ldr	r2, .L30
+ 358 01a4 1268     		ldr	r2, [r2, #0]
+ 359 01a6 22F48032 		bic	r2, r2, #65536
+ 360 01aa 1A60     		str	r2, [r3, #0]
+ 182:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.c **** }
+ 361              		.loc 1 182 0
+ 362 01ac BD46     		mov	sp, r7
+ 363 01ae 80BC     		pop	{r7}
+ 364 01b0 7047     		bx	lr
+ 365              	.L31:
+ 366 01b2 00BF     		.align	2
+ 367              	.L30:
+ 368 01b4 10E000E0 		.word	-536813552
+ 369              		.cfi_endproc
+ 370              	.LFE60:
+ 372              	.Letext0:
+ 373              		.file 2 "g:\\program files\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/gcc/ar
+ 374              		.file 3 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Drivers\\include/lpc_types.h"
+ 375              		.file 4 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Core\\CMSIS\\Include/core_cm3.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 lpc177x_8x_systick.c
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:20     .text:00000000 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:25     .text:00000000 SYSTICK_InternalInit
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:97     .text:00000078 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:102    .text:00000080 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:107    .text:00000080 SYSTICK_ExternalInit
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:187    .text:00000110 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:192    .text:00000118 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:197    .text:00000118 SYSTICK_Cmd
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:243    .text:0000014c $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:247    .text:00000150 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:252    .text:00000150 SYSTICK_IntCmd
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:298    .text:00000184 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:302    .text:00000188 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:307    .text:00000188 SYSTICK_GetCurrentValue
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:332    .text:00000198 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:336    .text:0000019c $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:341    .text:0000019c SYSTICK_ClearCounterFlag
+C:\Users\YANGZH~1\AppData\Local\Temp\ccKns6Pb.s:368    .text:000001b4 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.1.9fa2be94b3b27131c651c32db681ca6e
+                           .group:00000000 wm4.stdint.h.10.90b695f550ca6cc3fb08fa83baf01e05
+                           .group:00000000 wm4.lpc_types.h.61.500abe635b953859f645467b1debaa34
+                           .group:00000000 wm4.lpc177x_8x_libcfg_default.h.42.c21d4d8531a15b96cd9ccfa94b76f68e
+                           .group:00000000 wm4.LPC177x_8x.h.34.ced9b468ef83bb68f280515946661353
+                           .group:00000000 wm4.core_cm3.h.32.790cc16ac64d67f02f3790c90a28e38c
+                           .group:00000000 wm4.core_cmInstr.h.25.dd98b40e8e0d1d9ee958eb9cce5e7898
+                           .group:00000000 wm4.core_cm3.h.132.82da42f2eaa4f3e645984b3550bd4c22
+                           .group:00000000 wm4.LPC177x_8x.h.1353.9b0a09b2831088a36b3e4060dcdc4532
+                           .group:00000000 wm4.lpc177x_8x_systick.h.60.b737d8bbafaac79abde3888896f1f5bd
+                           .group:00000000 wm4.system_LPC177x_8x.h.34.e57b19a2859ef593a5974e6904d3f0ac
+                           .group:00000000 wm4.lpc177x_8x_clkpwr.h.61.8bfb9350f1be3b242e7e7c6f04f31221
+
+UNDEFINED SYMBOLS
+__aeabi_ui2f
+__aeabi_fcmpgt
+CLKPWR_GetCLK

@@ -1,0 +1,590 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"lpc177x_8x_dac.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.align	2
+  19              		.thumb
+  20              		.thumb_func
+  22              	DAC_GetPointer:
+  23              	.LFB55:
+  24              		.file 1 "../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c"
+   1:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** /**********************************************************************
+   2:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * $Id$      lpc177x_8x_dac.c            2011-06-02
+   3:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** *//**
+   4:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * @file     lpc177x_8x_dac.c
+   5:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * @brief    Contains all functions support for DAC firmware library on
+   6:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** *           LPC177x_8x
+   7:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * @version  1.0
+   8:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * @date     02. June. 2011
+   9:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * @author   NXP MCU SW Application Team
+  10:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * 
+  11:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * Copyright(C) 2011, NXP Semiconductor
+  12:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * All rights reserved.
+  13:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** *
+  14:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** ***********************************************************************
+  15:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * Software that is described herein is for illustrative purposes only
+  16:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * which provides customers with programming information regarding the
+  17:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * products. This software is supplied "AS IS" without any warranties.
+  18:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * NXP Semiconductors assumes no responsibility or liability for the
+  19:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * use of the software, conveys no license or title under any patent,
+  20:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * copyright, or mask work right to the product. NXP Semiconductors
+  21:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * reserves the right to make changes in the software without
+  22:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * notification. NXP Semiconductors also make no representation or
+  23:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * warranty that such application will be suitable for the specified
+  24:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * use without further testing or modification.
+  25:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * Permission to use, copy, modify, and distribute this software and its
+  26:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * documentation is hereby granted, under NXP Semiconductors'
+  27:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * relevant copyright in the software, without fee, provided that it
+  28:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * is used in conjunction with NXP Semiconductors microcontrollers.  This
+  29:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * copyright, permission, and disclaimer notice must appear in all copies of
+  30:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** * this code.
+  31:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** **********************************************************************/
+  32:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+  33:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** /* Peripheral group ----------------------------------------------------------- */
+  34:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** /** @addtogroup DAC
+  35:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @{
+  36:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  */
+  37:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** #ifdef __BUILD_WITH_EXAMPLE__
+  38:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** #include "lpc177x_8x_libcfg.h"
+  39:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** #else
+  40:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** #include "lpc177x_8x_libcfg_default.h"
+  41:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** #endif /* __BUILD_WITH_EXAMPLE__ */
+  42:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** #ifdef _DAC
+  43:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+  44:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** /* Includes ------------------------------------------------------------------- */
+  45:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** #include "lpc177x_8x_dac.h"
+  46:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** #include "lpc177x_8x_clkpwr.h"
+  47:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** #include "lpc177x_8x_pinsel.h"
+  48:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+  49:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** /* Private Functions ---------------------------------------------------------- */
+  50:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+  51:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** /*********************************************************************//**
+  52:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @brief       Get pointer to DAC peripheral
+  53:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @param[in]   compId      Component ID, normally is zero (0).
+  54:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @param[in]   pinnum      Pin number value, should be in range from 0..31
+  55:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @return      Pointer to DAC peripheral component
+  56:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  **********************************************************************/
+  57:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** static LPC_DAC_TypeDef * DAC_GetPointer(uint8_t compId)
+  58:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** {
+  25              		.loc 1 58 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 16
+  28              		@ frame_needed = 1, uses_anonymous_args = 0
+  29              		@ link register save eliminated.
+  30 0000 80B4     		push	{r7}
+  31              	.LCFI0:
+  32              		.cfi_def_cfa_offset 4
+  33              		.cfi_offset 7, -4
+  34 0002 85B0     		sub	sp, sp, #20
+  35              	.LCFI1:
+  36              		.cfi_def_cfa_offset 24
+  37 0004 00AF     		add	r7, sp, #0
+  38              	.LCFI2:
+  39              		.cfi_def_cfa_register 7
+  40 0006 0346     		mov	r3, r0
+  41 0008 FB71     		strb	r3, [r7, #7]
+  59:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     LPC_DAC_TypeDef *pComponent = LPC_DAC;
+  42              		.loc 1 59 0
+  43 000a 044B     		ldr	r3, .L3
+  44 000c FB60     		str	r3, [r7, #12]
+  60:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+  61:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     return pComponent;
+  45              		.loc 1 61 0
+  46 000e FB68     		ldr	r3, [r7, #12]
+  62:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** }
+  47              		.loc 1 62 0
+  48 0010 1846     		mov	r0, r3
+  49 0012 07F11407 		add	r7, r7, #20
+  50 0016 BD46     		mov	sp, r7
+  51 0018 80BC     		pop	{r7}
+  52 001a 7047     		bx	lr
+  53              	.L4:
+  54              		.align	2
+  55              	.L3:
+  56 001c 00C00840 		.word	1074315264
+  57              		.cfi_endproc
+  58              	.LFE55:
+  60              		.align	2
+  61              		.global	DAC_Init
+  62              		.thumb
+  63              		.thumb_func
+  65              	DAC_Init:
+  66              	.LFB56:
+  63:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+  64:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+  65:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+  66:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** /* Public Functions ----------------------------------------------------------- */
+  67:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** /** @addtogroup DAC_Public_Functions
+  68:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @{
+  69:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  */
+  70:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+  71:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** /*********************************************************************//**
+  72:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @brief       Initial ADC configuration
+  73:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  *                  - Maximum   current is 700 uA
+  74:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  *                  - Value to AOUT is 0
+  75:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @param[in]   DAC_Id  the ID of the DAC component that is using, should be: zero (0)
+  76:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @return      None
+  77:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  ***********************************************************************/
+  78:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** void DAC_Init(uint8_t DAC_Id)
+  79:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** {
+  67              		.loc 1 79 0
+  68              		.cfi_startproc
+  69              		@ args = 0, pretend = 0, frame = 8
+  70              		@ frame_needed = 1, uses_anonymous_args = 0
+  71 0020 80B5     		push	{r7, lr}
+  72              	.LCFI3:
+  73              		.cfi_def_cfa_offset 8
+  74              		.cfi_offset 7, -8
+  75              		.cfi_offset 14, -4
+  76 0022 82B0     		sub	sp, sp, #8
+  77              	.LCFI4:
+  78              		.cfi_def_cfa_offset 16
+  79 0024 00AF     		add	r7, sp, #0
+  80              	.LCFI5:
+  81              		.cfi_def_cfa_register 7
+  82 0026 0346     		mov	r3, r0
+  83 0028 FB71     		strb	r3, [r7, #7]
+  80:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     /*
+  81:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****      * Init DAC pin connect
+  82:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****      * AOUT on P0.26
+  83:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****      */
+  84:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     PINSEL_ConfigPin(0, 26, 2);                              
+  84              		.loc 1 84 0
+  85 002a 4FF00000 		mov	r0, #0
+  86 002e 4FF01A01 		mov	r1, #26
+  87 0032 4FF00202 		mov	r2, #2
+  88 0036 FFF7FEFF 		bl	PINSEL_ConfigPin
+  85:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+  86:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     PINSEL_SetAnalogPinMode(0,26,ENABLE);
+  89              		.loc 1 86 0
+  90 003a 4FF00000 		mov	r0, #0
+  91 003e 4FF01A01 		mov	r1, #26
+  92 0042 4FF00102 		mov	r2, #1
+  93 0046 FFF7FEFF 		bl	PINSEL_SetAnalogPinMode
+  87:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+  88:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     //Enable DAC for the pin
+  89:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     PINSEL_DacEnable(0, 26, ENABLE);
+  94              		.loc 1 89 0
+  95 004a 4FF00000 		mov	r0, #0
+  96 004e 4FF01A01 		mov	r1, #26
+  97 0052 4FF00102 		mov	r2, #1
+  98 0056 FFF7FEFF 		bl	PINSEL_DacEnable
+  90:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+  91:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     //Set maximum current output as default
+  92:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     DAC_SetBias(DAC_Id, DAC_MAX_CURRENT_700uA);
+  99              		.loc 1 92 0
+ 100 005a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 101 005c 1846     		mov	r0, r3
+ 102 005e 4FF00001 		mov	r1, #0
+ 103 0062 FFF7FEFF 		bl	DAC_SetBias
+  93:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** }
+ 104              		.loc 1 93 0
+ 105 0066 07F10807 		add	r7, r7, #8
+ 106 006a BD46     		mov	sp, r7
+ 107 006c 80BD     		pop	{r7, pc}
+ 108              		.cfi_endproc
+ 109              	.LFE56:
+ 111 006e 00BF     		.align	2
+ 112              		.global	DAC_UpdateValue
+ 113              		.thumb
+ 114              		.thumb_func
+ 116              	DAC_UpdateValue:
+ 117              	.LFB57:
+  94:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+  95:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** /*********************************************************************//**
+  96:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @brief       Update value to DAC
+  97:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @param[in]   DAC_Id  the ID of the DAC component that is using, should be: zero (0)
+  98:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @param[in]   dac_value : value 10 bit to be converted to output
+  99:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @return      None
+ 100:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  ***********************************************************************/
+ 101:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** void DAC_UpdateValue (uint8_t DAC_Id,uint32_t dac_value)
+ 102:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** {
+ 118              		.loc 1 102 0
+ 119              		.cfi_startproc
+ 120              		@ args = 0, pretend = 0, frame = 16
+ 121              		@ frame_needed = 1, uses_anonymous_args = 0
+ 122 0070 80B5     		push	{r7, lr}
+ 123              	.LCFI6:
+ 124              		.cfi_def_cfa_offset 8
+ 125              		.cfi_offset 7, -8
+ 126              		.cfi_offset 14, -4
+ 127 0072 84B0     		sub	sp, sp, #16
+ 128              	.LCFI7:
+ 129              		.cfi_def_cfa_offset 24
+ 130 0074 00AF     		add	r7, sp, #0
+ 131              	.LCFI8:
+ 132              		.cfi_def_cfa_register 7
+ 133 0076 0346     		mov	r3, r0
+ 134 0078 3960     		str	r1, [r7, #0]
+ 135 007a FB71     		strb	r3, [r7, #7]
+ 103:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     uint32_t tmp;
+ 104:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+ 105:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     LPC_DAC_TypeDef* pDac = DAC_GetPointer(DAC_Id);
+ 136              		.loc 1 105 0
+ 137 007c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 138 007e 1846     		mov	r0, r3
+ 139 0080 FFF7BEFF 		bl	DAC_GetPointer
+ 140 0084 F860     		str	r0, [r7, #12]
+ 106:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+ 107:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     tmp = pDac->CR & DAC_BIAS_EN;
+ 141              		.loc 1 107 0
+ 142 0086 FB68     		ldr	r3, [r7, #12]
+ 143 0088 1B68     		ldr	r3, [r3, #0]
+ 144 008a 03F48033 		and	r3, r3, #65536
+ 145 008e BB60     		str	r3, [r7, #8]
+ 108:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+ 109:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     tmp |= DAC_VALUE(dac_value);
+ 146              		.loc 1 109 0
+ 147 0090 3B68     		ldr	r3, [r7, #0]
+ 148 0092 4FEA8313 		lsl	r3, r3, #6
+ 149 0096 4FEA0343 		lsl	r3, r3, #16
+ 150 009a 4FEA1343 		lsr	r3, r3, #16
+ 151 009e BA68     		ldr	r2, [r7, #8]
+ 152 00a0 1343     		orrs	r3, r3, r2
+ 153 00a2 BB60     		str	r3, [r7, #8]
+ 110:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+ 111:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     // Update value
+ 112:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     pDac->CR = tmp;
+ 154              		.loc 1 112 0
+ 155 00a4 FB68     		ldr	r3, [r7, #12]
+ 156 00a6 BA68     		ldr	r2, [r7, #8]
+ 157 00a8 1A60     		str	r2, [r3, #0]
+ 113:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** }
+ 158              		.loc 1 113 0
+ 159 00aa 07F11007 		add	r7, r7, #16
+ 160 00ae BD46     		mov	sp, r7
+ 161 00b0 80BD     		pop	{r7, pc}
+ 162              		.cfi_endproc
+ 163              	.LFE57:
+ 165 00b2 00BF     		.align	2
+ 166              		.global	DAC_SetBias
+ 167              		.thumb
+ 168              		.thumb_func
+ 170              	DAC_SetBias:
+ 171              	.LFB58:
+ 114:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+ 115:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** /*********************************************************************//**
+ 116:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @brief       Set Maximum current for DAC
+ 117:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @param[in]   DAC_Id  the ID of the DAC component that is using, should be: zero (0)
+ 118:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @param[in]   bias : 0 is 700 uA
+ 119:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  *                     1    350 uA
+ 120:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @return      None
+ 121:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  ***********************************************************************/
+ 122:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** void DAC_SetBias (uint8_t DAC_Id, uint32_t bias)
+ 123:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** {
+ 172              		.loc 1 123 0
+ 173              		.cfi_startproc
+ 174              		@ args = 0, pretend = 0, frame = 16
+ 175              		@ frame_needed = 1, uses_anonymous_args = 0
+ 176 00b4 80B5     		push	{r7, lr}
+ 177              	.LCFI9:
+ 178              		.cfi_def_cfa_offset 8
+ 179              		.cfi_offset 7, -8
+ 180              		.cfi_offset 14, -4
+ 181 00b6 84B0     		sub	sp, sp, #16
+ 182              	.LCFI10:
+ 183              		.cfi_def_cfa_offset 24
+ 184 00b8 00AF     		add	r7, sp, #0
+ 185              	.LCFI11:
+ 186              		.cfi_def_cfa_register 7
+ 187 00ba 0346     		mov	r3, r0
+ 188 00bc 3960     		str	r1, [r7, #0]
+ 189 00be FB71     		strb	r3, [r7, #7]
+ 124:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     LPC_DAC_TypeDef* pDac = DAC_GetPointer(DAC_Id);
+ 190              		.loc 1 124 0
+ 191 00c0 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 192 00c2 1846     		mov	r0, r3
+ 193 00c4 FFF79CFF 		bl	DAC_GetPointer
+ 194 00c8 F860     		str	r0, [r7, #12]
+ 125:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+ 126:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     pDac->CR &=~DAC_BIAS_EN;
+ 195              		.loc 1 126 0
+ 196 00ca FB68     		ldr	r3, [r7, #12]
+ 197 00cc 1B68     		ldr	r3, [r3, #0]
+ 198 00ce 23F48032 		bic	r2, r3, #65536
+ 199 00d2 FB68     		ldr	r3, [r7, #12]
+ 200 00d4 1A60     		str	r2, [r3, #0]
+ 127:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+ 128:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     if (bias  == DAC_MAX_CURRENT_350uA)
+ 201              		.loc 1 128 0
+ 202 00d6 3B68     		ldr	r3, [r7, #0]
+ 203 00d8 012B     		cmp	r3, #1
+ 204 00da 05D1     		bne	.L7
+ 129:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     {
+ 130:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****         pDac->CR |= DAC_BIAS_EN;
+ 205              		.loc 1 130 0
+ 206 00dc FB68     		ldr	r3, [r7, #12]
+ 207 00de 1B68     		ldr	r3, [r3, #0]
+ 208 00e0 43F48032 		orr	r2, r3, #65536
+ 209 00e4 FB68     		ldr	r3, [r7, #12]
+ 210 00e6 1A60     		str	r2, [r3, #0]
+ 211              	.L7:
+ 131:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     }
+ 132:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** }
+ 212              		.loc 1 132 0
+ 213 00e8 07F11007 		add	r7, r7, #16
+ 214 00ec BD46     		mov	sp, r7
+ 215 00ee 80BD     		pop	{r7, pc}
+ 216              		.cfi_endproc
+ 217              	.LFE58:
+ 219              		.align	2
+ 220              		.global	DAC_ConfigDAConverterControl
+ 221              		.thumb
+ 222              		.thumb_func
+ 224              	DAC_ConfigDAConverterControl:
+ 225              	.LFB59:
+ 133:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+ 134:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** /*********************************************************************//**
+ 135:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @brief       To enable the DMA operation and control DMA timer
+ 136:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @param[in]   DAC_Id  the ID of the DAC component that is using, should be: zero (0)
+ 137:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @param[in]   DAC_ConverterConfigStruct pointer to DAC_CONVERTER_CFG_Type
+ 138:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  *                  - DBLBUF_ENA :  enable/disable DACR double buffering feature
+ 139:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  *                  - CNT_ENA    :  enable/disable timer out counter
+ 140:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  *                  - DMA_ENA    :  enable/disable DMA access
+ 141:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @return      None
+ 142:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  ***********************************************************************/
+ 143:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** void DAC_ConfigDAConverterControl (uint8_t DAC_Id, DAC_CONVERTER_CFG_Type *DAC_ConverterConfigStruc
+ 144:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** {
+ 226              		.loc 1 144 0
+ 227              		.cfi_startproc
+ 228              		@ args = 0, pretend = 0, frame = 16
+ 229              		@ frame_needed = 1, uses_anonymous_args = 0
+ 230 00f0 80B5     		push	{r7, lr}
+ 231              	.LCFI12:
+ 232              		.cfi_def_cfa_offset 8
+ 233              		.cfi_offset 7, -8
+ 234              		.cfi_offset 14, -4
+ 235 00f2 84B0     		sub	sp, sp, #16
+ 236              	.LCFI13:
+ 237              		.cfi_def_cfa_offset 24
+ 238 00f4 00AF     		add	r7, sp, #0
+ 239              	.LCFI14:
+ 240              		.cfi_def_cfa_register 7
+ 241 00f6 0346     		mov	r3, r0
+ 242 00f8 3960     		str	r1, [r7, #0]
+ 243 00fa FB71     		strb	r3, [r7, #7]
+ 145:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     LPC_DAC_TypeDef* pDac = DAC_GetPointer(DAC_Id);
+ 244              		.loc 1 145 0
+ 245 00fc FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 246 00fe 1846     		mov	r0, r3
+ 247 0100 FFF77EFF 		bl	DAC_GetPointer
+ 248 0104 F860     		str	r0, [r7, #12]
+ 146:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+ 147:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     pDac->CTRL &= ~DAC_DACCTRL_MASK;
+ 249              		.loc 1 147 0
+ 250 0106 FB68     		ldr	r3, [r7, #12]
+ 251 0108 5B68     		ldr	r3, [r3, #4]
+ 252 010a 23F00F02 		bic	r2, r3, #15
+ 253 010e FB68     		ldr	r3, [r7, #12]
+ 254 0110 5A60     		str	r2, [r3, #4]
+ 148:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+ 149:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     if (DAC_ConverterConfigStruct->DBLBUF_ENA)
+ 255              		.loc 1 149 0
+ 256 0112 3B68     		ldr	r3, [r7, #0]
+ 257 0114 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 258 0116 002B     		cmp	r3, #0
+ 259 0118 05D0     		beq	.L10
+ 150:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****         pDac->CTRL  |= DAC_DBLBUF_ENA;
+ 260              		.loc 1 150 0
+ 261 011a FB68     		ldr	r3, [r7, #12]
+ 262 011c 5B68     		ldr	r3, [r3, #4]
+ 263 011e 43F00202 		orr	r2, r3, #2
+ 264 0122 FB68     		ldr	r3, [r7, #12]
+ 265 0124 5A60     		str	r2, [r3, #4]
+ 266              	.L10:
+ 151:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+ 152:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     if (DAC_ConverterConfigStruct->CNT_ENA)
+ 267              		.loc 1 152 0
+ 268 0126 3B68     		ldr	r3, [r7, #0]
+ 269 0128 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 270 012a 002B     		cmp	r3, #0
+ 271 012c 05D0     		beq	.L11
+ 153:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****         pDac->CTRL  |= DAC_CNT_ENA;
+ 272              		.loc 1 153 0
+ 273 012e FB68     		ldr	r3, [r7, #12]
+ 274 0130 5B68     		ldr	r3, [r3, #4]
+ 275 0132 43F00402 		orr	r2, r3, #4
+ 276 0136 FB68     		ldr	r3, [r7, #12]
+ 277 0138 5A60     		str	r2, [r3, #4]
+ 278              	.L11:
+ 154:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+ 155:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     if (DAC_ConverterConfigStruct->DMA_ENA)
+ 279              		.loc 1 155 0
+ 280 013a 3B68     		ldr	r3, [r7, #0]
+ 281 013c 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 282 013e 002B     		cmp	r3, #0
+ 283 0140 05D0     		beq	.L9
+ 156:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****         pDac->CTRL  |= DAC_DMA_ENA;
+ 284              		.loc 1 156 0
+ 285 0142 FB68     		ldr	r3, [r7, #12]
+ 286 0144 5B68     		ldr	r3, [r3, #4]
+ 287 0146 43F00802 		orr	r2, r3, #8
+ 288 014a FB68     		ldr	r3, [r7, #12]
+ 289 014c 5A60     		str	r2, [r3, #4]
+ 290              	.L9:
+ 157:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** }
+ 291              		.loc 1 157 0
+ 292 014e 07F11007 		add	r7, r7, #16
+ 293 0152 BD46     		mov	sp, r7
+ 294 0154 80BD     		pop	{r7, pc}
+ 295              		.cfi_endproc
+ 296              	.LFE59:
+ 298 0156 00BF     		.align	2
+ 299              		.global	DAC_SetDMATimeOut
+ 300              		.thumb
+ 301              		.thumb_func
+ 303              	DAC_SetDMATimeOut:
+ 304              	.LFB60:
+ 158:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+ 159:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** /*********************************************************************//**
+ 160:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @brief       Set reload value for interrupt/DMA counter
+ 161:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @param[in]   DAC_Id  the ID of the DAC component that is using, should be: zero (0)
+ 162:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @param[in]   time_out time out to reload for interrupt/DMA counter
+ 163:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @return      None
+ 164:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  ***********************************************************************/
+ 165:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** void DAC_SetDMATimeOut(uint8_t DAC_Id, uint32_t time_out)
+ 166:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** {
+ 305              		.loc 1 166 0
+ 306              		.cfi_startproc
+ 307              		@ args = 0, pretend = 0, frame = 16
+ 308              		@ frame_needed = 1, uses_anonymous_args = 0
+ 309 0158 80B5     		push	{r7, lr}
+ 310              	.LCFI15:
+ 311              		.cfi_def_cfa_offset 8
+ 312              		.cfi_offset 7, -8
+ 313              		.cfi_offset 14, -4
+ 314 015a 84B0     		sub	sp, sp, #16
+ 315              	.LCFI16:
+ 316              		.cfi_def_cfa_offset 24
+ 317 015c 00AF     		add	r7, sp, #0
+ 318              	.LCFI17:
+ 319              		.cfi_def_cfa_register 7
+ 320 015e 0346     		mov	r3, r0
+ 321 0160 3960     		str	r1, [r7, #0]
+ 322 0162 FB71     		strb	r3, [r7, #7]
+ 167:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     LPC_DAC_TypeDef* pDac = DAC_GetPointer(DAC_Id);
+ 323              		.loc 1 167 0
+ 324 0164 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 325 0166 1846     		mov	r0, r3
+ 326 0168 FFF74AFF 		bl	DAC_GetPointer
+ 327 016c F860     		str	r0, [r7, #12]
+ 168:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+ 169:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     pDac->CNTVAL = DAC_CCNT_VALUE(time_out);
+ 328              		.loc 1 169 0
+ 329 016e 3B68     		ldr	r3, [r7, #0]
+ 330 0170 4FEA0343 		lsl	r3, r3, #16
+ 331 0174 4FEA1343 		lsr	r3, r3, #16
+ 332 0178 FA68     		ldr	r2, [r7, #12]
+ 333 017a 9360     		str	r3, [r2, #8]
+ 170:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** }
+ 334              		.loc 1 170 0
+ 335 017c 07F11007 		add	r7, r7, #16
+ 336 0180 BD46     		mov	sp, r7
+ 337 0182 80BD     		pop	{r7, pc}
+ 338              		.cfi_endproc
+ 339              	.LFE60:
+ 341              		.align	2
+ 342              		.global	DAC_IsIntRequested
+ 343              		.thumb
+ 344              		.thumb_func
+ 346              	DAC_IsIntRequested:
+ 347              	.LFB61:
+ 171:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+ 172:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+ 173:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** /*********************************************************************//**
+ 174:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @brief       Check the interrupt/DMA counter is occured or not because of the timer counter
+ 175:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @param[in]   DAC_Id  the ID of the DAC component that is using, should be: zero (0)
+ 176:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  * @return      None
+ 177:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****  ***********************************************************************/
+ 178:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** uint8_t DAC_IsIntRequested(uint8_t DAC_Id)
+ 179:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** {
+ 348              		.loc 1 179 0
+ 349              		.cfi_startproc
+ 350              		@ args = 0, pretend = 0, frame = 16
+ 351              		@ frame_needed = 1, uses_anonymous_args = 0
+ 352 0184 80B5     		push	{r7, lr}
+ 353              	.LCFI18:
+ 354              		.cfi_def_cfa_offset 8
+ 355              		.cfi_offset 7, -8
+ 356              		.cfi_offset 14, -4
+ 357 0186 84B0     		sub	sp, sp, #16
+ 358              	.LCFI19:
+ 359              		.cfi_def_cfa_offset 24
+ 360 0188 00AF     		add	r7, sp, #0
+ 361              	.LCFI20:
+ 362              		.cfi_def_cfa_register 7
+ 363 018a 0346     		mov	r3, r0
+ 364 018c FB71     		strb	r3, [r7, #7]
+ 180:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     LPC_DAC_TypeDef* pDac = DAC_GetPointer(DAC_Id);
+ 365              		.loc 1 180 0
+ 366 018e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 367 0190 1846     		mov	r0, r3
+ 368 0192 FFF735FF 		bl	DAC_GetPointer
+ 369 0196 F860     		str	r0, [r7, #12]
+ 181:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** 
+ 182:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     //Return the INT_DMA_REQ bit of D/A control register
+ 183:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c ****     return (pDac->CTRL & 0x01);
+ 370              		.loc 1 183 0
+ 371 0198 FB68     		ldr	r3, [r7, #12]
+ 372 019a 5B68     		ldr	r3, [r3, #4]
+ 373 019c DBB2     		uxtb	r3, r3
+ 374 019e 03F00103 		and	r3, r3, #1
+ 375 01a2 DBB2     		uxtb	r3, r3
+ 184:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.c **** }
+ 376              		.loc 1 184 0
+ 377 01a4 1846     		mov	r0, r3
+ 378 01a6 07F11007 		add	r7, r7, #16
+ 379 01aa BD46     		mov	sp, r7
+ 380 01ac 80BD     		pop	{r7, pc}
+ 381              		.cfi_endproc
+ 382              	.LFE61:
+ 384              	.Letext0:
+ 385              		.file 2 "g:\\program files\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/gcc/ar
+ 386              		.file 3 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Core\\Device\\NXP\\LPC177x_8x\\Includ
+ 387              		.file 4 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Drivers\\include/lpc_types.h"
+ 388              		.file 5 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Drivers\\include/lpc177x_8x_dac.h"
+ 389              		.file 6 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Core\\CMSIS\\Include/core_cm3.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 lpc177x_8x_dac.c
+C:\Users\YANGZH~1\AppData\Local\Temp\ccCQZq05.s:18     .text:00000000 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccCQZq05.s:22     .text:00000000 DAC_GetPointer
+C:\Users\YANGZH~1\AppData\Local\Temp\ccCQZq05.s:56     .text:0000001c $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccCQZq05.s:60     .text:00000020 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccCQZq05.s:65     .text:00000020 DAC_Init
+C:\Users\YANGZH~1\AppData\Local\Temp\ccCQZq05.s:170    .text:000000b4 DAC_SetBias
+C:\Users\YANGZH~1\AppData\Local\Temp\ccCQZq05.s:116    .text:00000070 DAC_UpdateValue
+C:\Users\YANGZH~1\AppData\Local\Temp\ccCQZq05.s:224    .text:000000f0 DAC_ConfigDAConverterControl
+C:\Users\YANGZH~1\AppData\Local\Temp\ccCQZq05.s:303    .text:00000158 DAC_SetDMATimeOut
+C:\Users\YANGZH~1\AppData\Local\Temp\ccCQZq05.s:346    .text:00000184 DAC_IsIntRequested
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.1.9fa2be94b3b27131c651c32db681ca6e
+                           .group:00000000 wm4.stdint.h.10.90b695f550ca6cc3fb08fa83baf01e05
+                           .group:00000000 wm4.lpc_types.h.61.500abe635b953859f645467b1debaa34
+                           .group:00000000 wm4.lpc177x_8x_libcfg_default.h.42.c21d4d8531a15b96cd9ccfa94b76f68e
+                           .group:00000000 wm4.LPC177x_8x.h.34.ced9b468ef83bb68f280515946661353
+                           .group:00000000 wm4.core_cm3.h.32.790cc16ac64d67f02f3790c90a28e38c
+                           .group:00000000 wm4.core_cmInstr.h.25.dd98b40e8e0d1d9ee958eb9cce5e7898
+                           .group:00000000 wm4.core_cm3.h.132.82da42f2eaa4f3e645984b3550bd4c22
+                           .group:00000000 wm4.LPC177x_8x.h.1353.9b0a09b2831088a36b3e4060dcdc4532
+                           .group:00000000 wm4.lpc177x_8x_dac.h.62.ee112609ecee47a15ee312a392cc0760
+                           .group:00000000 wm4.system_LPC177x_8x.h.34.e57b19a2859ef593a5974e6904d3f0ac
+                           .group:00000000 wm4.lpc177x_8x_clkpwr.h.61.8bfb9350f1be3b242e7e7c6f04f31221
+                           .group:00000000 wm4.lpc177x_8x_pinsel.h.40.a81053d200359e8219d877c26a0096e8
+
+UNDEFINED SYMBOLS
+PINSEL_ConfigPin
+PINSEL_SetAnalogPinMode
+PINSEL_DacEnable

@@ -1,0 +1,27 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"slab.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 slab.c
+                           .group:00000000 wm4.1.9fa2be94b3b27131c651c32db681ca6e
+                           .group:00000000 wm4.rtconfig.h.3.5a4bd5c079694966fb1e9ee3a4751929
+                           .group:00000000 wm4.rtdef.h.36.f520ed9310a9e6fa8719d7b7d81c046a
+                           .group:00000000 wm4.rtdebug.h.12.1fd584faa18c8d5ccd4774b9c31afcd0
+                           .group:00000000 wm4.rtservice.h.19.f6999772500f0a8f811ba3fba5581f34
+
+NO UNDEFINED SYMBOLS

@@ -1,0 +1,496 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"lpc177x_8x_exti.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.align	2
+  19              		.global	EXTI_Init
+  20              		.thumb
+  21              		.thumb_func
+  23              	EXTI_Init:
+  24              	.LFB55:
+  25              		.file 1 "../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c"
+   1:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** /**********************************************************************
+   2:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * $Id$      lpc177x_8x_exti.c           2011-06-02
+   3:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *//**
+   4:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @file     lpc177x_8x_exti.c
+   5:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @brief    Contains all functions support for External Interrupt
+   6:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *           firmware library on LPC177x_8x
+   7:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @version  1.0
+   8:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @date     02. June. 2011
+   9:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @author   NXP MCU SW Application Team
+  10:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * 
+  11:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * Copyright(C) 2011, NXP Semiconductor
+  12:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * All rights reserved.
+  13:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *
+  14:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** ***********************************************************************
+  15:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * Software that is described herein is for illustrative purposes only
+  16:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * which provides customers with programming information regarding the
+  17:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * products. This software is supplied "AS IS" without any warranties.
+  18:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * NXP Semiconductors assumes no responsibility or liability for the
+  19:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * use of the software, conveys no license or title under any patent,
+  20:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * copyright, or mask work right to the product. NXP Semiconductors
+  21:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * reserves the right to make changes in the software without
+  22:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * notification. NXP Semiconductors also make no representation or
+  23:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * warranty that such application will be suitable for the specified
+  24:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * use without further testing or modification.
+  25:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * Permission to use, copy, modify, and distribute this software and its
+  26:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * documentation is hereby granted, under NXP Semiconductors'
+  27:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * relevant copyright in the software, without fee, provided that it
+  28:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * is used in conjunction with NXP Semiconductors microcontrollers.  This
+  29:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * copyright, permission, and disclaimer notice must appear in all copies of
+  30:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * this code.
+  31:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** **********************************************************************/
+  32:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** 
+  33:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** /* Peripheral group ----------------------------------------------------------- */
+  34:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** /** @addtogroup EXTI
+  35:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****  * @{
+  36:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****  */
+  37:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** #ifdef __BUILD_WITH_EXAMPLE__
+  38:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** #include "lpc177x_8x_libcfg.h"
+  39:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** #else
+  40:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** #include "lpc177x_8x_libcfg_default.h"
+  41:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** #endif /* __BUILD_WITH_EXAMPLE__ */
+  42:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** #ifdef _EXTI
+  43:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** 
+  44:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** /* Includes ------------------------------------------------------------------- */
+  45:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** #include "lpc177x_8x_exti.h"
+  46:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** 
+  47:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** /* Public Functions ----------------------------------------------------------- */
+  48:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** /** @addtogroup EXTI_Public_Functions
+  49:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****  * @{
+  50:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****  */
+  51:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** 
+  52:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** /*********************************************************************//**
+  53:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****  * @brief       Initial for EXT
+  54:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****  *              - Set EXTINT, EXTMODE, EXTPOLAR registers to default value
+  55:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****  * @param[in]   None
+  56:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****  * @return      None
+  57:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****  **********************************************************************/
+  58:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** void EXTI_Init(void)
+  59:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** {
+  26              		.loc 1 59 0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 0
+  29              		@ frame_needed = 1, uses_anonymous_args = 0
+  30              		@ link register save eliminated.
+  31 0000 80B4     		push	{r7}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 4
+  34              		.cfi_offset 7, -4
+  35 0002 00AF     		add	r7, sp, #0
+  36              	.LCFI1:
+  37              		.cfi_def_cfa_register 7
+  60:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     LPC_SC->EXTINT = 0xF;
+  38              		.loc 1 60 0
+  39 0004 084B     		ldr	r3, .L2
+  40 0006 4FF00F02 		mov	r2, #15
+  41 000a C3F84021 		str	r2, [r3, #320]
+  61:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     LPC_SC->EXTMODE = 0x0;
+  42              		.loc 1 61 0
+  43 000e 064B     		ldr	r3, .L2
+  44 0010 4FF00002 		mov	r2, #0
+  45 0014 C3F84821 		str	r2, [r3, #328]
+  62:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     LPC_SC->EXTPOLAR = 0x0;
+  46              		.loc 1 62 0
+  47 0018 034B     		ldr	r3, .L2
+  48 001a 4FF00002 		mov	r2, #0
+  49 001e C3F84C21 		str	r2, [r3, #332]
+  63:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** }
+  50              		.loc 1 63 0
+  51 0022 BD46     		mov	sp, r7
+  52 0024 80BC     		pop	{r7}
+  53 0026 7047     		bx	lr
+  54              	.L3:
+  55              		.align	2
+  56              	.L2:
+  57 0028 00C00F40 		.word	1074774016
+  58              		.cfi_endproc
+  59              	.LFE55:
+  61              		.align	2
+  62              		.global	EXTI_DeInit
+  63              		.thumb
+  64              		.thumb_func
+  66              	EXTI_DeInit:
+  67              	.LFB56:
+  64:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** 
+  65:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** 
+  66:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** /*********************************************************************//**
+  67:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @brief        Close EXT
+  68:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @param[in]    None
+  69:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @return       None
+  70:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** **********************************************************************/
+  71:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** void    EXTI_DeInit(void)
+  72:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** {
+  68              		.loc 1 72 0
+  69              		.cfi_startproc
+  70              		@ args = 0, pretend = 0, frame = 0
+  71              		@ frame_needed = 1, uses_anonymous_args = 0
+  72              		@ link register save eliminated.
+  73 002c 80B4     		push	{r7}
+  74              	.LCFI2:
+  75              		.cfi_def_cfa_offset 4
+  76              		.cfi_offset 7, -4
+  77 002e 00AF     		add	r7, sp, #0
+  78              	.LCFI3:
+  79              		.cfi_def_cfa_register 7
+  73:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     ;
+  74:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** }
+  80              		.loc 1 74 0
+  81 0030 BD46     		mov	sp, r7
+  82 0032 80BC     		pop	{r7}
+  83 0034 7047     		bx	lr
+  84              		.cfi_endproc
+  85              	.LFE56:
+  87 0036 00BF     		.align	2
+  88              		.global	EXTI_Config
+  89              		.thumb
+  90              		.thumb_func
+  92              	EXTI_Config:
+  93              	.LFB57:
+  75:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** 
+  76:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** /*********************************************************************//**
+  77:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****  * @brief       Configuration for EXT
+  78:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****  *              - Set EXTINT, EXTMODE, EXTPOLAR register
+  79:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****  * @param[in]   EXTICfg Pointer to a EXTI_InitTypeDef structure
+  80:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****  *              that contains the configuration information for the
+  81:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****  *              specified external interrupt
+  82:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****  * @return      None
+  83:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****  **********************************************************************/
+  84:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** void EXTI_Config(EXTI_InitTypeDef *EXTICfg)
+  85:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** {
+  94              		.loc 1 85 0
+  95              		.cfi_startproc
+  96              		@ args = 0, pretend = 0, frame = 8
+  97              		@ frame_needed = 1, uses_anonymous_args = 0
+  98 0038 80B5     		push	{r7, lr}
+  99              	.LCFI4:
+ 100              		.cfi_def_cfa_offset 8
+ 101              		.cfi_offset 7, -8
+ 102              		.cfi_offset 14, -4
+ 103 003a 82B0     		sub	sp, sp, #8
+ 104              	.LCFI5:
+ 105              		.cfi_def_cfa_offset 16
+ 106 003c 00AF     		add	r7, sp, #0
+ 107              	.LCFI6:
+ 108              		.cfi_def_cfa_register 7
+ 109 003e 7860     		str	r0, [r7, #4]
+  86:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     LPC_SC->EXTINT = 0x0;
+ 110              		.loc 1 86 0
+ 111 0040 0C4B     		ldr	r3, .L6
+ 112 0042 4FF00002 		mov	r2, #0
+ 113 0046 C3F84021 		str	r2, [r3, #320]
+  87:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     EXTI_SetMode(EXTICfg->EXTI_Line, EXTICfg->EXTI_Mode);
+ 114              		.loc 1 87 0
+ 115 004a 7B68     		ldr	r3, [r7, #4]
+ 116 004c 1A78     		ldrb	r2, [r3, #0]	@ zero_extendqisi2
+ 117 004e 7B68     		ldr	r3, [r7, #4]
+ 118 0050 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 119 0052 1046     		mov	r0, r2
+ 120 0054 1946     		mov	r1, r3
+ 121 0056 FFF7FEFF 		bl	EXTI_SetMode
+  88:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     EXTI_SetPolarity(EXTICfg->EXTI_Line, EXTICfg->EXTI_polarity);
+ 122              		.loc 1 88 0
+ 123 005a 7B68     		ldr	r3, [r7, #4]
+ 124 005c 1A78     		ldrb	r2, [r3, #0]	@ zero_extendqisi2
+ 125 005e 7B68     		ldr	r3, [r7, #4]
+ 126 0060 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 127 0062 1046     		mov	r0, r2
+ 128 0064 1946     		mov	r1, r3
+ 129 0066 FFF7FEFF 		bl	EXTI_SetPolarity
+  89:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** }
+ 130              		.loc 1 89 0
+ 131 006a 07F10807 		add	r7, r7, #8
+ 132 006e BD46     		mov	sp, r7
+ 133 0070 80BD     		pop	{r7, pc}
+ 134              	.L7:
+ 135 0072 00BF     		.align	2
+ 136              	.L6:
+ 137 0074 00C00F40 		.word	1074774016
+ 138              		.cfi_endproc
+ 139              	.LFE57:
+ 141              		.align	2
+ 142              		.global	EXTI_SetMode
+ 143              		.thumb
+ 144              		.thumb_func
+ 146              	EXTI_SetMode:
+ 147              	.LFB58:
+  90:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** 
+  91:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** /*********************************************************************//**
+  92:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @brief        Set mode for EXTI pin
+  93:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @param[in]    EXTILine     external interrupt line, should be:
+  94:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *               - EXTI_EINT0: external interrupt line 0
+  95:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *               - EXTI_EINT1: external interrupt line 1
+  96:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *               - EXTI_EINT2: external interrupt line 2
+  97:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *               - EXTI_EINT3: external interrupt line 3
+  98:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @param[in]    mode    external mode, should be:
+  99:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *               - EXTI_MODE_LEVEL_SENSITIVE
+ 100:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *               - EXTI_MODE_EDGE_SENSITIVE
+ 101:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @return       None
+ 102:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *********************************************************************/
+ 103:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** void EXTI_SetMode(EXTI_LINE_ENUM EXTILine, EXTI_MODE_ENUM mode)
+ 104:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** {
+ 148              		.loc 1 104 0
+ 149              		.cfi_startproc
+ 150              		@ args = 0, pretend = 0, frame = 8
+ 151              		@ frame_needed = 1, uses_anonymous_args = 0
+ 152              		@ link register save eliminated.
+ 153 0078 80B4     		push	{r7}
+ 154              	.LCFI7:
+ 155              		.cfi_def_cfa_offset 4
+ 156              		.cfi_offset 7, -4
+ 157 007a 83B0     		sub	sp, sp, #12
+ 158              	.LCFI8:
+ 159              		.cfi_def_cfa_offset 16
+ 160 007c 00AF     		add	r7, sp, #0
+ 161              	.LCFI9:
+ 162              		.cfi_def_cfa_register 7
+ 163 007e 0246     		mov	r2, r0
+ 164 0080 0B46     		mov	r3, r1
+ 165 0082 FA71     		strb	r2, [r7, #7]
+ 166 0084 BB71     		strb	r3, [r7, #6]
+ 105:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     if(mode == EXTI_MODE_EDGE_SENSITIVE)
+ 167              		.loc 1 105 0
+ 168 0086 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 169 0088 012B     		cmp	r3, #1
+ 170 008a 0CD1     		bne	.L9
+ 106:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     {
+ 107:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****         LPC_SC->EXTMODE |= (1 << EXTILine);
+ 171              		.loc 1 107 0
+ 172 008c 114B     		ldr	r3, .L11
+ 173 008e 114A     		ldr	r2, .L11
+ 174 0090 D2F84811 		ldr	r1, [r2, #328]
+ 175 0094 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 176 0096 4FF00100 		mov	r0, #1
+ 177 009a 00FA02F2 		lsl	r2, r0, r2
+ 178 009e 0A43     		orrs	r2, r2, r1
+ 179 00a0 C3F84821 		str	r2, [r3, #328]
+ 180 00a4 10E0     		b	.L8
+ 181              	.L9:
+ 108:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     }
+ 109:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     else if(mode == EXTI_MODE_LEVEL_SENSITIVE)
+ 182              		.loc 1 109 0
+ 183 00a6 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 184 00a8 002B     		cmp	r3, #0
+ 185 00aa 0DD1     		bne	.L8
+ 110:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     {
+ 111:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****         LPC_SC->EXTMODE &= ~(1 << EXTILine);
+ 186              		.loc 1 111 0
+ 187 00ac 094B     		ldr	r3, .L11
+ 188 00ae 094A     		ldr	r2, .L11
+ 189 00b0 D2F84811 		ldr	r1, [r2, #328]
+ 190 00b4 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 191 00b6 4FF00100 		mov	r0, #1
+ 192 00ba 00FA02F2 		lsl	r2, r0, r2
+ 193 00be 6FEA0202 		mvn	r2, r2
+ 194 00c2 0A40     		ands	r2, r2, r1
+ 195 00c4 C3F84821 		str	r2, [r3, #328]
+ 196              	.L8:
+ 112:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     }
+ 113:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** }
+ 197              		.loc 1 113 0
+ 198 00c8 07F10C07 		add	r7, r7, #12
+ 199 00cc BD46     		mov	sp, r7
+ 200 00ce 80BC     		pop	{r7}
+ 201 00d0 7047     		bx	lr
+ 202              	.L12:
+ 203 00d2 00BF     		.align	2
+ 204              	.L11:
+ 205 00d4 00C00F40 		.word	1074774016
+ 206              		.cfi_endproc
+ 207              	.LFE58:
+ 209              		.align	2
+ 210              		.global	EXTI_SetPolarity
+ 211              		.thumb
+ 212              		.thumb_func
+ 214              	EXTI_SetPolarity:
+ 215              	.LFB59:
+ 114:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** 
+ 115:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** /*********************************************************************//**
+ 116:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @brief        Set polarity for EXTI pin
+ 117:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @param[in]    EXTILine     external interrupt line, should be:
+ 118:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *               - EXTI_EINT0: external interrupt line 0
+ 119:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *               - EXTI_EINT1: external interrupt line 1
+ 120:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *               - EXTI_EINT2: external interrupt line 2
+ 121:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *               - EXTI_EINT3: external interrupt line 3
+ 122:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @param[in]    polarity     external polarity value, should be:
+ 123:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *               - EXTI_POLARITY_LOW_ACTIVE_OR_FALLING_EDGE
+ 124:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *               - EXTI_POLARITY_LOW_ACTIVE_OR_FALLING_EDGE
+ 125:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @return       None
+ 126:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *********************************************************************/
+ 127:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** void EXTI_SetPolarity(EXTI_LINE_ENUM EXTILine, EXTI_POLARITY_ENUM polarity)
+ 128:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** {
+ 216              		.loc 1 128 0
+ 217              		.cfi_startproc
+ 218              		@ args = 0, pretend = 0, frame = 8
+ 219              		@ frame_needed = 1, uses_anonymous_args = 0
+ 220              		@ link register save eliminated.
+ 221 00d8 80B4     		push	{r7}
+ 222              	.LCFI10:
+ 223              		.cfi_def_cfa_offset 4
+ 224              		.cfi_offset 7, -4
+ 225 00da 83B0     		sub	sp, sp, #12
+ 226              	.LCFI11:
+ 227              		.cfi_def_cfa_offset 16
+ 228 00dc 00AF     		add	r7, sp, #0
+ 229              	.LCFI12:
+ 230              		.cfi_def_cfa_register 7
+ 231 00de 0246     		mov	r2, r0
+ 232 00e0 0B46     		mov	r3, r1
+ 233 00e2 FA71     		strb	r2, [r7, #7]
+ 234 00e4 BB71     		strb	r3, [r7, #6]
+ 129:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     if(polarity == EXTI_POLARITY_HIGH_ACTIVE_OR_RISING_EDGE)
+ 235              		.loc 1 129 0
+ 236 00e6 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 237 00e8 012B     		cmp	r3, #1
+ 238 00ea 0CD1     		bne	.L14
+ 130:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     {
+ 131:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****         LPC_SC->EXTPOLAR |= (1 << EXTILine);
+ 239              		.loc 1 131 0
+ 240 00ec 114B     		ldr	r3, .L16
+ 241 00ee 114A     		ldr	r2, .L16
+ 242 00f0 D2F84C11 		ldr	r1, [r2, #332]
+ 243 00f4 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 244 00f6 4FF00100 		mov	r0, #1
+ 245 00fa 00FA02F2 		lsl	r2, r0, r2
+ 246 00fe 0A43     		orrs	r2, r2, r1
+ 247 0100 C3F84C21 		str	r2, [r3, #332]
+ 248 0104 10E0     		b	.L13
+ 249              	.L14:
+ 132:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     }
+ 133:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     else if(polarity == EXTI_POLARITY_LOW_ACTIVE_OR_FALLING_EDGE)
+ 250              		.loc 1 133 0
+ 251 0106 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 252 0108 002B     		cmp	r3, #0
+ 253 010a 0DD1     		bne	.L13
+ 134:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     {
+ 135:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****         LPC_SC->EXTPOLAR &= ~(1 << EXTILine);
+ 254              		.loc 1 135 0
+ 255 010c 094B     		ldr	r3, .L16
+ 256 010e 094A     		ldr	r2, .L16
+ 257 0110 D2F84C11 		ldr	r1, [r2, #332]
+ 258 0114 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 259 0116 4FF00100 		mov	r0, #1
+ 260 011a 00FA02F2 		lsl	r2, r0, r2
+ 261 011e 6FEA0202 		mvn	r2, r2
+ 262 0122 0A40     		ands	r2, r2, r1
+ 263 0124 C3F84C21 		str	r2, [r3, #332]
+ 264              	.L13:
+ 136:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****     }
+ 137:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** }
+ 265              		.loc 1 137 0
+ 266 0128 07F10C07 		add	r7, r7, #12
+ 267 012c BD46     		mov	sp, r7
+ 268 012e 80BC     		pop	{r7}
+ 269 0130 7047     		bx	lr
+ 270              	.L17:
+ 271 0132 00BF     		.align	2
+ 272              	.L16:
+ 273 0134 00C00F40 		.word	1074774016
+ 274              		.cfi_endproc
+ 275              	.LFE59:
+ 277              		.align	2
+ 278              		.global	EXTI_ClearEXTIFlag
+ 279              		.thumb
+ 280              		.thumb_func
+ 282              	EXTI_ClearEXTIFlag:
+ 283              	.LFB60:
+ 138:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** 
+ 139:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** /*********************************************************************//**
+ 140:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @brief        Clear External interrupt flag
+ 141:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @param[in]    EXTILine     external interrupt line, should be:
+ 142:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *               - EXTI_EINT0: external interrupt line 0
+ 143:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *               - EXTI_EINT1: external interrupt line 1
+ 144:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *               - EXTI_EINT2: external interrupt line 2
+ 145:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *               - EXTI_EINT3: external interrupt line 3
+ 146:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** * @return       None
+ 147:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** *********************************************************************/
+ 148:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** void EXTI_ClearEXTIFlag(EXTI_LINE_ENUM EXTILine)
+ 149:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** {
+ 284              		.loc 1 149 0
+ 285              		.cfi_startproc
+ 286              		@ args = 0, pretend = 0, frame = 8
+ 287              		@ frame_needed = 1, uses_anonymous_args = 0
+ 288              		@ link register save eliminated.
+ 289 0138 80B4     		push	{r7}
+ 290              	.LCFI13:
+ 291              		.cfi_def_cfa_offset 4
+ 292              		.cfi_offset 7, -4
+ 293 013a 83B0     		sub	sp, sp, #12
+ 294              	.LCFI14:
+ 295              		.cfi_def_cfa_offset 16
+ 296 013c 00AF     		add	r7, sp, #0
+ 297              	.LCFI15:
+ 298              		.cfi_def_cfa_register 7
+ 299 013e 0346     		mov	r3, r0
+ 300 0140 FB71     		strb	r3, [r7, #7]
+ 150:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c ****         LPC_SC->EXTINT |= (1 << EXTILine);
+ 301              		.loc 1 150 0
+ 302 0142 084B     		ldr	r3, .L19
+ 303 0144 074A     		ldr	r2, .L19
+ 304 0146 D2F84011 		ldr	r1, [r2, #320]
+ 305 014a FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 306 014c 4FF00100 		mov	r0, #1
+ 307 0150 00FA02F2 		lsl	r2, r0, r2
+ 308 0154 0A43     		orrs	r2, r2, r1
+ 309 0156 C3F84021 		str	r2, [r3, #320]
+ 151:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.c **** }
+ 310              		.loc 1 151 0
+ 311 015a 07F10C07 		add	r7, r7, #12
+ 312 015e BD46     		mov	sp, r7
+ 313 0160 80BC     		pop	{r7}
+ 314 0162 7047     		bx	lr
+ 315              	.L20:
+ 316              		.align	2
+ 317              	.L19:
+ 318 0164 00C00F40 		.word	1074774016
+ 319              		.cfi_endproc
+ 320              	.LFE60:
+ 322              	.Letext0:
+ 323              		.file 2 "g:\\program files\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/gcc/ar
+ 324              		.file 3 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Core\\Device\\NXP\\LPC177x_8x\\Includ
+ 325              		.file 4 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Drivers\\include/lpc177x_8x_exti.h"
+ 326              		.file 5 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Core\\CMSIS\\Include/core_cm3.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 lpc177x_8x_exti.c
+C:\Users\YANGZH~1\AppData\Local\Temp\ccn6Y2hf.s:18     .text:00000000 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccn6Y2hf.s:23     .text:00000000 EXTI_Init
+C:\Users\YANGZH~1\AppData\Local\Temp\ccn6Y2hf.s:57     .text:00000028 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccn6Y2hf.s:61     .text:0000002c $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccn6Y2hf.s:66     .text:0000002c EXTI_DeInit
+C:\Users\YANGZH~1\AppData\Local\Temp\ccn6Y2hf.s:92     .text:00000038 EXTI_Config
+C:\Users\YANGZH~1\AppData\Local\Temp\ccn6Y2hf.s:146    .text:00000078 EXTI_SetMode
+C:\Users\YANGZH~1\AppData\Local\Temp\ccn6Y2hf.s:214    .text:000000d8 EXTI_SetPolarity
+C:\Users\YANGZH~1\AppData\Local\Temp\ccn6Y2hf.s:137    .text:00000074 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccn6Y2hf.s:141    .text:00000078 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccn6Y2hf.s:205    .text:000000d4 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccn6Y2hf.s:209    .text:000000d8 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccn6Y2hf.s:273    .text:00000134 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccn6Y2hf.s:277    .text:00000138 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccn6Y2hf.s:282    .text:00000138 EXTI_ClearEXTIFlag
+C:\Users\YANGZH~1\AppData\Local\Temp\ccn6Y2hf.s:318    .text:00000164 $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.1.9fa2be94b3b27131c651c32db681ca6e
+                           .group:00000000 wm4.stdint.h.10.90b695f550ca6cc3fb08fa83baf01e05
+                           .group:00000000 wm4.lpc_types.h.61.500abe635b953859f645467b1debaa34
+                           .group:00000000 wm4.lpc177x_8x_libcfg_default.h.42.c21d4d8531a15b96cd9ccfa94b76f68e
+                           .group:00000000 wm4.LPC177x_8x.h.34.ced9b468ef83bb68f280515946661353
+                           .group:00000000 wm4.core_cm3.h.32.790cc16ac64d67f02f3790c90a28e38c
+                           .group:00000000 wm4.core_cmInstr.h.25.dd98b40e8e0d1d9ee958eb9cce5e7898
+                           .group:00000000 wm4.core_cm3.h.132.82da42f2eaa4f3e645984b3550bd4c22
+                           .group:00000000 wm4.LPC177x_8x.h.1353.9b0a09b2831088a36b3e4060dcdc4532
+                           .group:00000000 wm4.lpc177x_8x_exti.h.60.ed088952fc351a4af13552684cdb29cd
+
+NO UNDEFINED SYMBOLS

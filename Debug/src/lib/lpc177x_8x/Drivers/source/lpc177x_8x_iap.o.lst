@@ -1,0 +1,1061 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"lpc177x_8x_iap.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global	iap_entry
+  19              		.data
+  20              		.align	2
+  23              	iap_entry:
+  24 0000 F11FFF1F 		.word	536813553
+  25              		.text
+  26              		.align	2
+  27              		.global	GetSecNum
+  28              		.thumb
+  29              		.thumb_func
+  31              	GetSecNum:
+  32              	.LFB55:
+  33              		.file 1 "../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c"
+   1:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** /**********************************************************************
+   2:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * $Id$      lpc177x_8x_iap.c            2011-11-21
+   3:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** *//**
+   4:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * @file     lpc177x_8x_iap.c
+   5:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @brief         Contains all functions support for IAP on LPC177x_8x
+   6:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * @version  1.0
+   7:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * @date     21. November. 2011
+   8:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * @author   NXP MCU SW Application Team
+   9:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * 
+  10:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * Copyright(C) 2011, NXP Semiconductor
+  11:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * All rights reserved.
+  12:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** *
+  13:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** ***********************************************************************
+  14:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * Software that is described herein is for illustrative purposes only
+  15:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * which provides customers with programming information regarding the
+  16:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * products. This software is supplied "AS IS" without any warranties.
+  17:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * NXP Semiconductors assumes no responsibility or liability for the
+  18:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * use of the software, conveys no license or title under any patent,
+  19:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * copyright, or mask work right to the product. NXP Semiconductors
+  20:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * reserves the right to make changes in the software without
+  21:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * notification. NXP Semiconductors also make no representation or
+  22:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * warranty that such application will be suitable for the specified
+  23:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * use without further testing or modification.
+  24:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * Permission to use, copy, modify, and distribute this software and its
+  25:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * documentation is hereby granted, under NXP Semiconductors'
+  26:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * relevant copyright in the software, without fee, provided that it
+  27:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * is used in conjunction with NXP Semiconductors microcontrollers.  This
+  28:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * copyright, permission, and disclaimer notice must appear in all copies of
+  29:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** * this code.
+  30:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** **********************************************************************/
+  31:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** #ifdef __BUILD_WITH_EXAMPLE__
+  32:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** #include "lpc177x_8x_libcfg.h"
+  33:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** #else
+  34:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** #include "lpc177x_8x_libcfg_default.h"
+  35:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** #endif /* __BUILD_WITH_EXAMPLE__ */
+  36:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** #ifdef _IAP
+  37:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** #include "lpc177x_8x_iap.h"
+  38:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** #include "lpc177x_8x_clkpwr.h"
+  39:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+  40:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** //  IAP Command
+  41:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** typedef void (*IAP)(uint32_t *cmd,uint32_t *result);
+  42:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** IAP iap_entry = (IAP) IAP_LOCATION;
+  43:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** #define IAP_Call    iap_entry
+  44:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+  45:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** /** @addtogroup IAP_Public_Functions LCD Public Function
+  46:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @ingroup IAP
+  47:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @{
+  48:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  */
+  49:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  
+  50:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+  51:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** /*********************************************************************//**
+  52:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @brief       Get Sector Number
+  53:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+  54:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[in] adr              Sector Address
+  55:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+  56:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @return  Sector Number.
+  57:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+  58:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  **********************************************************************/
+  59:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  uint32_t GetSecNum (uint32_t adr)
+  60:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** {
+  34              		.loc 1 60 0
+  35              		.cfi_startproc
+  36              		@ args = 0, pretend = 0, frame = 16
+  37              		@ frame_needed = 1, uses_anonymous_args = 0
+  38              		@ link register save eliminated.
+  39 0000 80B4     		push	{r7}
+  40              	.LCFI0:
+  41              		.cfi_def_cfa_offset 4
+  42              		.cfi_offset 7, -4
+  43 0002 85B0     		sub	sp, sp, #20
+  44              	.LCFI1:
+  45              		.cfi_def_cfa_offset 24
+  46 0004 00AF     		add	r7, sp, #0
+  47              	.LCFI2:
+  48              		.cfi_def_cfa_register 7
+  49 0006 7860     		str	r0, [r7, #4]
+  61:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     uint32_t n;
+  62:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+  63:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     n = adr >> 12;                               //  4kB Sector
+  50              		.loc 1 63 0
+  51 0008 7B68     		ldr	r3, [r7, #4]
+  52 000a 4FEA1333 		lsr	r3, r3, #12
+  53 000e FB60     		str	r3, [r7, #12]
+  64:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     if (n >= 0x10) {
+  54              		.loc 1 64 0
+  55 0010 FB68     		ldr	r3, [r7, #12]
+  56 0012 0F2B     		cmp	r3, #15
+  57 0014 05D9     		bls	.L2
+  65:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****       n = 0x0E + (n >> 3);                       // 32kB Sector
+  58              		.loc 1 65 0
+  59 0016 FB68     		ldr	r3, [r7, #12]
+  60 0018 4FEAD303 		lsr	r3, r3, #3
+  61 001c 03F10E03 		add	r3, r3, #14
+  62 0020 FB60     		str	r3, [r7, #12]
+  63              	.L2:
+  66:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     } 
+  67:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+  68:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     return (n);                                  // Sector Number
+  64              		.loc 1 68 0
+  65 0022 FB68     		ldr	r3, [r7, #12]
+  69:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** }
+  66              		.loc 1 69 0
+  67 0024 1846     		mov	r0, r3
+  68 0026 07F11407 		add	r7, r7, #20
+  69 002a BD46     		mov	sp, r7
+  70 002c 80BC     		pop	{r7}
+  71 002e 7047     		bx	lr
+  72              		.cfi_endproc
+  73              	.LFE55:
+  75              		.align	2
+  76              		.global	PrepareSector
+  77              		.thumb
+  78              		.thumb_func
+  80              	PrepareSector:
+  81              	.LFB56:
+  70:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+  71:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** /*********************************************************************//**
+  72:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @brief       Prepare sector(s) for write operation
+  73:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+  74:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[in] start_sec           The number of start sector
+  75:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[in] end_sec             The number of end sector
+  76:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+  77:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @return  CMD_SUCCESS/BUSY/INVALID_SECTOR.
+  78:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+  79:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  **********************************************************************/
+  80:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** IAP_STATUS_CODE PrepareSector(uint32_t start_sec, uint32_t end_sec)
+  81:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** {
+  82              		.loc 1 81 0
+  83              		.cfi_startproc
+  84              		@ args = 0, pretend = 0, frame = 48
+  85              		@ frame_needed = 1, uses_anonymous_args = 0
+  86 0030 80B5     		push	{r7, lr}
+  87              	.LCFI3:
+  88              		.cfi_def_cfa_offset 8
+  89              		.cfi_offset 7, -8
+  90              		.cfi_offset 14, -4
+  91 0032 8CB0     		sub	sp, sp, #48
+  92              	.LCFI4:
+  93              		.cfi_def_cfa_offset 56
+  94 0034 00AF     		add	r7, sp, #0
+  95              	.LCFI5:
+  96              		.cfi_def_cfa_register 7
+  97 0036 7860     		str	r0, [r7, #4]
+  98 0038 3960     		str	r1, [r7, #0]
+  82:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     IAP_COMMAND_Type command;
+  83:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     command.cmd    = IAP_PREPARE;                    // Prepare Sector for Write
+  99              		.loc 1 83 0
+ 100 003a 4FF03203 		mov	r3, #50
+ 101 003e BB60     		str	r3, [r7, #8]
+  84:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     command.param[0] = start_sec;                    // Start Sector
+ 102              		.loc 1 84 0
+ 103 0040 7B68     		ldr	r3, [r7, #4]
+ 104 0042 FB60     		str	r3, [r7, #12]
+  85:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     command.param[1] = end_sec;                      // End Sector
+ 105              		.loc 1 85 0
+ 106 0044 3B68     		ldr	r3, [r7, #0]
+ 107 0046 3B61     		str	r3, [r7, #16]
+  86:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     IAP_Call (&command.cmd, &command.status);        // Call IAP Command
+ 108              		.loc 1 86 0
+ 109 0048 084B     		ldr	r3, .L6
+ 110 004a 1B68     		ldr	r3, [r3, #0]
+ 111 004c 07F10801 		add	r1, r7, #8
+ 112 0050 07F10802 		add	r2, r7, #8
+ 113 0054 02F11402 		add	r2, r2, #20
+ 114 0058 0846     		mov	r0, r1
+ 115 005a 1146     		mov	r1, r2
+ 116 005c 9847     		blx	r3
+  87:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     return (IAP_STATUS_CODE)command.status;
+ 117              		.loc 1 87 0
+ 118 005e FB69     		ldr	r3, [r7, #28]
+ 119 0060 DBB2     		uxtb	r3, r3
+  88:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** }
+ 120              		.loc 1 88 0
+ 121 0062 1846     		mov	r0, r3
+ 122 0064 07F13007 		add	r7, r7, #48
+ 123 0068 BD46     		mov	sp, r7
+ 124 006a 80BD     		pop	{r7, pc}
+ 125              	.L7:
+ 126              		.align	2
+ 127              	.L6:
+ 128 006c 00000000 		.word	iap_entry
+ 129              		.cfi_endproc
+ 130              	.LFE56:
+ 132              		.align	2
+ 133              		.global	CopyRAM2Flash
+ 134              		.thumb
+ 135              		.thumb_func
+ 137              	CopyRAM2Flash:
+ 138              	.LFB57:
+  89:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+  90:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** /*********************************************************************//**
+  91:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @brief        Copy RAM to Flash
+  92:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+  93:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[in] dest            destination buffer (in Flash memory).
+  94:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[in] source       source buffer (in RAM).
+  95:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[in] size            the write size.
+  96:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+  97:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @return  CMD_SUCCESS.
+  98:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *                  SRC_ADDR_ERROR/DST_ADDR_ERROR
+  99:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *                  SRC_ADDR_NOT_MAPPED/DST_ADDR_NOT_MAPPED
+ 100:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *                  COUNT_ERROR/SECTOR_NOT_PREPARED_FOR_WRITE_OPERATION
+ 101:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *                  BUSY
+ 102:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 103:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  **********************************************************************/
+ 104:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** IAP_STATUS_CODE CopyRAM2Flash(uint8_t * dest, uint8_t* source, IAP_WRITE_SIZE size)
+ 105:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** {
+ 139              		.loc 1 105 0
+ 140              		.cfi_startproc
+ 141              		@ args = 0, pretend = 0, frame = 64
+ 142              		@ frame_needed = 1, uses_anonymous_args = 0
+ 143 0070 80B5     		push	{r7, lr}
+ 144              	.LCFI6:
+ 145              		.cfi_def_cfa_offset 8
+ 146              		.cfi_offset 7, -8
+ 147              		.cfi_offset 14, -4
+ 148 0072 90B0     		sub	sp, sp, #64
+ 149              	.LCFI7:
+ 150              		.cfi_def_cfa_offset 72
+ 151 0074 00AF     		add	r7, sp, #0
+ 152              	.LCFI8:
+ 153              		.cfi_def_cfa_register 7
+ 154 0076 F860     		str	r0, [r7, #12]
+ 155 0078 B960     		str	r1, [r7, #8]
+ 156 007a 1346     		mov	r3, r2
+ 157 007c FB80     		strh	r3, [r7, #6]	@ movhi
+ 106:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     uint32_t sec;
+ 107:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     IAP_STATUS_CODE status;
+ 108:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     IAP_COMMAND_Type command;
+ 109:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 110:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     // Prepare sectors
+ 111:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     sec = GetSecNum((uint32_t)dest);
+ 158              		.loc 1 111 0
+ 159 007e FB68     		ldr	r3, [r7, #12]
+ 160 0080 1846     		mov	r0, r3
+ 161 0082 FFF7FEFF 		bl	GetSecNum
+ 162 0086 F863     		str	r0, [r7, #60]
+ 112:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     status = PrepareSector(sec, sec);
+ 163              		.loc 1 112 0
+ 164 0088 F86B     		ldr	r0, [r7, #60]
+ 165 008a F96B     		ldr	r1, [r7, #60]
+ 166 008c FFF7FEFF 		bl	PrepareSector
+ 167 0090 0346     		mov	r3, r0
+ 168 0092 87F83B30 		strb	r3, [r7, #59]
+ 113:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     if(status != CMD_SUCCESS)
+ 169              		.loc 1 113 0
+ 170 0096 97F83B30 		ldrb	r3, [r7, #59]	@ zero_extendqisi2
+ 171 009a 002B     		cmp	r3, #0
+ 172 009c 02D0     		beq	.L9
+ 114:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****         return status;
+ 173              		.loc 1 114 0
+ 174 009e 97F83B30 		ldrb	r3, [r7, #59]	@ zero_extendqisi2
+ 175 00a2 20E0     		b	.L11
+ 176              	.L9:
+ 115:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    
+ 116:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     // write
+ 117:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     command.cmd    = IAP_COPY_RAM2FLASH;             // Copy RAM to Flash
+ 177              		.loc 1 117 0
+ 178 00a4 4FF03303 		mov	r3, #51
+ 179 00a8 3B61     		str	r3, [r7, #16]
+ 118:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     command.param[0] = (uint32_t)dest;                 // Destination Flash Address
+ 180              		.loc 1 118 0
+ 181 00aa FB68     		ldr	r3, [r7, #12]
+ 182 00ac 7B61     		str	r3, [r7, #20]
+ 119:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     command.param[1] = (uint32_t)source;               // Source RAM Address
+ 183              		.loc 1 119 0
+ 184 00ae BB68     		ldr	r3, [r7, #8]
+ 185 00b0 BB61     		str	r3, [r7, #24]
+ 120:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     command.param[2] =  size;                          // Number of bytes
+ 186              		.loc 1 120 0
+ 187 00b2 FB88     		ldrh	r3, [r7, #6]
+ 188 00b4 FB61     		str	r3, [r7, #28]
+ 121:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     command.param[3] =  CLKPWR_GetCLK(CLKPWR_CLKTYPE_CPU) / 1000;         // CCLK in kHz
+ 189              		.loc 1 121 0
+ 190 00b6 4FF00000 		mov	r0, #0
+ 191 00ba FFF7FEFF 		bl	CLKPWR_GetCLK
+ 192 00be 0246     		mov	r2, r0
+ 193 00c0 0B4B     		ldr	r3, .L12
+ 194 00c2 A3FB0213 		umull	r1, r3, r3, r2
+ 195 00c6 4FEA9313 		lsr	r3, r3, #6
+ 196 00ca 3B62     		str	r3, [r7, #32]
+ 122:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     IAP_Call (&command.cmd, &command.status);              // Call IAP Command
+ 197              		.loc 1 122 0
+ 198 00cc 094B     		ldr	r3, .L12+4
+ 199 00ce 1B68     		ldr	r3, [r3, #0]
+ 200 00d0 07F11001 		add	r1, r7, #16
+ 201 00d4 07F11002 		add	r2, r7, #16
+ 202 00d8 02F11402 		add	r2, r2, #20
+ 203 00dc 0846     		mov	r0, r1
+ 204 00de 1146     		mov	r1, r2
+ 205 00e0 9847     		blx	r3
+ 123:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****       
+ 124:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     return (IAP_STATUS_CODE)command.status;             // Finished without Errors    
+ 206              		.loc 1 124 0
+ 207 00e2 7B6A     		ldr	r3, [r7, #36]
+ 208 00e4 DBB2     		uxtb	r3, r3
+ 209              	.L11:
+ 125:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** }
+ 210              		.loc 1 125 0
+ 211 00e6 1846     		mov	r0, r3
+ 212 00e8 07F14007 		add	r7, r7, #64
+ 213 00ec BD46     		mov	sp, r7
+ 214 00ee 80BD     		pop	{r7, pc}
+ 215              	.L13:
+ 216              		.align	2
+ 217              	.L12:
+ 218 00f0 D34D6210 		.word	274877907
+ 219 00f4 00000000 		.word	iap_entry
+ 220              		.cfi_endproc
+ 221              	.LFE57:
+ 223              		.align	2
+ 224              		.global	EraseSector
+ 225              		.thumb
+ 226              		.thumb_func
+ 228              	EraseSector:
+ 229              	.LFB58:
+ 126:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 127:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** /*********************************************************************//**
+ 128:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @brief        Erase sector(s)
+ 129:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 130:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[in] start_sec    The number of start sector
+ 131:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[in] end_sec      The number of end sector
+ 132:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 133:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @return  CMD_SUCCESS.
+ 134:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *                  INVALID_SECTOR
+ 135:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *                  SECTOR_NOT_PREPARED_FOR_WRITE_OPERATION
+ 136:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *                  BUSY
+ 137:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 138:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  **********************************************************************/
+ 139:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** IAP_STATUS_CODE EraseSector(uint32_t start_sec, uint32_t end_sec)
+ 140:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** {
+ 230              		.loc 1 140 0
+ 231              		.cfi_startproc
+ 232              		@ args = 0, pretend = 0, frame = 56
+ 233              		@ frame_needed = 1, uses_anonymous_args = 0
+ 234 00f8 80B5     		push	{r7, lr}
+ 235              	.LCFI9:
+ 236              		.cfi_def_cfa_offset 8
+ 237              		.cfi_offset 7, -8
+ 238              		.cfi_offset 14, -4
+ 239 00fa 8EB0     		sub	sp, sp, #56
+ 240              	.LCFI10:
+ 241              		.cfi_def_cfa_offset 64
+ 242 00fc 00AF     		add	r7, sp, #0
+ 243              	.LCFI11:
+ 244              		.cfi_def_cfa_register 7
+ 245 00fe 7860     		str	r0, [r7, #4]
+ 246 0100 3960     		str	r1, [r7, #0]
+ 141:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     IAP_COMMAND_Type command;
+ 142:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     IAP_STATUS_CODE status;
+ 143:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 144:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     // Prepare sectors
+ 145:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     status = PrepareSector(start_sec, end_sec);
+ 247              		.loc 1 145 0
+ 248 0102 7868     		ldr	r0, [r7, #4]
+ 249 0104 3968     		ldr	r1, [r7, #0]
+ 250 0106 FFF7FEFF 		bl	PrepareSector
+ 251 010a 0346     		mov	r3, r0
+ 252 010c 87F83730 		strb	r3, [r7, #55]
+ 146:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     if(status != CMD_SUCCESS)
+ 253              		.loc 1 146 0
+ 254 0110 97F83730 		ldrb	r3, [r7, #55]	@ zero_extendqisi2
+ 255 0114 002B     		cmp	r3, #0
+ 256 0116 02D0     		beq	.L15
+ 147:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****         return status;
+ 257              		.loc 1 147 0
+ 258 0118 97F83730 		ldrb	r3, [r7, #55]	@ zero_extendqisi2
+ 259 011c 1EE0     		b	.L17
+ 260              	.L15:
+ 148:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 149:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     // Erase sectors
+ 150:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     command.cmd    = IAP_ERASE;                    // Prepare Sector for Write
+ 261              		.loc 1 150 0
+ 262 011e 4FF03403 		mov	r3, #52
+ 263 0122 FB60     		str	r3, [r7, #12]
+ 151:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     command.param[0] = start_sec;                  // Start Sector
+ 264              		.loc 1 151 0
+ 265 0124 7B68     		ldr	r3, [r7, #4]
+ 266 0126 3B61     		str	r3, [r7, #16]
+ 152:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     command.param[1] = end_sec;                    // End Sector
+ 267              		.loc 1 152 0
+ 268 0128 3B68     		ldr	r3, [r7, #0]
+ 269 012a 7B61     		str	r3, [r7, #20]
+ 153:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     command.param[2] =  CLKPWR_GetCLK(CLKPWR_CLKTYPE_CPU) / 1000;         // CCLK in kHz
+ 270              		.loc 1 153 0
+ 271 012c 4FF00000 		mov	r0, #0
+ 272 0130 FFF7FEFF 		bl	CLKPWR_GetCLK
+ 273 0134 0246     		mov	r2, r0
+ 274 0136 0C4B     		ldr	r3, .L18
+ 275 0138 A3FB0213 		umull	r1, r3, r3, r2
+ 276 013c 4FEA9313 		lsr	r3, r3, #6
+ 277 0140 BB61     		str	r3, [r7, #24]
+ 154:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     IAP_Call (&command.cmd, &command.status);      // Call IAP Command
+ 278              		.loc 1 154 0
+ 279 0142 0A4B     		ldr	r3, .L18+4
+ 280 0144 1B68     		ldr	r3, [r3, #0]
+ 281 0146 07F10C01 		add	r1, r7, #12
+ 282 014a 07F10C02 		add	r2, r7, #12
+ 283 014e 02F11402 		add	r2, r2, #20
+ 284 0152 0846     		mov	r0, r1
+ 285 0154 1146     		mov	r1, r2
+ 286 0156 9847     		blx	r3
+ 155:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     return (IAP_STATUS_CODE)command.status;  
+ 287              		.loc 1 155 0
+ 288 0158 3B6A     		ldr	r3, [r7, #32]
+ 289 015a DBB2     		uxtb	r3, r3
+ 290              	.L17:
+ 156:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** }
+ 291              		.loc 1 156 0
+ 292 015c 1846     		mov	r0, r3
+ 293 015e 07F13807 		add	r7, r7, #56
+ 294 0162 BD46     		mov	sp, r7
+ 295 0164 80BD     		pop	{r7, pc}
+ 296              	.L19:
+ 297 0166 00BF     		.align	2
+ 298              	.L18:
+ 299 0168 D34D6210 		.word	274877907
+ 300 016c 00000000 		.word	iap_entry
+ 301              		.cfi_endproc
+ 302              	.LFE58:
+ 304              		.align	2
+ 305              		.global	BlankCheckSector
+ 306              		.thumb
+ 307              		.thumb_func
+ 309              	BlankCheckSector:
+ 310              	.LFB59:
+ 157:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 158:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** /*********************************************************************//**
+ 159:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @brief         Blank check sector(s)
+ 160:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 161:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[in] start_sec    The number of start sector
+ 162:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[in] end_sec      The number of end sector
+ 163:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[out] first_nblank_loc  The offset of the first non-blank word
+ 164:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****   * @param[out] first_nblank_val  The value of the first non-blank word
+ 165:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 166:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @return  CMD_SUCCESS.
+ 167:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *                  INVALID_SECTOR
+ 168:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *                  SECTOR_NOT_BLANK
+ 169:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *                  BUSY
+ 170:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 171:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  **********************************************************************/
+ 172:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** IAP_STATUS_CODE BlankCheckSector(uint32_t start_sec, uint32_t end_sec,
+ 173:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****                                  uint32_t *first_nblank_loc, 
+ 174:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****                                  uint32_t *first_nblank_val)
+ 175:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** {
+ 311              		.loc 1 175 0
+ 312              		.cfi_startproc
+ 313              		@ args = 0, pretend = 0, frame = 56
+ 314              		@ frame_needed = 1, uses_anonymous_args = 0
+ 315 0170 80B5     		push	{r7, lr}
+ 316              	.LCFI12:
+ 317              		.cfi_def_cfa_offset 8
+ 318              		.cfi_offset 7, -8
+ 319              		.cfi_offset 14, -4
+ 320 0172 8EB0     		sub	sp, sp, #56
+ 321              	.LCFI13:
+ 322              		.cfi_def_cfa_offset 64
+ 323 0174 00AF     		add	r7, sp, #0
+ 324              	.LCFI14:
+ 325              		.cfi_def_cfa_register 7
+ 326 0176 F860     		str	r0, [r7, #12]
+ 327 0178 B960     		str	r1, [r7, #8]
+ 328 017a 7A60     		str	r2, [r7, #4]
+ 329 017c 3B60     		str	r3, [r7, #0]
+ 176:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     IAP_COMMAND_Type command;
+ 177:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     
+ 178:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     command.cmd    = IAP_BLANK_CHECK;                // Prepare Sector for Write
+ 330              		.loc 1 178 0
+ 331 017e 4FF03503 		mov	r3, #53
+ 332 0182 3B61     		str	r3, [r7, #16]
+ 179:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     command.param[0] = start_sec;                    // Start Sector
+ 333              		.loc 1 179 0
+ 334 0184 FB68     		ldr	r3, [r7, #12]
+ 335 0186 7B61     		str	r3, [r7, #20]
+ 180:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     command.param[1] = end_sec;                      // End Sector
+ 336              		.loc 1 180 0
+ 337 0188 BB68     		ldr	r3, [r7, #8]
+ 338 018a BB61     		str	r3, [r7, #24]
+ 181:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     IAP_Call (&command.cmd, &command.status);        // Call IAP Command
+ 339              		.loc 1 181 0
+ 340 018c 104B     		ldr	r3, .L24
+ 341 018e 1B68     		ldr	r3, [r3, #0]
+ 342 0190 07F11001 		add	r1, r7, #16
+ 343 0194 07F11002 		add	r2, r7, #16
+ 344 0198 02F11402 		add	r2, r2, #20
+ 345 019c 0846     		mov	r0, r1
+ 346 019e 1146     		mov	r1, r2
+ 347 01a0 9847     		blx	r3
+ 182:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 183:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     if(command.status == SECTOR_NOT_BLANK)
+ 348              		.loc 1 183 0
+ 349 01a2 7B6A     		ldr	r3, [r7, #36]
+ 350 01a4 082B     		cmp	r3, #8
+ 351 01a6 0BD1     		bne	.L21
+ 184:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     {
+ 185:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****       // Update out value
+ 186:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****       if(first_nblank_loc != NULL)
+ 352              		.loc 1 186 0
+ 353 01a8 7B68     		ldr	r3, [r7, #4]
+ 354 01aa 002B     		cmp	r3, #0
+ 355 01ac 02D0     		beq	.L22
+ 187:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****           *first_nblank_loc =  command.result[0];
+ 356              		.loc 1 187 0
+ 357 01ae BA6A     		ldr	r2, [r7, #40]
+ 358 01b0 7B68     		ldr	r3, [r7, #4]
+ 359 01b2 1A60     		str	r2, [r3, #0]
+ 360              	.L22:
+ 188:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****       if(first_nblank_val != NULL)
+ 361              		.loc 1 188 0
+ 362 01b4 3B68     		ldr	r3, [r7, #0]
+ 363 01b6 002B     		cmp	r3, #0
+ 364 01b8 02D0     		beq	.L21
+ 189:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****           *first_nblank_val =  command.result[1];
+ 365              		.loc 1 189 0
+ 366 01ba FA6A     		ldr	r2, [r7, #44]
+ 367 01bc 3B68     		ldr	r3, [r7, #0]
+ 368 01be 1A60     		str	r2, [r3, #0]
+ 369              	.L21:
+ 190:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     }
+ 191:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 192:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****     return (IAP_STATUS_CODE)command.status;
+ 370              		.loc 1 192 0
+ 371 01c0 7B6A     		ldr	r3, [r7, #36]
+ 372 01c2 DBB2     		uxtb	r3, r3
+ 193:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** }
+ 373              		.loc 1 193 0
+ 374 01c4 1846     		mov	r0, r3
+ 375 01c6 07F13807 		add	r7, r7, #56
+ 376 01ca BD46     		mov	sp, r7
+ 377 01cc 80BD     		pop	{r7, pc}
+ 378              	.L25:
+ 379 01ce 00BF     		.align	2
+ 380              	.L24:
+ 381 01d0 00000000 		.word	iap_entry
+ 382              		.cfi_endproc
+ 383              	.LFE59:
+ 385              		.align	2
+ 386              		.global	ReadPartID
+ 387              		.thumb
+ 388              		.thumb_func
+ 390              	ReadPartID:
+ 391              	.LFB60:
+ 194:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 195:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** /*********************************************************************//**
+ 196:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @brief          Read part identification number
+ 197:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 198:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[out] partID  Part ID
+ 199:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 200:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @return  CMD_SUCCESS
+ 201:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 202:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  **********************************************************************/
+ 203:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** IAP_STATUS_CODE ReadPartID(uint32_t *partID)
+ 204:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** {
+ 392              		.loc 1 204 0
+ 393              		.cfi_startproc
+ 394              		@ args = 0, pretend = 0, frame = 48
+ 395              		@ frame_needed = 1, uses_anonymous_args = 0
+ 396 01d4 80B5     		push	{r7, lr}
+ 397              	.LCFI15:
+ 398              		.cfi_def_cfa_offset 8
+ 399              		.cfi_offset 7, -8
+ 400              		.cfi_offset 14, -4
+ 401 01d6 8CB0     		sub	sp, sp, #48
+ 402              	.LCFI16:
+ 403              		.cfi_def_cfa_offset 56
+ 404 01d8 00AF     		add	r7, sp, #0
+ 405              	.LCFI17:
+ 406              		.cfi_def_cfa_register 7
+ 407 01da 7860     		str	r0, [r7, #4]
+ 205:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    IAP_COMMAND_Type command;
+ 206:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    command.cmd = IAP_READ_PART_ID;
+ 408              		.loc 1 206 0
+ 409 01dc 4FF03603 		mov	r3, #54
+ 410 01e0 BB60     		str	r3, [r7, #8]
+ 207:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    IAP_Call (&command.cmd, &command.status);        // Call IAP Command
+ 411              		.loc 1 207 0
+ 412 01e2 0D4B     		ldr	r3, .L29
+ 413 01e4 1B68     		ldr	r3, [r3, #0]
+ 414 01e6 07F10801 		add	r1, r7, #8
+ 415 01ea 07F10802 		add	r2, r7, #8
+ 416 01ee 02F11402 		add	r2, r2, #20
+ 417 01f2 0846     		mov	r0, r1
+ 418 01f4 1146     		mov	r1, r2
+ 419 01f6 9847     		blx	r3
+ 208:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 209:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    if(command.status == CMD_SUCCESS)
+ 420              		.loc 1 209 0
+ 421 01f8 FB69     		ldr	r3, [r7, #28]
+ 422 01fa 002B     		cmp	r3, #0
+ 423 01fc 05D1     		bne	.L27
+ 210:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    {
+ 211:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****       if(partID != NULL)
+ 424              		.loc 1 211 0
+ 425 01fe 7B68     		ldr	r3, [r7, #4]
+ 426 0200 002B     		cmp	r3, #0
+ 427 0202 02D0     		beq	.L27
+ 212:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****          *partID = command.result[0];
+ 428              		.loc 1 212 0
+ 429 0204 3A6A     		ldr	r2, [r7, #32]
+ 430 0206 7B68     		ldr	r3, [r7, #4]
+ 431 0208 1A60     		str	r2, [r3, #0]
+ 432              	.L27:
+ 213:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    }
+ 214:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 215:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    return (IAP_STATUS_CODE)command.status;
+ 433              		.loc 1 215 0
+ 434 020a FB69     		ldr	r3, [r7, #28]
+ 435 020c DBB2     		uxtb	r3, r3
+ 216:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** }
+ 436              		.loc 1 216 0
+ 437 020e 1846     		mov	r0, r3
+ 438 0210 07F13007 		add	r7, r7, #48
+ 439 0214 BD46     		mov	sp, r7
+ 440 0216 80BD     		pop	{r7, pc}
+ 441              	.L30:
+ 442              		.align	2
+ 443              	.L29:
+ 444 0218 00000000 		.word	iap_entry
+ 445              		.cfi_endproc
+ 446              	.LFE60:
+ 448              		.align	2
+ 449              		.global	ReadBootCodeVer
+ 450              		.thumb
+ 451              		.thumb_func
+ 453              	ReadBootCodeVer:
+ 454              	.LFB61:
+ 217:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 218:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** /*********************************************************************//**
+ 219:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @brief          Read boot code version. The version is interpreted as <major>.<minor>.
+ 220:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 221:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[out] major  The major
+ 222:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[out] minor  The minor
+ 223:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 224:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @return  CMD_SUCCESS
+ 225:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 226:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  **********************************************************************/
+ 227:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** IAP_STATUS_CODE ReadBootCodeVer(uint8_t *major, uint8_t* minor)
+ 228:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** {
+ 455              		.loc 1 228 0
+ 456              		.cfi_startproc
+ 457              		@ args = 0, pretend = 0, frame = 48
+ 458              		@ frame_needed = 1, uses_anonymous_args = 0
+ 459 021c 80B5     		push	{r7, lr}
+ 460              	.LCFI18:
+ 461              		.cfi_def_cfa_offset 8
+ 462              		.cfi_offset 7, -8
+ 463              		.cfi_offset 14, -4
+ 464 021e 8CB0     		sub	sp, sp, #48
+ 465              	.LCFI19:
+ 466              		.cfi_def_cfa_offset 56
+ 467 0220 00AF     		add	r7, sp, #0
+ 468              	.LCFI20:
+ 469              		.cfi_def_cfa_register 7
+ 470 0222 7860     		str	r0, [r7, #4]
+ 471 0224 3960     		str	r1, [r7, #0]
+ 229:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    IAP_COMMAND_Type command;
+ 230:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    command.cmd = IAP_READ_BOOT_VER;
+ 472              		.loc 1 230 0
+ 473 0226 4FF03703 		mov	r3, #55
+ 474 022a BB60     		str	r3, [r7, #8]
+ 231:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    IAP_Call (&command.cmd, &command.status);        // Call IAP Command
+ 475              		.loc 1 231 0
+ 476 022c 124B     		ldr	r3, .L35
+ 477 022e 1B68     		ldr	r3, [r3, #0]
+ 478 0230 07F10801 		add	r1, r7, #8
+ 479 0234 07F10802 		add	r2, r7, #8
+ 480 0238 02F11402 		add	r2, r2, #20
+ 481 023c 0846     		mov	r0, r1
+ 482 023e 1146     		mov	r1, r2
+ 483 0240 9847     		blx	r3
+ 232:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 233:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    if(command.status == CMD_SUCCESS)
+ 484              		.loc 1 233 0
+ 485 0242 FB69     		ldr	r3, [r7, #28]
+ 486 0244 002B     		cmp	r3, #0
+ 487 0246 0FD1     		bne	.L32
+ 234:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    {
+ 235:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****       if(major != NULL)
+ 488              		.loc 1 235 0
+ 489 0248 7B68     		ldr	r3, [r7, #4]
+ 490 024a 002B     		cmp	r3, #0
+ 491 024c 05D0     		beq	.L33
+ 236:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****          *major = (command.result[0] >> 8) & 0xFF;
+ 492              		.loc 1 236 0
+ 493 024e 3B6A     		ldr	r3, [r7, #32]
+ 494 0250 4FEA1323 		lsr	r3, r3, #8
+ 495 0254 DAB2     		uxtb	r2, r3
+ 496 0256 7B68     		ldr	r3, [r7, #4]
+ 497 0258 1A70     		strb	r2, [r3, #0]
+ 498              	.L33:
+ 237:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****       if(minor != NULL)
+ 499              		.loc 1 237 0
+ 500 025a 3B68     		ldr	r3, [r7, #0]
+ 501 025c 002B     		cmp	r3, #0
+ 502 025e 03D0     		beq	.L32
+ 238:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****          *minor = (command.result[0]) & 0xFF;
+ 503              		.loc 1 238 0
+ 504 0260 3B6A     		ldr	r3, [r7, #32]
+ 505 0262 DAB2     		uxtb	r2, r3
+ 506 0264 3B68     		ldr	r3, [r7, #0]
+ 507 0266 1A70     		strb	r2, [r3, #0]
+ 508              	.L32:
+ 239:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    }
+ 240:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 241:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    return (IAP_STATUS_CODE)command.status;
+ 509              		.loc 1 241 0
+ 510 0268 FB69     		ldr	r3, [r7, #28]
+ 511 026a DBB2     		uxtb	r3, r3
+ 242:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** }
+ 512              		.loc 1 242 0
+ 513 026c 1846     		mov	r0, r3
+ 514 026e 07F13007 		add	r7, r7, #48
+ 515 0272 BD46     		mov	sp, r7
+ 516 0274 80BD     		pop	{r7, pc}
+ 517              	.L36:
+ 518 0276 00BF     		.align	2
+ 519              	.L35:
+ 520 0278 00000000 		.word	iap_entry
+ 521              		.cfi_endproc
+ 522              	.LFE61:
+ 524              		.align	2
+ 525              		.global	ReadDeviceSerialNum
+ 526              		.thumb
+ 527              		.thumb_func
+ 529              	ReadDeviceSerialNum:
+ 530              	.LFB62:
+ 243:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 244:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** /*********************************************************************//**
+ 245:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @brief          Read Device serial number.
+ 246:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 247:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[out] uid   Serial number.
+ 248:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 249:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @return  CMD_SUCCESS
+ 250:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 251:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  **********************************************************************/
+ 252:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** IAP_STATUS_CODE ReadDeviceSerialNum(uint32_t *uid)
+ 253:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** {
+ 531              		.loc 1 253 0
+ 532              		.cfi_startproc
+ 533              		@ args = 0, pretend = 0, frame = 56
+ 534              		@ frame_needed = 1, uses_anonymous_args = 0
+ 535 027c 80B5     		push	{r7, lr}
+ 536              	.LCFI21:
+ 537              		.cfi_def_cfa_offset 8
+ 538              		.cfi_offset 7, -8
+ 539              		.cfi_offset 14, -4
+ 540 027e 8EB0     		sub	sp, sp, #56
+ 541              	.LCFI22:
+ 542              		.cfi_def_cfa_offset 64
+ 543 0280 00AF     		add	r7, sp, #0
+ 544              	.LCFI23:
+ 545              		.cfi_def_cfa_register 7
+ 546 0282 7860     		str	r0, [r7, #4]
+ 254:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    IAP_COMMAND_Type command;
+ 255:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    command.cmd = IAP_READ_SERIAL_NUMBER;
+ 547              		.loc 1 255 0
+ 548 0284 4FF03A03 		mov	r3, #58
+ 549 0288 FB60     		str	r3, [r7, #12]
+ 256:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    IAP_Call (&command.cmd, &command.status);        // Call IAP Command
+ 550              		.loc 1 256 0
+ 551 028a 1B4B     		ldr	r3, .L42
+ 552 028c 1B68     		ldr	r3, [r3, #0]
+ 553 028e 07F10C01 		add	r1, r7, #12
+ 554 0292 07F10C02 		add	r2, r7, #12
+ 555 0296 02F11402 		add	r2, r2, #20
+ 556 029a 0846     		mov	r0, r1
+ 557 029c 1146     		mov	r1, r2
+ 558 029e 9847     		blx	r3
+ 257:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 258:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    if(command.status == CMD_SUCCESS)
+ 559              		.loc 1 258 0
+ 560 02a0 3B6A     		ldr	r3, [r7, #32]
+ 561 02a2 002B     		cmp	r3, #0
+ 562 02a4 20D1     		bne	.L38
+ 259:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    {
+ 260:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****       if(uid != NULL)
+ 563              		.loc 1 260 0
+ 564 02a6 7B68     		ldr	r3, [r7, #4]
+ 565 02a8 002B     		cmp	r3, #0
+ 566 02aa 1DD0     		beq	.L38
+ 567              	.LBB2:
+ 261:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****       {
+ 262:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****         uint32_t i = 0;
+ 568              		.loc 1 262 0
+ 569 02ac 4FF00003 		mov	r3, #0
+ 570 02b0 7B63     		str	r3, [r7, #52]
+ 263:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****         for(i = 0; i < 4; i++)
+ 571              		.loc 1 263 0
+ 572 02b2 4FF00003 		mov	r3, #0
+ 573 02b6 7B63     		str	r3, [r7, #52]
+ 574 02b8 13E0     		b	.L39
+ 575              	.L40:
+ 264:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****            uid[i] =  command.result[i];
+ 576              		.loc 1 264 0 discriminator 2
+ 577 02ba 7B6B     		ldr	r3, [r7, #52]
+ 578 02bc 4FEA8303 		lsl	r3, r3, #2
+ 579 02c0 7A68     		ldr	r2, [r7, #4]
+ 580 02c2 D218     		adds	r2, r2, r3
+ 581 02c4 7B6B     		ldr	r3, [r7, #52]
+ 582 02c6 03F10603 		add	r3, r3, #6
+ 583 02ca 4FEA8303 		lsl	r3, r3, #2
+ 584 02ce 07F13801 		add	r1, r7, #56
+ 585 02d2 CB18     		adds	r3, r1, r3
+ 586 02d4 53F82C3C 		ldr	r3, [r3, #-44]
+ 587 02d8 1360     		str	r3, [r2, #0]
+ 263:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****         for(i = 0; i < 4; i++)
+ 588              		.loc 1 263 0 discriminator 2
+ 589 02da 7B6B     		ldr	r3, [r7, #52]
+ 590 02dc 03F10103 		add	r3, r3, #1
+ 591 02e0 7B63     		str	r3, [r7, #52]
+ 592              	.L39:
+ 263:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****         for(i = 0; i < 4; i++)
+ 593              		.loc 1 263 0 is_stmt 0 discriminator 1
+ 594 02e2 7B6B     		ldr	r3, [r7, #52]
+ 595 02e4 032B     		cmp	r3, #3
+ 596 02e6 E8D9     		bls	.L40
+ 597              	.L38:
+ 598              	.LBE2:
+ 265:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****       }
+ 266:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    }
+ 267:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 268:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    return (IAP_STATUS_CODE)command.status;
+ 599              		.loc 1 268 0 is_stmt 1
+ 600 02e8 3B6A     		ldr	r3, [r7, #32]
+ 601 02ea DBB2     		uxtb	r3, r3
+ 269:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** }
+ 602              		.loc 1 269 0
+ 603 02ec 1846     		mov	r0, r3
+ 604 02ee 07F13807 		add	r7, r7, #56
+ 605 02f2 BD46     		mov	sp, r7
+ 606 02f4 80BD     		pop	{r7, pc}
+ 607              	.L43:
+ 608 02f6 00BF     		.align	2
+ 609              	.L42:
+ 610 02f8 00000000 		.word	iap_entry
+ 611              		.cfi_endproc
+ 612              	.LFE62:
+ 614              		.align	2
+ 615              		.global	Compare
+ 616              		.thumb
+ 617              		.thumb_func
+ 619              	Compare:
+ 620              	.LFB63:
+ 270:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 271:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** /*********************************************************************//**
+ 272:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @brief          compare the memory contents at two locations.
+ 273:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 274:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[in] addr1   The address of the 1st buffer (in RAM/Flash).
+ 275:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[in] addr2   The address of the 2nd buffer (in RAM/Flash).
+ 276:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[in] size      Number of bytes to be compared; should be a multiple of 4.
+ 277:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 278:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @return  CMD_SUCCESS
+ 279:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *                  COMPARE_ERROR
+ 280:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *                  COUNT_ERROR (Byte count is not a multiple of 4)
+ 281:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *                  ADDR_ERROR
+ 282:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *                  ADDR_NOT_MAPPED
+ 283:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 284:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  **********************************************************************/
+ 285:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** IAP_STATUS_CODE Compare(uint8_t *addr1, uint8_t *addr2, uint32_t size)
+ 286:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** {
+ 621              		.loc 1 286 0
+ 622              		.cfi_startproc
+ 623              		@ args = 0, pretend = 0, frame = 56
+ 624              		@ frame_needed = 1, uses_anonymous_args = 0
+ 625 02fc 80B5     		push	{r7, lr}
+ 626              	.LCFI24:
+ 627              		.cfi_def_cfa_offset 8
+ 628              		.cfi_offset 7, -8
+ 629              		.cfi_offset 14, -4
+ 630 02fe 8EB0     		sub	sp, sp, #56
+ 631              	.LCFI25:
+ 632              		.cfi_def_cfa_offset 64
+ 633 0300 00AF     		add	r7, sp, #0
+ 634              	.LCFI26:
+ 635              		.cfi_def_cfa_register 7
+ 636 0302 F860     		str	r0, [r7, #12]
+ 637 0304 B960     		str	r1, [r7, #8]
+ 638 0306 7A60     		str	r2, [r7, #4]
+ 287:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    IAP_COMMAND_Type command;
+ 288:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    command.cmd = IAP_COMPARE;
+ 639              		.loc 1 288 0
+ 640 0308 4FF03803 		mov	r3, #56
+ 641 030c 3B61     		str	r3, [r7, #16]
+ 289:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    command.param[0] = (uint32_t)addr1;
+ 642              		.loc 1 289 0
+ 643 030e FB68     		ldr	r3, [r7, #12]
+ 644 0310 7B61     		str	r3, [r7, #20]
+ 290:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    command.param[1] = (uint32_t)addr2;
+ 645              		.loc 1 290 0
+ 646 0312 BB68     		ldr	r3, [r7, #8]
+ 647 0314 BB61     		str	r3, [r7, #24]
+ 291:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    command.param[2] = size;
+ 648              		.loc 1 291 0
+ 649 0316 7B68     		ldr	r3, [r7, #4]
+ 650 0318 FB61     		str	r3, [r7, #28]
+ 292:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    IAP_Call (&command.cmd, &command.status);        // Call IAP Command
+ 651              		.loc 1 292 0
+ 652 031a 094B     		ldr	r3, .L46
+ 653 031c 1B68     		ldr	r3, [r3, #0]
+ 654 031e 07F11001 		add	r1, r7, #16
+ 655 0322 07F11002 		add	r2, r7, #16
+ 656 0326 02F11402 		add	r2, r2, #20
+ 657 032a 0846     		mov	r0, r1
+ 658 032c 1146     		mov	r1, r2
+ 659 032e 9847     		blx	r3
+ 293:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 294:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    return (IAP_STATUS_CODE)command.status;
+ 660              		.loc 1 294 0
+ 661 0330 7B6A     		ldr	r3, [r7, #36]
+ 662 0332 DBB2     		uxtb	r3, r3
+ 295:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** }
+ 663              		.loc 1 295 0
+ 664 0334 1846     		mov	r0, r3
+ 665 0336 07F13807 		add	r7, r7, #56
+ 666 033a BD46     		mov	sp, r7
+ 667 033c 80BD     		pop	{r7, pc}
+ 668              	.L47:
+ 669 033e 00BF     		.align	2
+ 670              	.L46:
+ 671 0340 00000000 		.word	iap_entry
+ 672              		.cfi_endproc
+ 673              	.LFE63:
+ 675              		.align	2
+ 676              		.global	InvokeISP
+ 677              		.thumb
+ 678              		.thumb_func
+ 680              	InvokeISP:
+ 681              	.LFB64:
+ 296:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** 
+ 297:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** /*********************************************************************//**
+ 298:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @brief          Re-invoke ISP.
+ 299:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 300:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @param[in] None.
+ 301:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 302:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  * @return  None.
+ 303:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  *
+ 304:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****  **********************************************************************/
+ 305:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** void InvokeISP(void)
+ 306:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** {
+ 682              		.loc 1 306 0
+ 683              		.cfi_startproc
+ 684              		@ args = 0, pretend = 0, frame = 40
+ 685              		@ frame_needed = 1, uses_anonymous_args = 0
+ 686 0344 80B5     		push	{r7, lr}
+ 687              	.LCFI27:
+ 688              		.cfi_def_cfa_offset 8
+ 689              		.cfi_offset 7, -8
+ 690              		.cfi_offset 14, -4
+ 691 0346 8AB0     		sub	sp, sp, #40
+ 692              	.LCFI28:
+ 693              		.cfi_def_cfa_offset 48
+ 694 0348 00AF     		add	r7, sp, #0
+ 695              	.LCFI29:
+ 696              		.cfi_def_cfa_register 7
+ 307:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    IAP_COMMAND_Type command;
+ 308:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    command.cmd = IAP_REINVOKE_ISP;
+ 697              		.loc 1 308 0
+ 698 034a 4FF03903 		mov	r3, #57
+ 699 034e 3B60     		str	r3, [r7, #0]
+ 309:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c ****    IAP_Call (&command.cmd, &command.status);        // Call IAP Command
+ 700              		.loc 1 309 0
+ 701 0350 064B     		ldr	r3, .L49
+ 702 0352 1B68     		ldr	r3, [r3, #0]
+ 703 0354 3946     		mov	r1, r7
+ 704 0356 3A46     		mov	r2, r7
+ 705 0358 02F11402 		add	r2, r2, #20
+ 706 035c 0846     		mov	r0, r1
+ 707 035e 1146     		mov	r1, r2
+ 708 0360 9847     		blx	r3
+ 310:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.c **** }
+ 709              		.loc 1 310 0
+ 710 0362 07F12807 		add	r7, r7, #40
+ 711 0366 BD46     		mov	sp, r7
+ 712 0368 80BD     		pop	{r7, pc}
+ 713              	.L50:
+ 714 036a 00BF     		.align	2
+ 715              	.L49:
+ 716 036c 00000000 		.word	iap_entry
+ 717              		.cfi_endproc
+ 718              	.LFE64:
+ 720              	.Letext0:
+ 721              		.file 2 "g:\\program files\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/gcc/ar
+ 722              		.file 3 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Drivers\\include/lpc177x_8x_iap.h"
+ 723              		.file 4 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Core\\CMSIS\\Include/core_cm3.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 lpc177x_8x_iap.c
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:23     .data:00000000 iap_entry
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:20     .data:00000000 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:26     .text:00000000 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:31     .text:00000000 GetSecNum
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:80     .text:00000030 PrepareSector
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:128    .text:0000006c $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:132    .text:00000070 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:137    .text:00000070 CopyRAM2Flash
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:218    .text:000000f0 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:223    .text:000000f8 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:228    .text:000000f8 EraseSector
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:299    .text:00000168 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:304    .text:00000170 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:309    .text:00000170 BlankCheckSector
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:381    .text:000001d0 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:385    .text:000001d4 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:390    .text:000001d4 ReadPartID
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:444    .text:00000218 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:448    .text:0000021c $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:453    .text:0000021c ReadBootCodeVer
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:520    .text:00000278 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:524    .text:0000027c $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:529    .text:0000027c ReadDeviceSerialNum
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:610    .text:000002f8 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:614    .text:000002fc $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:619    .text:000002fc Compare
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:671    .text:00000340 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:675    .text:00000344 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:680    .text:00000344 InvokeISP
+C:\Users\YANGZH~1\AppData\Local\Temp\ccjxS7C9.s:716    .text:0000036c $d
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.1.9fa2be94b3b27131c651c32db681ca6e
+                           .group:00000000 wm4.stdint.h.10.90b695f550ca6cc3fb08fa83baf01e05
+                           .group:00000000 wm4.lpc_types.h.61.500abe635b953859f645467b1debaa34
+                           .group:00000000 wm4.lpc177x_8x_libcfg_default.h.42.c21d4d8531a15b96cd9ccfa94b76f68e
+                           .group:00000000 wm4.lpc177x_8x_iap.h.34.c0302e09f5eed5ba28932a431b7f72ac
+                           .group:00000000 wm4.LPC177x_8x.h.34.ced9b468ef83bb68f280515946661353
+                           .group:00000000 wm4.core_cm3.h.32.790cc16ac64d67f02f3790c90a28e38c
+                           .group:00000000 wm4.core_cmInstr.h.25.dd98b40e8e0d1d9ee958eb9cce5e7898
+                           .group:00000000 wm4.core_cm3.h.132.82da42f2eaa4f3e645984b3550bd4c22
+                           .group:00000000 wm4.LPC177x_8x.h.1353.9b0a09b2831088a36b3e4060dcdc4532
+                           .group:00000000 wm4.system_LPC177x_8x.h.34.e57b19a2859ef593a5974e6904d3f0ac
+                           .group:00000000 wm4.lpc177x_8x_clkpwr.h.61.8bfb9350f1be3b242e7e7c6f04f31221
+
+UNDEFINED SYMBOLS
+CLKPWR_GetCLK

@@ -1,0 +1,1750 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"lpc177x_8x_qei.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.align	2
+  19              		.global	QEI_GetPointer
+  20              		.thumb
+  21              		.thumb_func
+  23              	QEI_GetPointer:
+  24              	.LFB55:
+  25              		.file 1 "../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c"
+   1:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /**********************************************************************
+   2:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * $Id$      lpc177x_8x_qei.c            2011-06-02
+   3:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** *//**
+   4:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * @file     lpc177x_8x_qei.c
+   5:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * @brief    Contains all functions support for QEI firmware library
+   6:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** *           on LPC177x_8x
+   7:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * @version  1.0
+   8:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * @date     02. June. 2011
+   9:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * @author   NXP MCU SW Application Team
+  10:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * 
+  11:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * Copyright(C) 2011, NXP Semiconductor
+  12:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * All rights reserved.
+  13:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** *
+  14:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** ***********************************************************************
+  15:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * Software that is described herein is for illustrative purposes only
+  16:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * which provides customers with programming information regarding the
+  17:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * products. This software is supplied "AS IS" without any warranties.
+  18:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * NXP Semiconductors assumes no responsibility or liability for the
+  19:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * use of the software, conveys no license or title under any patent,
+  20:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * copyright, or mask work right to the product. NXP Semiconductors
+  21:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * reserves the right to make changes in the software without
+  22:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * notification. NXP Semiconductors also make no representation or
+  23:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * warranty that such application will be suitable for the specified
+  24:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * use without further testing or modification.
+  25:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * Permission to use, copy, modify, and distribute this software and its
+  26:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * documentation is hereby granted, under NXP Semiconductors'
+  27:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * relevant copyright in the software, without fee, provided that it
+  28:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * is used in conjunction with NXP Semiconductors microcontrollers.  This
+  29:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * copyright, permission, and disclaimer notice must appear in all copies of
+  30:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * this code.
+  31:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** **********************************************************************/
+  32:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+  33:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /* Peripheral group ----------------------------------------------------------- */
+  34:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /** @addtogroup QEI
+  35:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @{
+  36:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  */
+  37:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** #ifdef __BUILD_WITH_EXAMPLE__
+  38:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** #include "lpc177x_8x_libcfg.h"
+  39:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** #else
+  40:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** #include "lpc177x_8x_libcfg_default.h"
+  41:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** #endif /* __BUILD_WITH_EXAMPLE__ */
+  42:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** #ifdef _QEI
+  43:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+  44:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /* Includes ------------------------------------------------------------------- */
+  45:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** #include "lpc177x_8x_qei.h"
+  46:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** #include "lpc177x_8x_clkpwr.h"
+  47:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+  48:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /* Private Types -------------------------------------------------------------- */
+  49:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /** @defgroup QEI_Private_Types QEI Private Types
+  50:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @{
+  51:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  */
+  52:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+  53:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /**
+  54:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief QEI configuration union type definition
+  55:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  */
+  56:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** typedef union {
+  57:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     QEI_CFG_Type bmQEIConfig;
+  58:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     uint32_t ulQEIConfig;
+  59:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** } QEI_CFGOPT_Type;
+  60:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+  61:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /**
+  62:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @}
+  63:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  */
+  64:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+  65:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** LPC_QEI_TypeDef* QEI_GetPointer(uint8_t qeiId);
+  66:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+  67:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+  68:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /* Public Functions ----------------------------------------------------------- */
+  69:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /** @addtogroup QEI_Public_Functions
+  70:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @{
+  71:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  */
+  72:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+  73:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+  74:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Get the point to typedef of QEI component
+  75:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   qeiId           The Id of the expected QEI component
+  76:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                              It should be 0 (zero) always with LPC177x_8x
+  77:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      None
+  78:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+  79:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** LPC_QEI_TypeDef* QEI_GetPointer(uint8_t qeiId)
+  80:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+  26              		.loc 1 80 0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 16
+  29              		@ frame_needed = 1, uses_anonymous_args = 0
+  30              		@ link register save eliminated.
+  31 0000 80B4     		push	{r7}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 4
+  34              		.cfi_offset 7, -4
+  35 0002 85B0     		sub	sp, sp, #20
+  36              	.LCFI1:
+  37              		.cfi_def_cfa_offset 24
+  38 0004 00AF     		add	r7, sp, #0
+  39              	.LCFI2:
+  40              		.cfi_def_cfa_register 7
+  41 0006 0346     		mov	r3, r0
+  42 0008 FB71     		strb	r3, [r7, #7]
+  81:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = NULL;
+  43              		.loc 1 81 0
+  44 000a 4FF00003 		mov	r3, #0
+  45 000e FB60     		str	r3, [r7, #12]
+  82:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+  83:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     if(qeiId == 0)
+  46              		.loc 1 83 0
+  47 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  48 0012 002B     		cmp	r3, #0
+  49 0014 01D1     		bne	.L2
+  84:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     {
+  85:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****         pQei = LPC_QEI;
+  50              		.loc 1 85 0
+  51 0016 044B     		ldr	r3, .L4
+  52 0018 FB60     		str	r3, [r7, #12]
+  53              	.L2:
+  86:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     }
+  87:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+  88:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     return pQei;
+  54              		.loc 1 88 0
+  55 001a FB68     		ldr	r3, [r7, #12]
+  89:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+  56              		.loc 1 89 0
+  57 001c 1846     		mov	r0, r3
+  58 001e 07F11407 		add	r7, r7, #20
+  59 0022 BD46     		mov	sp, r7
+  60 0024 80BC     		pop	{r7}
+  61 0026 7047     		bx	lr
+  62              	.L5:
+  63              		.align	2
+  64              	.L4:
+  65 0028 00C00B40 		.word	1074511872
+  66              		.cfi_endproc
+  67              	.LFE55:
+  69              		.align	2
+  70              		.global	QEI_Reset
+  71              		.thumb
+  72              		.thumb_func
+  74              	QEI_Reset:
+  75              	.LFB56:
+  90:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+  91:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+  92:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+  93:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Resets value for each type of QEI value, such as velocity,
+  94:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *              counter, position, etc..
+  95:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   qeiId           The Id of the expected QEI component
+  96:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                              It should be 0 (zero) always with LPC177x_8x
+  97:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+  98:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   ulResetType     QEI Reset Type, should be one of the following:
+  99:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                              - QEI_RESET_POS: Reset Position Counter
+ 100:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                              - QEI_RESET_POSOnIDX: Reset Position Counter on Index signal
+ 101:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                              - QEI_RESET_VEL: Reset Velocity
+ 102:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                              - QEI_RESET_IDX: Reset Index Counter
+ 103:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      None
+ 104:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 105:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** void QEI_Reset(uint8_t qeiId, uint32_t ulResetType)
+ 106:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+  76              		.loc 1 106 0
+  77              		.cfi_startproc
+  78              		@ args = 0, pretend = 0, frame = 16
+  79              		@ frame_needed = 1, uses_anonymous_args = 0
+  80 002c 80B5     		push	{r7, lr}
+  81              	.LCFI3:
+  82              		.cfi_def_cfa_offset 8
+  83              		.cfi_offset 7, -8
+  84              		.cfi_offset 14, -4
+  85 002e 84B0     		sub	sp, sp, #16
+  86              	.LCFI4:
+  87              		.cfi_def_cfa_offset 24
+  88 0030 00AF     		add	r7, sp, #0
+  89              	.LCFI5:
+  90              		.cfi_def_cfa_register 7
+  91 0032 0346     		mov	r3, r0
+  92 0034 3960     		str	r1, [r7, #0]
+  93 0036 FB71     		strb	r3, [r7, #7]
+ 107:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+  94              		.loc 1 107 0
+  95 0038 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  96 003a 1846     		mov	r0, r3
+  97 003c FFF7FEFF 		bl	QEI_GetPointer
+  98 0040 F860     		str	r0, [r7, #12]
+ 108:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 109:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->CON = ulResetType;
+  99              		.loc 1 109 0
+ 100 0042 FB68     		ldr	r3, [r7, #12]
+ 101 0044 3A68     		ldr	r2, [r7, #0]
+ 102 0046 1A60     		str	r2, [r3, #0]
+ 110:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 103              		.loc 1 110 0
+ 104 0048 07F11007 		add	r7, r7, #16
+ 105 004c BD46     		mov	sp, r7
+ 106 004e 80BD     		pop	{r7, pc}
+ 107              		.cfi_endproc
+ 108              	.LFE56:
+ 110              		.align	2
+ 111              		.global	QEI_Init
+ 112              		.thumb
+ 113              		.thumb_func
+ 115              	QEI_Init:
+ 116              	.LFB57:
+ 111:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 112:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 113:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Initializes the QEI peripheral according to the specified
+ 114:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** *               parameters in the QEI_ConfigStruct.
+ 115:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * @param[in]    qeiId           The Id of the expected QEI component
+ 116:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** *                               It should be 0 (zero) always with LPC177x_8x
+ 117:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** *
+ 118:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * @param[in]    QEI_ConfigStruct    Pointer to a QEI_CFG_Type structure
+ 119:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** *                    that contains the configuration information for the
+ 120:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** *                    specified QEI peripheral
+ 121:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      None
+ 122:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 123:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** void QEI_Init(uint8_t qeiId, QEI_CFG_Type *QEI_ConfigStruct)
+ 124:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 117              		.loc 1 124 0
+ 118              		.cfi_startproc
+ 119              		@ args = 0, pretend = 0, frame = 16
+ 120              		@ frame_needed = 1, uses_anonymous_args = 0
+ 121 0050 80B5     		push	{r7, lr}
+ 122              	.LCFI6:
+ 123              		.cfi_def_cfa_offset 8
+ 124              		.cfi_offset 7, -8
+ 125              		.cfi_offset 14, -4
+ 126 0052 84B0     		sub	sp, sp, #16
+ 127              	.LCFI7:
+ 128              		.cfi_def_cfa_offset 24
+ 129 0054 00AF     		add	r7, sp, #0
+ 130              	.LCFI8:
+ 131              		.cfi_def_cfa_register 7
+ 132 0056 0346     		mov	r3, r0
+ 133 0058 3960     		str	r1, [r7, #0]
+ 134 005a FB71     		strb	r3, [r7, #7]
+ 125:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 135              		.loc 1 125 0
+ 136 005c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 137 005e 1846     		mov	r0, r3
+ 138 0060 FFF7FEFF 		bl	QEI_GetPointer
+ 139 0064 F860     		str	r0, [r7, #12]
+ 126:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 127:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     /* Set up clock and power for QEI module */
+ 128:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     CLKPWR_ConfigPPWR (CLKPWR_PCONP_PCQEI, ENABLE);
+ 140              		.loc 1 128 0
+ 141 0066 4FF48020 		mov	r0, #262144
+ 142 006a 4FF00101 		mov	r1, #1
+ 143 006e FFF7FEFF 		bl	CLKPWR_ConfigPPWR
+ 129:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 130:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     // Reset all remaining value in QEI peripheral
+ 131:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 132:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->MAXPOS = 0x00;
+ 144              		.loc 1 132 0
+ 145 0072 FB68     		ldr	r3, [r7, #12]
+ 146 0074 4FF00002 		mov	r2, #0
+ 147 0078 1A61     		str	r2, [r3, #16]
+ 133:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->CMPOS0 = 0x00;
+ 148              		.loc 1 133 0
+ 149 007a FB68     		ldr	r3, [r7, #12]
+ 150 007c 4FF00002 		mov	r2, #0
+ 151 0080 5A61     		str	r2, [r3, #20]
+ 134:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->CMPOS1 = 0x00;
+ 152              		.loc 1 134 0
+ 153 0082 FB68     		ldr	r3, [r7, #12]
+ 154 0084 4FF00002 		mov	r2, #0
+ 155 0088 9A61     		str	r2, [r3, #24]
+ 135:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->CMPOS2 = 0x00;
+ 156              		.loc 1 135 0
+ 157 008a FB68     		ldr	r3, [r7, #12]
+ 158 008c 4FF00002 		mov	r2, #0
+ 159 0090 DA61     		str	r2, [r3, #28]
+ 136:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->INXCMP0 = 0x00;
+ 160              		.loc 1 136 0
+ 161 0092 FB68     		ldr	r3, [r7, #12]
+ 162 0094 4FF00002 		mov	r2, #0
+ 163 0098 5A62     		str	r2, [r3, #36]
+ 137:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->VELCOMP = 0x00;
+ 164              		.loc 1 137 0
+ 165 009a FB68     		ldr	r3, [r7, #12]
+ 166 009c 4FF00002 		mov	r2, #0
+ 167 00a0 9A63     		str	r2, [r3, #56]
+ 138:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 139:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->LOAD = 0x00;
+ 168              		.loc 1 139 0
+ 169 00a2 FB68     		ldr	r3, [r7, #12]
+ 170 00a4 4FF00002 		mov	r2, #0
+ 171 00a8 9A62     		str	r2, [r3, #40]
+ 140:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->CON = QEI_CON_RESP | QEI_CON_RESV | QEI_CON_RESI;
+ 172              		.loc 1 140 0
+ 173 00aa FB68     		ldr	r3, [r7, #12]
+ 174 00ac 4FF00D02 		mov	r2, #13
+ 175 00b0 1A60     		str	r2, [r3, #0]
+ 141:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 142:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->FILTERPHA = 0x00;
+ 176              		.loc 1 142 0
+ 177 00b2 FB68     		ldr	r3, [r7, #12]
+ 178 00b4 4FF00002 		mov	r2, #0
+ 179 00b8 DA63     		str	r2, [r3, #60]
+ 143:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->FILTERPHB = 0x00;
+ 180              		.loc 1 143 0
+ 181 00ba FB68     		ldr	r3, [r7, #12]
+ 182 00bc 4FF00002 		mov	r2, #0
+ 183 00c0 1A64     		str	r2, [r3, #64]
+ 144:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->FILTERINX = 0x00;
+ 184              		.loc 1 144 0
+ 185 00c2 FB68     		ldr	r3, [r7, #12]
+ 186 00c4 4FF00002 		mov	r2, #0
+ 187 00c8 5A64     		str	r2, [r3, #68]
+ 145:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 146:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     // Disable all Interrupt
+ 147:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->IEC = QEI_IECLR_BITMASK;
+ 188              		.loc 1 147 0
+ 189 00ca FB68     		ldr	r3, [r7, #12]
+ 190 00cc 4FF6FF72 		movw	r2, #65535
+ 191 00d0 C3F8D82F 		str	r2, [r3, #4056]
+ 148:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 149:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     // Clear all Interrupt pending
+ 150:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->CLR = QEI_INTCLR_BITMASK;
+ 192              		.loc 1 150 0
+ 193 00d4 FB68     		ldr	r3, [r7, #12]
+ 194 00d6 4FF6FF72 		movw	r2, #65535
+ 195 00da C3F8E82F 		str	r2, [r3, #4072]
+ 151:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 152:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     // Set QEI configuration value corresponding to its setting up value
+ 153:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->CONF = ((QEI_CFGOPT_Type *)QEI_ConfigStruct)->ulQEIConfig;
+ 196              		.loc 1 153 0
+ 197 00de 3B68     		ldr	r3, [r7, #0]
+ 198 00e0 1A68     		ldr	r2, [r3, #0]
+ 199 00e2 FB68     		ldr	r3, [r7, #12]
+ 200 00e4 9A60     		str	r2, [r3, #8]
+ 154:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 201              		.loc 1 154 0
+ 202 00e6 07F11007 		add	r7, r7, #16
+ 203 00ea BD46     		mov	sp, r7
+ 204 00ec 80BD     		pop	{r7, pc}
+ 205              		.cfi_endproc
+ 206              	.LFE57:
+ 208 00ee 00BF     		.align	2
+ 209              		.global	QEI_DeInit
+ 210              		.thumb
+ 211              		.thumb_func
+ 213              	QEI_DeInit:
+ 214              	.LFB58:
+ 155:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 156:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 157:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 158:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       De-initializes the QEI peripheral registers to their
+ 159:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                  default reset values.
+ 160:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 161:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 162:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 163:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      None
+ 164:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 165:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** void QEI_DeInit(uint8_t qeiId)
+ 166:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 215              		.loc 1 166 0
+ 216              		.cfi_startproc
+ 217              		@ args = 0, pretend = 0, frame = 8
+ 218              		@ frame_needed = 1, uses_anonymous_args = 0
+ 219 00f0 80B5     		push	{r7, lr}
+ 220              	.LCFI9:
+ 221              		.cfi_def_cfa_offset 8
+ 222              		.cfi_offset 7, -8
+ 223              		.cfi_offset 14, -4
+ 224 00f2 82B0     		sub	sp, sp, #8
+ 225              	.LCFI10:
+ 226              		.cfi_def_cfa_offset 16
+ 227 00f4 00AF     		add	r7, sp, #0
+ 228              	.LCFI11:
+ 229              		.cfi_def_cfa_register 7
+ 230 00f6 0346     		mov	r3, r0
+ 231 00f8 FB71     		strb	r3, [r7, #7]
+ 167:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     /* Turn off clock and power for QEI module */
+ 168:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     CLKPWR_ConfigPPWR (CLKPWR_PCONP_PCQEI, DISABLE);
+ 232              		.loc 1 168 0
+ 233 00fa 4FF48020 		mov	r0, #262144
+ 234 00fe 4FF00001 		mov	r1, #0
+ 235 0102 FFF7FEFF 		bl	CLKPWR_ConfigPPWR
+ 169:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 236              		.loc 1 169 0
+ 237 0106 07F10807 		add	r7, r7, #8
+ 238 010a BD46     		mov	sp, r7
+ 239 010c 80BD     		pop	{r7, pc}
+ 240              		.cfi_endproc
+ 241              	.LFE58:
+ 243 010e 00BF     		.align	2
+ 244              		.global	QEI_GetCfgDefault
+ 245              		.thumb
+ 246              		.thumb_func
+ 248              	QEI_GetCfgDefault:
+ 249              	.LFB59:
+ 170:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 171:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 172:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*****************************************************************************//**
+ 173:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * @brief        Fills each QIE_InitStruct member with its default value:
+ 174:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** *               - DirectionInvert = QEI_DIRINV_NONE
+ 175:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** *               - SignalMode = QEI_SIGNALMODE_QUAD
+ 176:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** *               - CaptureMode = QEI_CAPMODE_4X
+ 177:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** *               - InvertIndex = QEI_INVINX_NONE
+ 178:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * @param[in]    QIE_InitStruct Pointer to a QEI_CFG_Type structure
+ 179:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** *                    which will be initialized.
+ 180:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** * @return       None
+ 181:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** *******************************************************************************/
+ 182:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** void QEI_GetCfgDefault(QEI_CFG_Type *QIE_InitStruct)
+ 183:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 250              		.loc 1 183 0
+ 251              		.cfi_startproc
+ 252              		@ args = 0, pretend = 0, frame = 8
+ 253              		@ frame_needed = 1, uses_anonymous_args = 0
+ 254              		@ link register save eliminated.
+ 255 0110 80B4     		push	{r7}
+ 256              	.LCFI12:
+ 257              		.cfi_def_cfa_offset 4
+ 258              		.cfi_offset 7, -4
+ 259 0112 83B0     		sub	sp, sp, #12
+ 260              	.LCFI13:
+ 261              		.cfi_def_cfa_offset 16
+ 262 0114 00AF     		add	r7, sp, #0
+ 263              	.LCFI14:
+ 264              		.cfi_def_cfa_register 7
+ 265 0116 7860     		str	r0, [r7, #4]
+ 184:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     QIE_InitStruct->CaptureMode = QEI_CAPMODE_4X;
+ 266              		.loc 1 184 0
+ 267 0118 7A68     		ldr	r2, [r7, #4]
+ 268 011a 1378     		ldrb	r3, [r2, #0]
+ 269 011c 43F00403 		orr	r3, r3, #4
+ 270 0120 1370     		strb	r3, [r2, #0]
+ 185:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     QIE_InitStruct->DirectionInvert = QEI_DIRINV_NONE;
+ 271              		.loc 1 185 0
+ 272 0122 7A68     		ldr	r2, [r7, #4]
+ 273 0124 1378     		ldrb	r3, [r2, #0]
+ 274 0126 6FF30003 		bfc	r3, #0, #1
+ 275 012a 1370     		strb	r3, [r2, #0]
+ 186:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     QIE_InitStruct->InvertIndex = QEI_INVINX_NONE;
+ 276              		.loc 1 186 0
+ 277 012c 7A68     		ldr	r2, [r7, #4]
+ 278 012e 1378     		ldrb	r3, [r2, #0]
+ 279 0130 6FF3C303 		bfc	r3, #3, #1
+ 280 0134 1370     		strb	r3, [r2, #0]
+ 187:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     QIE_InitStruct->SignalMode = QEI_SIGNALMODE_QUAD;
+ 281              		.loc 1 187 0
+ 282 0136 7A68     		ldr	r2, [r7, #4]
+ 283 0138 1378     		ldrb	r3, [r2, #0]
+ 284 013a 6FF34103 		bfc	r3, #1, #1
+ 285 013e 1370     		strb	r3, [r2, #0]
+ 188:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 286              		.loc 1 188 0
+ 287 0140 07F10C07 		add	r7, r7, #12
+ 288 0144 BD46     		mov	sp, r7
+ 289 0146 80BC     		pop	{r7}
+ 290 0148 7047     		bx	lr
+ 291              		.cfi_endproc
+ 292              	.LFE59:
+ 294 014a 00BF     		.align	2
+ 295              		.global	QEI_GetStatus
+ 296              		.thumb
+ 297              		.thumb_func
+ 299              	QEI_GetStatus:
+ 300              	.LFB60:
+ 189:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 190:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 191:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 192:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Check whether if specified flag status is set or not
+ 193:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 194:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 195:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 196:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   ulFlagType  Status Flag Type, should be one of the following:
+ 197:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                          - QEI_STATUS_DIR: Direction Status
+ 198:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      New Status of this status flag (SET or RESET)
+ 199:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 200:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** FlagStatus QEI_GetStatus(uint8_t qeiId, uint32_t ulFlagType)
+ 201:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 301              		.loc 1 201 0
+ 302              		.cfi_startproc
+ 303              		@ args = 0, pretend = 0, frame = 16
+ 304              		@ frame_needed = 1, uses_anonymous_args = 0
+ 305 014c 80B5     		push	{r7, lr}
+ 306              	.LCFI15:
+ 307              		.cfi_def_cfa_offset 8
+ 308              		.cfi_offset 7, -8
+ 309              		.cfi_offset 14, -4
+ 310 014e 84B0     		sub	sp, sp, #16
+ 311              	.LCFI16:
+ 312              		.cfi_def_cfa_offset 24
+ 313 0150 00AF     		add	r7, sp, #0
+ 314              	.LCFI17:
+ 315              		.cfi_def_cfa_register 7
+ 316 0152 0346     		mov	r3, r0
+ 317 0154 3960     		str	r1, [r7, #0]
+ 318 0156 FB71     		strb	r3, [r7, #7]
+ 202:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 319              		.loc 1 202 0
+ 320 0158 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 321 015a 1846     		mov	r0, r3
+ 322 015c FFF7FEFF 		bl	QEI_GetPointer
+ 323 0160 F860     		str	r0, [r7, #12]
+ 203:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 204:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     return ((pQei->STAT & ulFlagType) ? SET : RESET);
+ 324              		.loc 1 204 0
+ 325 0162 FB68     		ldr	r3, [r7, #12]
+ 326 0164 5A68     		ldr	r2, [r3, #4]
+ 327 0166 3B68     		ldr	r3, [r7, #0]
+ 328 0168 1340     		ands	r3, r3, r2
+ 329 016a 002B     		cmp	r3, #0
+ 330 016c 0CBF     		ite	eq
+ 331 016e 0023     		moveq	r3, #0
+ 332 0170 0123     		movne	r3, #1
+ 333 0172 DBB2     		uxtb	r3, r3
+ 205:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 334              		.loc 1 205 0
+ 335 0174 1846     		mov	r0, r3
+ 336 0176 07F11007 		add	r7, r7, #16
+ 337 017a BD46     		mov	sp, r7
+ 338 017c 80BD     		pop	{r7, pc}
+ 339              		.cfi_endproc
+ 340              	.LFE60:
+ 342 017e 00BF     		.align	2
+ 343              		.global	QEI_GetPosition
+ 344              		.thumb
+ 345              		.thumb_func
+ 347              	QEI_GetPosition:
+ 348              	.LFB61:
+ 206:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 207:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 208:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Get current position value in QEI peripheral
+ 209:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 210:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 211:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 212:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      Current position value of QEI peripheral
+ 213:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 214:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** uint32_t QEI_GetPosition(uint8_t qeiId)
+ 215:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 349              		.loc 1 215 0
+ 350              		.cfi_startproc
+ 351              		@ args = 0, pretend = 0, frame = 16
+ 352              		@ frame_needed = 1, uses_anonymous_args = 0
+ 353 0180 80B5     		push	{r7, lr}
+ 354              	.LCFI18:
+ 355              		.cfi_def_cfa_offset 8
+ 356              		.cfi_offset 7, -8
+ 357              		.cfi_offset 14, -4
+ 358 0182 84B0     		sub	sp, sp, #16
+ 359              	.LCFI19:
+ 360              		.cfi_def_cfa_offset 24
+ 361 0184 00AF     		add	r7, sp, #0
+ 362              	.LCFI20:
+ 363              		.cfi_def_cfa_register 7
+ 364 0186 0346     		mov	r3, r0
+ 365 0188 FB71     		strb	r3, [r7, #7]
+ 216:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 366              		.loc 1 216 0
+ 367 018a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 368 018c 1846     		mov	r0, r3
+ 369 018e FFF7FEFF 		bl	QEI_GetPointer
+ 370 0192 F860     		str	r0, [r7, #12]
+ 217:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 218:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     return (pQei->POS);
+ 371              		.loc 1 218 0
+ 372 0194 FB68     		ldr	r3, [r7, #12]
+ 373 0196 DB68     		ldr	r3, [r3, #12]
+ 219:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 374              		.loc 1 219 0
+ 375 0198 1846     		mov	r0, r3
+ 376 019a 07F11007 		add	r7, r7, #16
+ 377 019e BD46     		mov	sp, r7
+ 378 01a0 80BD     		pop	{r7, pc}
+ 379              		.cfi_endproc
+ 380              	.LFE61:
+ 382 01a2 00BF     		.align	2
+ 383              		.global	QEI_SetMaxPosition
+ 384              		.thumb
+ 385              		.thumb_func
+ 387              	QEI_SetMaxPosition:
+ 388              	.LFB62:
+ 220:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 221:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 222:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Set max position value for QEI peripheral
+ 223:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 224:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 225:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 226:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   ulMaxPos    Max position value to set
+ 227:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      None
+ 228:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 229:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** void QEI_SetMaxPosition(uint8_t qeiId, uint32_t ulMaxPos)
+ 230:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 389              		.loc 1 230 0
+ 390              		.cfi_startproc
+ 391              		@ args = 0, pretend = 0, frame = 16
+ 392              		@ frame_needed = 1, uses_anonymous_args = 0
+ 393 01a4 80B5     		push	{r7, lr}
+ 394              	.LCFI21:
+ 395              		.cfi_def_cfa_offset 8
+ 396              		.cfi_offset 7, -8
+ 397              		.cfi_offset 14, -4
+ 398 01a6 84B0     		sub	sp, sp, #16
+ 399              	.LCFI22:
+ 400              		.cfi_def_cfa_offset 24
+ 401 01a8 00AF     		add	r7, sp, #0
+ 402              	.LCFI23:
+ 403              		.cfi_def_cfa_register 7
+ 404 01aa 0346     		mov	r3, r0
+ 405 01ac 3960     		str	r1, [r7, #0]
+ 406 01ae FB71     		strb	r3, [r7, #7]
+ 231:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 407              		.loc 1 231 0
+ 408 01b0 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 409 01b2 1846     		mov	r0, r3
+ 410 01b4 FFF7FEFF 		bl	QEI_GetPointer
+ 411 01b8 F860     		str	r0, [r7, #12]
+ 232:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 233:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->MAXPOS = ulMaxPos;
+ 412              		.loc 1 233 0
+ 413 01ba FB68     		ldr	r3, [r7, #12]
+ 414 01bc 3A68     		ldr	r2, [r7, #0]
+ 415 01be 1A61     		str	r2, [r3, #16]
+ 234:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 416              		.loc 1 234 0
+ 417 01c0 07F11007 		add	r7, r7, #16
+ 418 01c4 BD46     		mov	sp, r7
+ 419 01c6 80BD     		pop	{r7, pc}
+ 420              		.cfi_endproc
+ 421              	.LFE62:
+ 423              		.align	2
+ 424              		.global	QEI_SetPositionComp
+ 425              		.thumb
+ 426              		.thumb_func
+ 428              	QEI_SetPositionComp:
+ 429              	.LFB63:
+ 235:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 236:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 237:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Set position compare value for QEI peripheral
+ 238:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 239:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 240:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 241:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   bPosCompCh  Compare Position channel, should be:
+ 242:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                          - QEI_COMPPOS_CH_0: QEI compare position channel 0
+ 243:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                          - QEI_COMPPOS_CH_1: QEI compare position channel 1
+ 244:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                          - QEI_COMPPOS_CH_2: QEI compare position channel 2
+ 245:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   ulPosComp   Compare Position value to set
+ 246:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      None
+ 247:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 248:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** void QEI_SetPositionComp(uint8_t qeiId, uint8_t bPosCompCh, uint32_t ulPosComp)
+ 249:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 430              		.loc 1 249 0
+ 431              		.cfi_startproc
+ 432              		@ args = 0, pretend = 0, frame = 16
+ 433              		@ frame_needed = 1, uses_anonymous_args = 0
+ 434 01c8 80B5     		push	{r7, lr}
+ 435              	.LCFI24:
+ 436              		.cfi_def_cfa_offset 8
+ 437              		.cfi_offset 7, -8
+ 438              		.cfi_offset 14, -4
+ 439 01ca 84B0     		sub	sp, sp, #16
+ 440              	.LCFI25:
+ 441              		.cfi_def_cfa_offset 24
+ 442 01cc 00AF     		add	r7, sp, #0
+ 443              	.LCFI26:
+ 444              		.cfi_def_cfa_register 7
+ 445 01ce 0B46     		mov	r3, r1
+ 446 01d0 3A60     		str	r2, [r7, #0]
+ 447 01d2 0246     		mov	r2, r0
+ 448 01d4 FA71     		strb	r2, [r7, #7]
+ 449 01d6 BB71     		strb	r3, [r7, #6]
+ 250:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 450              		.loc 1 250 0
+ 451 01d8 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 452 01da 1846     		mov	r0, r3
+ 453 01dc FFF7FEFF 		bl	QEI_GetPointer
+ 454 01e0 F860     		str	r0, [r7, #12]
+ 251:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     uint32_t *tmp;
+ 252:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 253:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     tmp = (uint32_t *) (&(pQei->CMPOS0) + bPosCompCh * 4);
+ 455              		.loc 1 253 0
+ 456 01e2 FB68     		ldr	r3, [r7, #12]
+ 457 01e4 03F11402 		add	r2, r3, #20
+ 458 01e8 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 459 01ea 4FEA0313 		lsl	r3, r3, #4
+ 460 01ee D318     		adds	r3, r2, r3
+ 461 01f0 BB60     		str	r3, [r7, #8]
+ 254:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     *tmp = ulPosComp;
+ 462              		.loc 1 254 0
+ 463 01f2 BB68     		ldr	r3, [r7, #8]
+ 464 01f4 3A68     		ldr	r2, [r7, #0]
+ 465 01f6 1A60     		str	r2, [r3, #0]
+ 255:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 466              		.loc 1 255 0
+ 467 01f8 07F11007 		add	r7, r7, #16
+ 468 01fc BD46     		mov	sp, r7
+ 469 01fe 80BD     		pop	{r7, pc}
+ 470              		.cfi_endproc
+ 471              	.LFE63:
+ 473              		.align	2
+ 474              		.global	QEI_GetIndex
+ 475              		.thumb
+ 476              		.thumb_func
+ 478              	QEI_GetIndex:
+ 479              	.LFB64:
+ 256:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 257:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 258:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Get current index counter of QEI peripheral
+ 259:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 260:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 261:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 262:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      Current value of QEI index counter
+ 263:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 264:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** uint32_t QEI_GetIndex(uint8_t qeiId)
+ 265:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 480              		.loc 1 265 0
+ 481              		.cfi_startproc
+ 482              		@ args = 0, pretend = 0, frame = 16
+ 483              		@ frame_needed = 1, uses_anonymous_args = 0
+ 484 0200 80B5     		push	{r7, lr}
+ 485              	.LCFI27:
+ 486              		.cfi_def_cfa_offset 8
+ 487              		.cfi_offset 7, -8
+ 488              		.cfi_offset 14, -4
+ 489 0202 84B0     		sub	sp, sp, #16
+ 490              	.LCFI28:
+ 491              		.cfi_def_cfa_offset 24
+ 492 0204 00AF     		add	r7, sp, #0
+ 493              	.LCFI29:
+ 494              		.cfi_def_cfa_register 7
+ 495 0206 0346     		mov	r3, r0
+ 496 0208 FB71     		strb	r3, [r7, #7]
+ 266:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 497              		.loc 1 266 0
+ 498 020a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 499 020c 1846     		mov	r0, r3
+ 500 020e FFF7FEFF 		bl	QEI_GetPointer
+ 501 0212 F860     		str	r0, [r7, #12]
+ 267:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 268:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     return (pQei->INXCNT);
+ 502              		.loc 1 268 0
+ 503 0214 FB68     		ldr	r3, [r7, #12]
+ 504 0216 1B6A     		ldr	r3, [r3, #32]
+ 269:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 505              		.loc 1 269 0
+ 506 0218 1846     		mov	r0, r3
+ 507 021a 07F11007 		add	r7, r7, #16
+ 508 021e BD46     		mov	sp, r7
+ 509 0220 80BD     		pop	{r7, pc}
+ 510              		.cfi_endproc
+ 511              	.LFE64:
+ 513 0222 00BF     		.align	2
+ 514              		.global	QEI_SetIndexComp
+ 515              		.thumb
+ 516              		.thumb_func
+ 518              	QEI_SetIndexComp:
+ 519              	.LFB65:
+ 270:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 271:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 272:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Set value for index compare in QEI peripheral
+ 273:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 274:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 275:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 276:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   ulIndexComp     Compare Index Value to set
+ 277:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      None
+ 278:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 279:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** void QEI_SetIndexComp(uint8_t qeiId, uint32_t ulIndexComp)
+ 280:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 520              		.loc 1 280 0
+ 521              		.cfi_startproc
+ 522              		@ args = 0, pretend = 0, frame = 16
+ 523              		@ frame_needed = 1, uses_anonymous_args = 0
+ 524 0224 80B5     		push	{r7, lr}
+ 525              	.LCFI30:
+ 526              		.cfi_def_cfa_offset 8
+ 527              		.cfi_offset 7, -8
+ 528              		.cfi_offset 14, -4
+ 529 0226 84B0     		sub	sp, sp, #16
+ 530              	.LCFI31:
+ 531              		.cfi_def_cfa_offset 24
+ 532 0228 00AF     		add	r7, sp, #0
+ 533              	.LCFI32:
+ 534              		.cfi_def_cfa_register 7
+ 535 022a 0346     		mov	r3, r0
+ 536 022c 3960     		str	r1, [r7, #0]
+ 537 022e FB71     		strb	r3, [r7, #7]
+ 281:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 538              		.loc 1 281 0
+ 539 0230 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 540 0232 1846     		mov	r0, r3
+ 541 0234 FFF7FEFF 		bl	QEI_GetPointer
+ 542 0238 F860     		str	r0, [r7, #12]
+ 282:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 283:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->INXCMP0 = ulIndexComp;
+ 543              		.loc 1 283 0
+ 544 023a FB68     		ldr	r3, [r7, #12]
+ 545 023c 3A68     		ldr	r2, [r7, #0]
+ 546 023e 5A62     		str	r2, [r3, #36]
+ 284:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 547              		.loc 1 284 0
+ 548 0240 07F11007 		add	r7, r7, #16
+ 549 0244 BD46     		mov	sp, r7
+ 550 0246 80BD     		pop	{r7, pc}
+ 551              		.cfi_endproc
+ 552              	.LFE65:
+ 554              		.global	__aeabi_uldivmod
+ 555              		.align	2
+ 556              		.global	QEI_SetTimerReload
+ 557              		.thumb
+ 558              		.thumb_func
+ 560              	QEI_SetTimerReload:
+ 561              	.LFB66:
+ 285:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 286:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 287:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Set timer reload value for QEI peripheral. When the velocity timer is
+ 288:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *              over-flow, the value that set for Timer Reload register will be loaded
+ 289:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *              into the velocity timer for next period. The calculated velocity in RPM
+ 290:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *              therefore will be affect by this value.
+ 291:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 292:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 293:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 294:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   QEIReloadStruct QEI reload structure
+ 295:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      None
+ 296:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 297:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** void QEI_SetTimerReload(uint8_t qeiId, QEI_RELOADCFG_Type *QEIReloadStruct)
+ 298:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 562              		.loc 1 298 0
+ 563              		.cfi_startproc
+ 564              		@ args = 0, pretend = 0, frame = 24
+ 565              		@ frame_needed = 1, uses_anonymous_args = 0
+ 566 0248 80B5     		push	{r7, lr}
+ 567              	.LCFI33:
+ 568              		.cfi_def_cfa_offset 8
+ 569              		.cfi_offset 7, -8
+ 570              		.cfi_offset 14, -4
+ 571 024a 86B0     		sub	sp, sp, #24
+ 572              	.LCFI34:
+ 573              		.cfi_def_cfa_offset 32
+ 574 024c 00AF     		add	r7, sp, #0
+ 575              	.LCFI35:
+ 576              		.cfi_def_cfa_register 7
+ 577 024e 0346     		mov	r3, r0
+ 578 0250 3960     		str	r1, [r7, #0]
+ 579 0252 FB71     		strb	r3, [r7, #7]
+ 299:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 580              		.loc 1 299 0
+ 581 0254 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 582 0256 1846     		mov	r0, r3
+ 583 0258 FFF7FEFF 		bl	QEI_GetPointer
+ 584 025c 7861     		str	r0, [r7, #20]
+ 300:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     uint64_t pclk;
+ 301:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 302:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 303:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     if (QEIReloadStruct->ReloadOption == QEI_TIMERRELOAD_TICKVAL)
+ 585              		.loc 1 303 0
+ 586 025e 3B68     		ldr	r3, [r7, #0]
+ 587 0260 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 588 0262 002B     		cmp	r3, #0
+ 589 0264 06D1     		bne	.L20
+ 304:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     {
+ 305:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****         pQei->LOAD = QEIReloadStruct->ReloadValue - 1;
+ 590              		.loc 1 305 0
+ 591 0266 3B68     		ldr	r3, [r7, #0]
+ 592 0268 5B68     		ldr	r3, [r3, #4]
+ 593 026a 03F1FF32 		add	r2, r3, #-1
+ 594 026e 7B69     		ldr	r3, [r7, #20]
+ 595 0270 9A62     		str	r2, [r3, #40]
+ 596 0272 25E0     		b	.L19
+ 597              	.L20:
+ 306:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     }
+ 307:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     else
+ 308:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     {
+ 309:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** #if 1
+ 310:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****         pclk = CLKPWR_GetCLK(CLKPWR_CLKTYPE_PER);
+ 598              		.loc 1 310 0
+ 599 0274 4FF00100 		mov	r0, #1
+ 600 0278 FFF7FEFF 		bl	CLKPWR_GetCLK
+ 601 027c 0146     		mov	r1, r0
+ 602 027e 0A46     		mov	r2, r1
+ 603 0280 4FF00003 		mov	r3, #0
+ 604 0284 C7E90223 		strd	r2, [r7, #8]
+ 311:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 312:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****         pclk = (pclk /(1000000/QEIReloadStruct->ReloadValue)) - 1;
+ 605              		.loc 1 312 0
+ 606 0288 3B68     		ldr	r3, [r7, #0]
+ 607 028a 5B68     		ldr	r3, [r3, #4]
+ 608 028c 0E4A     		ldr	r2, .L22
+ 609 028e B2FBF3F1 		udiv	r1, r2, r3
+ 610 0292 0A46     		mov	r2, r1
+ 611 0294 4FF00003 		mov	r3, #0
+ 612 0298 D7E90201 		ldrd	r0, [r7, #8]
+ 613 029c FFF7FEFF 		bl	__aeabi_uldivmod
+ 614 02a0 0246     		mov	r2, r0
+ 615 02a2 0B46     		mov	r3, r1
+ 616 02a4 1046     		mov	r0, r2
+ 617 02a6 1946     		mov	r1, r3
+ 618 02a8 4FF0FF32 		mov	r2, #-1
+ 619 02ac 4FF0FF33 		mov	r3, #-1
+ 620 02b0 1218     		adds	r2, r2, r0
+ 621 02b2 43EB0103 		adc	r3, r3, r1
+ 622 02b6 C7E90223 		strd	r2, [r7, #8]
+ 313:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 314:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****         pQei->LOAD = (uint32_t)pclk;
+ 623              		.loc 1 314 0
+ 624 02ba BA68     		ldr	r2, [r7, #8]
+ 625 02bc 7B69     		ldr	r3, [r7, #20]
+ 626 02be 9A62     		str	r2, [r3, #40]
+ 627              	.L19:
+ 315:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** #else
+ 316:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****         ld = CLKPWR_GetCLK(CLKPWR_CLKTYPE_PER);
+ 317:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 318:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****         if (ld/1000000 > 0)
+ 319:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****         {
+ 320:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****             ld /= 1000000;
+ 321:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****             ld *= QEIReloadStruct->ReloadValue;
+ 322:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****             ld -= 1;
+ 323:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****         }
+ 324:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****         else
+ 325:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****         {
+ 326:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****             ld *= QEIReloadStruct->ReloadValue;
+ 327:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****             ld /= 1000000;
+ 328:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****             ld -= 1;
+ 329:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****         }
+ 330:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 331:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****         pQei->LOAD = ld;
+ 332:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** #endif
+ 333:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     }
+ 334:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 628              		.loc 1 334 0
+ 629 02c0 07F11807 		add	r7, r7, #24
+ 630 02c4 BD46     		mov	sp, r7
+ 631 02c6 80BD     		pop	{r7, pc}
+ 632              	.L23:
+ 633              		.align	2
+ 634              	.L22:
+ 635 02c8 40420F00 		.word	1000000
+ 636              		.cfi_endproc
+ 637              	.LFE66:
+ 639              		.align	2
+ 640              		.global	QEI_GetTimer
+ 641              		.thumb
+ 642              		.thumb_func
+ 644              	QEI_GetTimer:
+ 645              	.LFB67:
+ 335:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 336:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 337:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Get current timer counter in QEI peripheral
+ 338:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 339:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 340:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 341:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      Current timer counter in QEI peripheral
+ 342:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 343:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** uint32_t QEI_GetTimer(uint8_t qeiId)
+ 344:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 646              		.loc 1 344 0
+ 647              		.cfi_startproc
+ 648              		@ args = 0, pretend = 0, frame = 16
+ 649              		@ frame_needed = 1, uses_anonymous_args = 0
+ 650 02cc 80B5     		push	{r7, lr}
+ 651              	.LCFI36:
+ 652              		.cfi_def_cfa_offset 8
+ 653              		.cfi_offset 7, -8
+ 654              		.cfi_offset 14, -4
+ 655 02ce 84B0     		sub	sp, sp, #16
+ 656              	.LCFI37:
+ 657              		.cfi_def_cfa_offset 24
+ 658 02d0 00AF     		add	r7, sp, #0
+ 659              	.LCFI38:
+ 660              		.cfi_def_cfa_register 7
+ 661 02d2 0346     		mov	r3, r0
+ 662 02d4 FB71     		strb	r3, [r7, #7]
+ 345:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 663              		.loc 1 345 0
+ 664 02d6 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 665 02d8 1846     		mov	r0, r3
+ 666 02da FFF7FEFF 		bl	QEI_GetPointer
+ 667 02de F860     		str	r0, [r7, #12]
+ 346:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 347:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     return (pQei->TIME);
+ 668              		.loc 1 347 0
+ 669 02e0 FB68     		ldr	r3, [r7, #12]
+ 670 02e2 DB6A     		ldr	r3, [r3, #44]
+ 348:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 671              		.loc 1 348 0
+ 672 02e4 1846     		mov	r0, r3
+ 673 02e6 07F11007 		add	r7, r7, #16
+ 674 02ea BD46     		mov	sp, r7
+ 675 02ec 80BD     		pop	{r7, pc}
+ 676              		.cfi_endproc
+ 677              	.LFE67:
+ 679 02ee 00BF     		.align	2
+ 680              		.global	QEI_GetVelocity
+ 681              		.thumb
+ 682              		.thumb_func
+ 684              	QEI_GetVelocity:
+ 685              	.LFB68:
+ 349:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 350:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 351:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Get current velocity pulse counter in current time period
+ 352:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 353:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 354:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 355:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      Current velocity pulse counter value
+ 356:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 357:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** uint32_t QEI_GetVelocity(uint8_t qeiId)
+ 358:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 686              		.loc 1 358 0
+ 687              		.cfi_startproc
+ 688              		@ args = 0, pretend = 0, frame = 16
+ 689              		@ frame_needed = 1, uses_anonymous_args = 0
+ 690 02f0 80B5     		push	{r7, lr}
+ 691              	.LCFI39:
+ 692              		.cfi_def_cfa_offset 8
+ 693              		.cfi_offset 7, -8
+ 694              		.cfi_offset 14, -4
+ 695 02f2 84B0     		sub	sp, sp, #16
+ 696              	.LCFI40:
+ 697              		.cfi_def_cfa_offset 24
+ 698 02f4 00AF     		add	r7, sp, #0
+ 699              	.LCFI41:
+ 700              		.cfi_def_cfa_register 7
+ 701 02f6 0346     		mov	r3, r0
+ 702 02f8 FB71     		strb	r3, [r7, #7]
+ 359:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 703              		.loc 1 359 0
+ 704 02fa FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 705 02fc 1846     		mov	r0, r3
+ 706 02fe FFF7FEFF 		bl	QEI_GetPointer
+ 707 0302 F860     		str	r0, [r7, #12]
+ 360:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 361:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     return (pQei->VEL);
+ 708              		.loc 1 361 0
+ 709 0304 FB68     		ldr	r3, [r7, #12]
+ 710 0306 1B6B     		ldr	r3, [r3, #48]
+ 362:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 711              		.loc 1 362 0
+ 712 0308 1846     		mov	r0, r3
+ 713 030a 07F11007 		add	r7, r7, #16
+ 714 030e BD46     		mov	sp, r7
+ 715 0310 80BD     		pop	{r7, pc}
+ 716              		.cfi_endproc
+ 717              	.LFE68:
+ 719 0312 00BF     		.align	2
+ 720              		.global	QEI_GetVelocityCap
+ 721              		.thumb
+ 722              		.thumb_func
+ 724              	QEI_GetVelocityCap:
+ 725              	.LFB69:
+ 363:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 364:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 365:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Get the most recently measured velocity of the QEI. When
+ 366:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *              the Velocity timer in QEI is over-flow, the current velocity
+ 367:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *              value will be loaded into Velocity Capture register.
+ 368:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 369:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 370:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 371:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      The most recently measured velocity value
+ 372:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 373:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** uint32_t QEI_GetVelocityCap(uint8_t qeiId)
+ 374:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 726              		.loc 1 374 0
+ 727              		.cfi_startproc
+ 728              		@ args = 0, pretend = 0, frame = 16
+ 729              		@ frame_needed = 1, uses_anonymous_args = 0
+ 730 0314 80B5     		push	{r7, lr}
+ 731              	.LCFI42:
+ 732              		.cfi_def_cfa_offset 8
+ 733              		.cfi_offset 7, -8
+ 734              		.cfi_offset 14, -4
+ 735 0316 84B0     		sub	sp, sp, #16
+ 736              	.LCFI43:
+ 737              		.cfi_def_cfa_offset 24
+ 738 0318 00AF     		add	r7, sp, #0
+ 739              	.LCFI44:
+ 740              		.cfi_def_cfa_register 7
+ 741 031a 0346     		mov	r3, r0
+ 742 031c FB71     		strb	r3, [r7, #7]
+ 375:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 743              		.loc 1 375 0
+ 744 031e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 745 0320 1846     		mov	r0, r3
+ 746 0322 FFF7FEFF 		bl	QEI_GetPointer
+ 747 0326 F860     		str	r0, [r7, #12]
+ 376:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 377:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     return (pQei->CAP);
+ 748              		.loc 1 377 0
+ 749 0328 FB68     		ldr	r3, [r7, #12]
+ 750 032a 5B6B     		ldr	r3, [r3, #52]
+ 378:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 751              		.loc 1 378 0
+ 752 032c 1846     		mov	r0, r3
+ 753 032e 07F11007 		add	r7, r7, #16
+ 754 0332 BD46     		mov	sp, r7
+ 755 0334 80BD     		pop	{r7, pc}
+ 756              		.cfi_endproc
+ 757              	.LFE69:
+ 759 0336 00BF     		.align	2
+ 760              		.global	QEI_SetVelocityComp
+ 761              		.thumb
+ 762              		.thumb_func
+ 764              	QEI_SetVelocityComp:
+ 765              	.LFB70:
+ 379:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 380:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 381:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Set Velocity Compare value for QEI peripheral
+ 382:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 383:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 384:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 385:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   ulVelComp       Compare Velocity value to set
+ 386:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      None
+ 387:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 388:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** void QEI_SetVelocityComp(uint8_t qeiId, uint32_t ulVelComp)
+ 389:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 766              		.loc 1 389 0
+ 767              		.cfi_startproc
+ 768              		@ args = 0, pretend = 0, frame = 16
+ 769              		@ frame_needed = 1, uses_anonymous_args = 0
+ 770 0338 80B5     		push	{r7, lr}
+ 771              	.LCFI45:
+ 772              		.cfi_def_cfa_offset 8
+ 773              		.cfi_offset 7, -8
+ 774              		.cfi_offset 14, -4
+ 775 033a 84B0     		sub	sp, sp, #16
+ 776              	.LCFI46:
+ 777              		.cfi_def_cfa_offset 24
+ 778 033c 00AF     		add	r7, sp, #0
+ 779              	.LCFI47:
+ 780              		.cfi_def_cfa_register 7
+ 781 033e 0346     		mov	r3, r0
+ 782 0340 3960     		str	r1, [r7, #0]
+ 783 0342 FB71     		strb	r3, [r7, #7]
+ 390:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 784              		.loc 1 390 0
+ 785 0344 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 786 0346 1846     		mov	r0, r3
+ 787 0348 FFF7FEFF 		bl	QEI_GetPointer
+ 788 034c F860     		str	r0, [r7, #12]
+ 391:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 392:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->VELCOMP = ulVelComp;
+ 789              		.loc 1 392 0
+ 790 034e FB68     		ldr	r3, [r7, #12]
+ 791 0350 3A68     		ldr	r2, [r7, #0]
+ 792 0352 9A63     		str	r2, [r3, #56]
+ 393:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 793              		.loc 1 393 0
+ 794 0354 07F11007 		add	r7, r7, #16
+ 795 0358 BD46     		mov	sp, r7
+ 796 035a 80BD     		pop	{r7, pc}
+ 797              		.cfi_endproc
+ 798              	.LFE70:
+ 800              		.align	2
+ 801              		.global	QEI_SetDigiFilter
+ 802              		.thumb
+ 803              		.thumb_func
+ 805              	QEI_SetDigiFilter:
+ 806              	.LFB71:
+ 394:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 395:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 396:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Set value of sampling count for the digital filter in
+ 397:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *              QEI peripheral
+ 398:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 399:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 400:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 401:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   ulSamplingPulse Value of sampling count to set
+ 402:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      None
+ 403:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 404:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** void QEI_SetDigiFilter(uint8_t qeiId, st_Qei_FilterCfg FilterVal)
+ 405:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 807              		.loc 1 405 0
+ 808              		.cfi_startproc
+ 809              		@ args = 0, pretend = 0, frame = 24
+ 810              		@ frame_needed = 1, uses_anonymous_args = 0
+ 811 035c 90B5     		push	{r4, r7, lr}
+ 812              	.LCFI48:
+ 813              		.cfi_def_cfa_offset 12
+ 814              		.cfi_offset 4, -12
+ 815              		.cfi_offset 7, -8
+ 816              		.cfi_offset 14, -4
+ 817 035e 87B0     		sub	sp, sp, #28
+ 818              	.LCFI49:
+ 819              		.cfi_def_cfa_offset 40
+ 820 0360 00AF     		add	r7, sp, #0
+ 821              	.LCFI50:
+ 822              		.cfi_def_cfa_register 7
+ 823 0362 0446     		mov	r4, r0
+ 824 0364 3846     		mov	r0, r7
+ 825 0366 80E80E00 		stmia	r0, {r1, r2, r3}
+ 826 036a 2346     		mov	r3, r4
+ 827 036c FB73     		strb	r3, [r7, #15]
+ 406:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 828              		.loc 1 406 0
+ 829 036e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 830 0370 1846     		mov	r0, r3
+ 831 0372 FFF7FEFF 		bl	QEI_GetPointer
+ 832 0376 7861     		str	r0, [r7, #20]
+ 407:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 408:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->FILTERPHA = FilterVal.PHA_FilterVal;
+ 833              		.loc 1 408 0
+ 834 0378 3A68     		ldr	r2, [r7, #0]
+ 835 037a 7B69     		ldr	r3, [r7, #20]
+ 836 037c DA63     		str	r2, [r3, #60]
+ 409:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->FILTERPHB = FilterVal.PHB_FilterVal;
+ 837              		.loc 1 409 0
+ 838 037e 7A68     		ldr	r2, [r7, #4]
+ 839 0380 7B69     		ldr	r3, [r7, #20]
+ 840 0382 1A64     		str	r2, [r3, #64]
+ 410:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->FILTERINX = FilterVal.INX_FilterVal;
+ 841              		.loc 1 410 0
+ 842 0384 BA68     		ldr	r2, [r7, #8]
+ 843 0386 7B69     		ldr	r3, [r7, #20]
+ 844 0388 5A64     		str	r2, [r3, #68]
+ 411:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 845              		.loc 1 411 0
+ 846 038a 07F11C07 		add	r7, r7, #28
+ 847 038e BD46     		mov	sp, r7
+ 848 0390 90BD     		pop	{r4, r7, pc}
+ 849              		.cfi_endproc
+ 850              	.LFE71:
+ 852 0392 00BF     		.align	2
+ 853              		.global	QEI_GetIntStatus
+ 854              		.thumb
+ 855              		.thumb_func
+ 857              	QEI_GetIntStatus:
+ 858              	.LFB72:
+ 412:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 413:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 414:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Check whether if specified interrupt flag status in QEI
+ 415:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *              peripheral is set or not
+ 416:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 417:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 418:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 419:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   ulIntType       Interrupt Flag Status type, should be:
+ 420:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_INX_Int: index pulse was detected interrupt
+ 421:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_TIM_Int: Velocity timer over flow interrupt
+ 422:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_VELC_Int: Capture velocity is less than compare interrupt
+ 423:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_DIR_Int: Change of direction interrupt
+ 424:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_ERR_Int: An encoder phase error interrupt
+ 425:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_ENCLK_Int: An encoder clock pulse was detected interrupt
+ 426:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS0_Int: position 0 compare value is equal to the
+ 427:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                                         current position interrupt
+ 428:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS1_Int: position 1 compare value is equal to the
+ 429:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                                         current position interrupt
+ 430:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS2_Int: position 2 compare value is equal to the
+ 431:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                                         current position interrupt
+ 432:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_REV_Int: Index compare value is equal to the current
+ 433:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                                         index count interrupt
+ 434:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS0REV_Int: Combined position 0 and revolution count interrupt
+ 435:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS1REV_Int: Combined position 1 and revolution count interrupt
+ 436:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS2REV_Int: Combined position 2 and revolution count interrupt
+ 437:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      New State of specified interrupt flag status (SET or RESET)
+ 438:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 439:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** FlagStatus QEI_GetIntStatus(uint8_t qeiId, uint32_t ulIntType)
+ 440:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 859              		.loc 1 440 0
+ 860              		.cfi_startproc
+ 861              		@ args = 0, pretend = 0, frame = 16
+ 862              		@ frame_needed = 1, uses_anonymous_args = 0
+ 863 0394 80B5     		push	{r7, lr}
+ 864              	.LCFI51:
+ 865              		.cfi_def_cfa_offset 8
+ 866              		.cfi_offset 7, -8
+ 867              		.cfi_offset 14, -4
+ 868 0396 84B0     		sub	sp, sp, #16
+ 869              	.LCFI52:
+ 870              		.cfi_def_cfa_offset 24
+ 871 0398 00AF     		add	r7, sp, #0
+ 872              	.LCFI53:
+ 873              		.cfi_def_cfa_register 7
+ 874 039a 0346     		mov	r3, r0
+ 875 039c 3960     		str	r1, [r7, #0]
+ 876 039e FB71     		strb	r3, [r7, #7]
+ 441:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 877              		.loc 1 441 0
+ 878 03a0 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 879 03a2 1846     		mov	r0, r3
+ 880 03a4 FFF7FEFF 		bl	QEI_GetPointer
+ 881 03a8 F860     		str	r0, [r7, #12]
+ 442:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 443:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     return((pQei->INTSTAT & ulIntType) ? SET : RESET);
+ 882              		.loc 1 443 0
+ 883 03aa FB68     		ldr	r3, [r7, #12]
+ 884 03ac D3F8E02F 		ldr	r2, [r3, #4064]
+ 885 03b0 3B68     		ldr	r3, [r7, #0]
+ 886 03b2 1340     		ands	r3, r3, r2
+ 887 03b4 002B     		cmp	r3, #0
+ 888 03b6 0CBF     		ite	eq
+ 889 03b8 0023     		moveq	r3, #0
+ 890 03ba 0123     		movne	r3, #1
+ 891 03bc DBB2     		uxtb	r3, r3
+ 444:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 892              		.loc 1 444 0
+ 893 03be 1846     		mov	r0, r3
+ 894 03c0 07F11007 		add	r7, r7, #16
+ 895 03c4 BD46     		mov	sp, r7
+ 896 03c6 80BD     		pop	{r7, pc}
+ 897              		.cfi_endproc
+ 898              	.LFE72:
+ 900              		.align	2
+ 901              		.global	QEI_IntCmd
+ 902              		.thumb
+ 903              		.thumb_func
+ 905              	QEI_IntCmd:
+ 906              	.LFB73:
+ 445:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 446:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 447:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Enable/Disable specified interrupt in QEI peripheral
+ 448:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 449:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 450:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 451:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   ulIntType       Interrupt Flag Status type, should be:
+ 452:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_INX_Int: index pulse was detected interrupt
+ 453:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_TIM_Int: Velocity timer over flow interrupt
+ 454:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_VELC_Int: Capture velocity is less than compare interrupt
+ 455:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_DIR_Int: Change of direction interrupt
+ 456:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_ERR_Int: An encoder phase error interrupt
+ 457:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_ENCLK_Int: An encoder clock pulse was detected interrupt
+ 458:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS0_Int: position 0 compare value is equal to the
+ 459:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                                         current position interrupt
+ 460:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS1_Int: position 1 compare value is equal to the
+ 461:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                                         current position interrupt
+ 462:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS2_Int: position 2 compare value is equal to the
+ 463:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                                         current position interrupt
+ 464:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_REV_Int: Index compare value is equal to the current
+ 465:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                                         index count interrupt
+ 466:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS0REV_Int: Combined position 0 and revolution count interrupt
+ 467:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS1REV_Int: Combined position 1 and revolution count interrupt
+ 468:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS2REV_Int: Combined position 2 and revolution count interrupt
+ 469:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   NewState        New function state, should be:
+ 470:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                              - DISABLE
+ 471:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                              - ENABLE
+ 472:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      None
+ 473:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 474:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** void QEI_IntCmd(uint8_t qeiId, uint32_t ulIntType, FunctionalState NewState)
+ 475:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 907              		.loc 1 475 0
+ 908              		.cfi_startproc
+ 909              		@ args = 0, pretend = 0, frame = 16
+ 910              		@ frame_needed = 1, uses_anonymous_args = 0
+ 911 03c8 80B5     		push	{r7, lr}
+ 912              	.LCFI54:
+ 913              		.cfi_def_cfa_offset 8
+ 914              		.cfi_offset 7, -8
+ 915              		.cfi_offset 14, -4
+ 916 03ca 84B0     		sub	sp, sp, #16
+ 917              	.LCFI55:
+ 918              		.cfi_def_cfa_offset 24
+ 919 03cc 00AF     		add	r7, sp, #0
+ 920              	.LCFI56:
+ 921              		.cfi_def_cfa_register 7
+ 922 03ce 3960     		str	r1, [r7, #0]
+ 923 03d0 1346     		mov	r3, r2
+ 924 03d2 0246     		mov	r2, r0
+ 925 03d4 FA71     		strb	r2, [r7, #7]
+ 926 03d6 BB71     		strb	r3, [r7, #6]
+ 476:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 927              		.loc 1 476 0
+ 928 03d8 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 929 03da 1846     		mov	r0, r3
+ 930 03dc FFF7FEFF 		bl	QEI_GetPointer
+ 931 03e0 F860     		str	r0, [r7, #12]
+ 477:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 478:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     if (NewState == ENABLE)
+ 932              		.loc 1 478 0
+ 933 03e2 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 934 03e4 012B     		cmp	r3, #1
+ 935 03e6 04D1     		bne	.L35
+ 479:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     {
+ 480:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****         pQei->IES = ulIntType;
+ 936              		.loc 1 480 0
+ 937 03e8 FB68     		ldr	r3, [r7, #12]
+ 938 03ea 3A68     		ldr	r2, [r7, #0]
+ 939 03ec C3F8DC2F 		str	r2, [r3, #4060]
+ 940 03f0 03E0     		b	.L34
+ 941              	.L35:
+ 481:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     }
+ 482:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     else
+ 483:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     {
+ 484:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****         pQei->IEC = ulIntType;
+ 942              		.loc 1 484 0
+ 943 03f2 FB68     		ldr	r3, [r7, #12]
+ 944 03f4 3A68     		ldr	r2, [r7, #0]
+ 945 03f6 C3F8D82F 		str	r2, [r3, #4056]
+ 946              	.L34:
+ 485:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     }
+ 486:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 947              		.loc 1 486 0
+ 948 03fa 07F11007 		add	r7, r7, #16
+ 949 03fe BD46     		mov	sp, r7
+ 950 0400 80BD     		pop	{r7, pc}
+ 951              		.cfi_endproc
+ 952              	.LFE73:
+ 954 0402 00BF     		.align	2
+ 955              		.global	QEI_IntSet
+ 956              		.thumb
+ 957              		.thumb_func
+ 959              	QEI_IntSet:
+ 960              	.LFB74:
+ 487:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 488:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 489:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 490:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Sets (forces) specified interrupt in QEI peripheral
+ 491:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 492:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 493:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 494:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   ulIntType       Interrupt Flag Status type, should be:
+ 495:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_INX_Int: index pulse was detected interrupt
+ 496:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_TIM_Int: Velocity timer over flow interrupt
+ 497:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_VELC_Int: Capture velocity is less than compare interrupt
+ 498:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_DIR_Int: Change of direction interrupt
+ 499:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_ERR_Int: An encoder phase error interrupt
+ 500:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_ENCLK_Int: An encoder clock pulse was detected interrupt
+ 501:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS0_Int: position 0 compare value is equal to the
+ 502:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                                         current position interrupt
+ 503:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS1_Int: position 1 compare value is equal to the
+ 504:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                                         current position interrupt
+ 505:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS2_Int: position 2 compare value is equal to the
+ 506:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                                         current position interrupt
+ 507:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_REV_Int: Index compare value is equal to the current
+ 508:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                                         index count interrupt
+ 509:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS0REV_Int: Combined position 0 and revolution count interrupt
+ 510:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS1REV_Int: Combined position 1 and revolution count interrupt
+ 511:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS2REV_Int: Combined position 2 and revolution count interrupt
+ 512:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      None
+ 513:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 514:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** void QEI_IntSet(uint8_t qeiId, uint32_t ulIntType)
+ 515:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 961              		.loc 1 515 0
+ 962              		.cfi_startproc
+ 963              		@ args = 0, pretend = 0, frame = 16
+ 964              		@ frame_needed = 1, uses_anonymous_args = 0
+ 965 0404 80B5     		push	{r7, lr}
+ 966              	.LCFI57:
+ 967              		.cfi_def_cfa_offset 8
+ 968              		.cfi_offset 7, -8
+ 969              		.cfi_offset 14, -4
+ 970 0406 84B0     		sub	sp, sp, #16
+ 971              	.LCFI58:
+ 972              		.cfi_def_cfa_offset 24
+ 973 0408 00AF     		add	r7, sp, #0
+ 974              	.LCFI59:
+ 975              		.cfi_def_cfa_register 7
+ 976 040a 0346     		mov	r3, r0
+ 977 040c 3960     		str	r1, [r7, #0]
+ 978 040e FB71     		strb	r3, [r7, #7]
+ 516:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 979              		.loc 1 516 0
+ 980 0410 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 981 0412 1846     		mov	r0, r3
+ 982 0414 FFF7FEFF 		bl	QEI_GetPointer
+ 983 0418 F860     		str	r0, [r7, #12]
+ 517:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 518:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->SET = ulIntType;
+ 984              		.loc 1 518 0
+ 985 041a FB68     		ldr	r3, [r7, #12]
+ 986 041c 3A68     		ldr	r2, [r7, #0]
+ 987 041e C3F8EC2F 		str	r2, [r3, #4076]
+ 519:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 988              		.loc 1 519 0
+ 989 0422 07F11007 		add	r7, r7, #16
+ 990 0426 BD46     		mov	sp, r7
+ 991 0428 80BD     		pop	{r7, pc}
+ 992              		.cfi_endproc
+ 993              	.LFE74:
+ 995 042a 00BF     		.align	2
+ 996              		.global	QEI_IntClear
+ 997              		.thumb
+ 998              		.thumb_func
+ 1000              	QEI_IntClear:
+ 1001              	.LFB75:
+ 520:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 521:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 522:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Clear (force) specified interrupt (pending) in QEI peripheral
+ 523:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 524:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 525:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 526:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   ulIntType       Interrupt Flag Status type, should be:
+ 527:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_INX_Int: index pulse was detected interrupt
+ 528:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_TIM_Int: Velocity timer over flow interrupt
+ 529:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_VELC_Int: Capture velocity is less than compare interrupt
+ 530:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_DIR_Int: Change of direction interrupt
+ 531:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_ERR_Int: An encoder phase error interrupt
+ 532:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_ENCLK_Int: An encoder clock pulse was detected interrupt
+ 533:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS0_Int: position 0 compare value is equal to the
+ 534:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                                         current position interrupt
+ 535:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS1_Int: position 1 compare value is equal to the
+ 536:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                                         current position interrupt
+ 537:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS2_Int: position 2 compare value is equal to the
+ 538:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                                         current position interrupt
+ 539:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_REV_Int: Index compare value is equal to the current
+ 540:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                                         index count interrupt
+ 541:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS0REV_Int: Combined position 0 and revolution count interrupt
+ 542:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS1REV_Int: Combined position 1 and revolution count interrupt
+ 543:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****                 - QEI_INTFLAG_POS2REV_Int: Combined position 2 and revolution count interrupt
+ 544:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      None
+ 545:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 546:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** void QEI_IntClear(uint8_t qeiId, uint32_t ulIntType)
+ 547:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 1002              		.loc 1 547 0
+ 1003              		.cfi_startproc
+ 1004              		@ args = 0, pretend = 0, frame = 16
+ 1005              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1006 042c 80B5     		push	{r7, lr}
+ 1007              	.LCFI60:
+ 1008              		.cfi_def_cfa_offset 8
+ 1009              		.cfi_offset 7, -8
+ 1010              		.cfi_offset 14, -4
+ 1011 042e 84B0     		sub	sp, sp, #16
+ 1012              	.LCFI61:
+ 1013              		.cfi_def_cfa_offset 24
+ 1014 0430 00AF     		add	r7, sp, #0
+ 1015              	.LCFI62:
+ 1016              		.cfi_def_cfa_register 7
+ 1017 0432 0346     		mov	r3, r0
+ 1018 0434 3960     		str	r1, [r7, #0]
+ 1019 0436 FB71     		strb	r3, [r7, #7]
+ 548:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 1020              		.loc 1 548 0
+ 1021 0438 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1022 043a 1846     		mov	r0, r3
+ 1023 043c FFF7FEFF 		bl	QEI_GetPointer
+ 1024 0440 F860     		str	r0, [r7, #12]
+ 549:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 550:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     pQei->CLR = ulIntType;
+ 1025              		.loc 1 550 0
+ 1026 0442 FB68     		ldr	r3, [r7, #12]
+ 1027 0444 3A68     		ldr	r2, [r7, #0]
+ 1028 0446 C3F8E82F 		str	r2, [r3, #4072]
+ 551:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 1029              		.loc 1 551 0
+ 1030 044a 07F11007 		add	r7, r7, #16
+ 1031 044e BD46     		mov	sp, r7
+ 1032 0450 80BD     		pop	{r7, pc}
+ 1033              		.cfi_endproc
+ 1034              	.LFE75:
+ 1036 0452 00BF     		.align	2
+ 1037              		.global	QEI_CalculateRPM
+ 1038              		.thumb
+ 1039              		.thumb_func
+ 1041              	QEI_CalculateRPM:
+ 1042              	.LFB76:
+ 552:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 553:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 554:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** /*********************************************************************//**
+ 555:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @brief       Calculates the actual velocity in RPM passed via velocity
+ 556:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *              capture value and Pulse Per Round (of the encoder) value
+ 557:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *              parameter input.
+ 558:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]    qeiId           The Id of the expected QEI component
+ 559:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                               It should be 0 (zero) always with LPC177x_8x
+ 560:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *
+ 561:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   ulVelCapValue   Velocity capture input value that can
+ 562:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  *                              be got from QEI_GetVelocityCap() function
+ 563:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @param[in]   ulPPR           Pulse per round of encoder
+ 564:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  * @return      The actual value of velocity in RPM (Round per minute)
+ 565:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****  **********************************************************************/
+ 566:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** uint32_t QEI_CalculateRPM(uint8_t qeiId, uint32_t ulVelCapValue, uint32_t ulPPR)
+ 567:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** {
+ 1043              		.loc 1 567 0
+ 1044              		.cfi_startproc
+ 1045              		@ args = 0, pretend = 0, frame = 56
+ 1046              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1047 0454 B0B5     		push	{r4, r5, r7, lr}
+ 1048              	.LCFI63:
+ 1049              		.cfi_def_cfa_offset 16
+ 1050              		.cfi_offset 4, -16
+ 1051              		.cfi_offset 5, -12
+ 1052              		.cfi_offset 7, -8
+ 1053              		.cfi_offset 14, -4
+ 1054 0456 8EB0     		sub	sp, sp, #56
+ 1055              	.LCFI64:
+ 1056              		.cfi_def_cfa_offset 72
+ 1057 0458 00AF     		add	r7, sp, #0
+ 1058              	.LCFI65:
+ 1059              		.cfi_def_cfa_register 7
+ 1060 045a 0346     		mov	r3, r0
+ 1061 045c B960     		str	r1, [r7, #8]
+ 1062 045e 7A60     		str	r2, [r7, #4]
+ 1063 0460 FB73     		strb	r3, [r7, #15]
+ 568:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     LPC_QEI_TypeDef* pQei = QEI_GetPointer(qeiId);
+ 1064              		.loc 1 568 0
+ 1065 0462 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1066 0464 1846     		mov	r0, r3
+ 1067 0466 FFF7FEFF 		bl	QEI_GetPointer
+ 1068 046a 7863     		str	r0, [r7, #52]
+ 569:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 570:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     uint64_t rpm, clock, Load, edges;
+ 571:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 572:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     // Get current Clock rate for timer input
+ 573:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     clock = CLKPWR_GetCLK(CLKPWR_CLKTYPE_PER);
+ 1069              		.loc 1 573 0
+ 1070 046c 4FF00100 		mov	r0, #1
+ 1071 0470 FFF7FEFF 		bl	CLKPWR_GetCLK
+ 1072 0474 0146     		mov	r1, r0
+ 1073 0476 0A46     		mov	r2, r1
+ 1074 0478 4FF00003 		mov	r3, #0
+ 1075 047c C7E90A23 		strd	r2, [r7, #40]
+ 574:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 575:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     // Get Timer load value (velocity capture period)
+ 576:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     Load  = (uint64_t)(pQei->LOAD + 1);
+ 1076              		.loc 1 576 0
+ 1077 0480 7B6B     		ldr	r3, [r7, #52]
+ 1078 0482 9B6A     		ldr	r3, [r3, #40]
+ 1079 0484 03F10101 		add	r1, r3, #1
+ 1080 0488 0A46     		mov	r2, r1
+ 1081 048a 4FF00003 		mov	r3, #0
+ 1082 048e C7E90823 		strd	r2, [r7, #32]
+ 577:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 578:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     // Get Edge
+ 579:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     edges = (uint64_t)((pQei->CONF & QEI_CONF_CAPMODE) ? 4 : 2);
+ 1083              		.loc 1 579 0
+ 1084 0492 7B6B     		ldr	r3, [r7, #52]
+ 1085 0494 9B68     		ldr	r3, [r3, #8]
+ 1086 0496 03F00403 		and	r3, r3, #4
+ 1087 049a 002B     		cmp	r3, #0
+ 1088 049c 04D0     		beq	.L40
+ 1089              		.loc 1 579 0 is_stmt 0 discriminator 1
+ 1090 049e 4FF00402 		mov	r2, #4
+ 1091 04a2 4FF00003 		mov	r3, #0
+ 1092 04a6 03E0     		b	.L41
+ 1093              	.L40:
+ 1094              		.loc 1 579 0 discriminator 2
+ 1095 04a8 4FF00202 		mov	r2, #2
+ 1096 04ac 4FF00003 		mov	r3, #0
+ 1097              	.L41:
+ 1098              		.loc 1 579 0 discriminator 3
+ 1099 04b0 C7E90623 		strd	r2, [r7, #24]
+ 580:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 581:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     // Calculate RPM
+ 582:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     rpm = ((clock * ulVelCapValue * 60) / (Load * ulPPR * edges));
+ 1100              		.loc 1 582 0 is_stmt 1 discriminator 3
+ 1101 04b4 B968     		ldr	r1, [r7, #8]
+ 1102 04b6 0A46     		mov	r2, r1
+ 1103 04b8 4FF00003 		mov	r3, #0
+ 1104 04bc B96A     		ldr	r1, [r7, #40]
+ 1105 04be 03FB01F0 		mul	r0, r3, r1
+ 1106 04c2 F96A     		ldr	r1, [r7, #44]
+ 1107 04c4 02FB01F1 		mul	r1, r2, r1
+ 1108 04c8 4118     		adds	r1, r0, r1
+ 1109 04ca B86A     		ldr	r0, [r7, #40]
+ 1110 04cc A0FB0223 		umull	r2, r3, r0, r2
+ 1111 04d0 C918     		adds	r1, r1, r3
+ 1112 04d2 0B46     		mov	r3, r1
+ 1113 04d4 4FF03C01 		mov	r1, #60
+ 1114 04d8 01FB03F0 		mul	r0, r1, r3
+ 1115 04dc 4FF00001 		mov	r1, #0
+ 1116 04e0 01FB02F1 		mul	r1, r1, r2
+ 1117 04e4 4418     		adds	r4, r0, r1
+ 1118 04e6 4FF03C01 		mov	r1, #60
+ 1119 04ea A2FB0101 		umull	r0, r1, r2, r1
+ 1120 04ee 6318     		adds	r3, r4, r1
+ 1121 04f0 1946     		mov	r1, r3
+ 1122 04f2 7C68     		ldr	r4, [r7, #4]
+ 1123 04f4 2246     		mov	r2, r4
+ 1124 04f6 4FF00003 		mov	r3, #0
+ 1125 04fa 3C6A     		ldr	r4, [r7, #32]
+ 1126 04fc 03FB04F5 		mul	r5, r3, r4
+ 1127 0500 7C6A     		ldr	r4, [r7, #36]
+ 1128 0502 02FB04F4 		mul	r4, r2, r4
+ 1129 0506 2C19     		adds	r4, r5, r4
+ 1130 0508 3D6A     		ldr	r5, [r7, #32]
+ 1131 050a A5FB0223 		umull	r2, r3, r5, r2
+ 1132 050e E418     		adds	r4, r4, r3
+ 1133 0510 2346     		mov	r3, r4
+ 1134 0512 BC69     		ldr	r4, [r7, #24]
+ 1135 0514 03FB04F5 		mul	r5, r3, r4
+ 1136 0518 FC69     		ldr	r4, [r7, #28]
+ 1137 051a 02FB04F4 		mul	r4, r2, r4
+ 1138 051e 2C19     		adds	r4, r5, r4
+ 1139 0520 BD69     		ldr	r5, [r7, #24]
+ 1140 0522 A5FB0223 		umull	r2, r3, r5, r2
+ 1141 0526 E418     		adds	r4, r4, r3
+ 1142 0528 2346     		mov	r3, r4
+ 1143 052a FFF7FEFF 		bl	__aeabi_uldivmod
+ 1144 052e 0246     		mov	r2, r0
+ 1145 0530 0B46     		mov	r3, r1
+ 1146 0532 C7E90423 		strd	r2, [r7, #16]
+ 583:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** 
+ 584:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c ****     return (uint32_t)(rpm);
+ 1147              		.loc 1 584 0 discriminator 3
+ 1148 0536 3B69     		ldr	r3, [r7, #16]
+ 585:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.c **** }
+ 1149              		.loc 1 585 0 discriminator 3
+ 1150 0538 1846     		mov	r0, r3
+ 1151 053a 07F13807 		add	r7, r7, #56
+ 1152 053e BD46     		mov	sp, r7
+ 1153 0540 B0BD     		pop	{r4, r5, r7, pc}
+ 1154              		.cfi_endproc
+ 1155              	.LFE76:
+ 1157              	.Letext0:
+ 1158              		.file 2 "g:\\program files\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/gcc/ar
+ 1159              		.file 3 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Drivers\\include/lpc_types.h"
+ 1160              		.file 4 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Core\\Device\\NXP\\LPC177x_8x\\Includ
+ 1161              		.file 5 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Drivers\\include/lpc177x_8x_qei.h"
+ 1162              		.file 6 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Core\\CMSIS\\Include/core_cm3.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 lpc177x_8x_qei.c
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:18     .text:00000000 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:23     .text:00000000 QEI_GetPointer
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:65     .text:00000028 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:69     .text:0000002c $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:74     .text:0000002c QEI_Reset
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:115    .text:00000050 QEI_Init
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:213    .text:000000f0 QEI_DeInit
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:248    .text:00000110 QEI_GetCfgDefault
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:299    .text:0000014c QEI_GetStatus
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:347    .text:00000180 QEI_GetPosition
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:387    .text:000001a4 QEI_SetMaxPosition
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:428    .text:000001c8 QEI_SetPositionComp
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:478    .text:00000200 QEI_GetIndex
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:518    .text:00000224 QEI_SetIndexComp
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:560    .text:00000248 QEI_SetTimerReload
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:635    .text:000002c8 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:639    .text:000002cc $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:644    .text:000002cc QEI_GetTimer
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:684    .text:000002f0 QEI_GetVelocity
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:724    .text:00000314 QEI_GetVelocityCap
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:764    .text:00000338 QEI_SetVelocityComp
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:805    .text:0000035c QEI_SetDigiFilter
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:857    .text:00000394 QEI_GetIntStatus
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:905    .text:000003c8 QEI_IntCmd
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:959    .text:00000404 QEI_IntSet
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:1000   .text:0000042c QEI_IntClear
+C:\Users\YANGZH~1\AppData\Local\Temp\ccGMF0p0.s:1041   .text:00000454 QEI_CalculateRPM
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.1.9fa2be94b3b27131c651c32db681ca6e
+                           .group:00000000 wm4.stdint.h.10.90b695f550ca6cc3fb08fa83baf01e05
+                           .group:00000000 wm4.lpc_types.h.61.500abe635b953859f645467b1debaa34
+                           .group:00000000 wm4.lpc177x_8x_libcfg_default.h.42.c21d4d8531a15b96cd9ccfa94b76f68e
+                           .group:00000000 wm4.LPC177x_8x.h.34.ced9b468ef83bb68f280515946661353
+                           .group:00000000 wm4.core_cm3.h.32.790cc16ac64d67f02f3790c90a28e38c
+                           .group:00000000 wm4.core_cmInstr.h.25.dd98b40e8e0d1d9ee958eb9cce5e7898
+                           .group:00000000 wm4.core_cm3.h.132.82da42f2eaa4f3e645984b3550bd4c22
+                           .group:00000000 wm4.LPC177x_8x.h.1353.9b0a09b2831088a36b3e4060dcdc4532
+                           .group:00000000 wm4.lpc177x_8x_qei.h.57.9c2a80a5c52e12f40f8439c03bfffefc
+                           .group:00000000 wm4.system_LPC177x_8x.h.34.e57b19a2859ef593a5974e6904d3f0ac
+                           .group:00000000 wm4.lpc177x_8x_clkpwr.h.61.8bfb9350f1be3b242e7e7c6f04f31221
+
+UNDEFINED SYMBOLS
+CLKPWR_ConfigPPWR
+__aeabi_uldivmod
+CLKPWR_GetCLK

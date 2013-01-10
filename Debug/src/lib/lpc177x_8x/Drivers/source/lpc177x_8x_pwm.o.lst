@@ -1,0 +1,1935 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"lpc177x_8x_pwm.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.align	2
+  19              		.thumb
+  20              		.thumb_func
+  22              	PWM_GetPointer:
+  23              	.LFB55:
+  24              		.file 1 "../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c"
+   1:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /**********************************************************************
+   2:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * $Id$      lpc177x_8x_pwm.c            2011-06-02
+   3:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** *//**
+   4:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * @file     lpc177x_8x_pwm.c
+   5:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * @brief    Contains all functions support for PWM firmware library
+   6:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** *           on LPC177x_8x
+   7:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * @version  1.0
+   8:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * @date     02. June. 2011
+   9:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * @author   NXP MCU SW Application Team
+  10:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * 
+  11:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * Copyright(C) 2011, NXP Semiconductor
+  12:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * All rights reserved.
+  13:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** *
+  14:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** ***********************************************************************
+  15:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * Software that is described herein is for illustrative purposes only
+  16:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * which provides customers with programming information regarding the
+  17:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * products. This software is supplied "AS IS" without any warranties.
+  18:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * NXP Semiconductors assumes no responsibility or liability for the
+  19:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * use of the software, conveys no license or title under any patent,
+  20:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * copyright, or mask work right to the product. NXP Semiconductors
+  21:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * reserves the right to make changes in the software without
+  22:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * notification. NXP Semiconductors also make no representation or
+  23:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * warranty that such application will be suitable for the specified
+  24:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * use without further testing or modification.
+  25:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * Permission to use, copy, modify, and distribute this software and its
+  26:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * documentation is hereby granted, under NXP Semiconductors'
+  27:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * relevant copyright in the software, without fee, provided that it
+  28:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * is used in conjunction with NXP Semiconductors microcontrollers.  This
+  29:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * copyright, permission, and disclaimer notice must appear in all copies of
+  30:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * this code.
+  31:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** **********************************************************************/
+  32:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+  33:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /* Peripheral group ----------------------------------------------------------- */
+  34:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /** @addtogroup PWM
+  35:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @{
+  36:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  */
+  37:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** #ifdef __BUILD_WITH_EXAMPLE__
+  38:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** #include "lpc177x_8x_libcfg.h"
+  39:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** #else
+  40:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** #include "lpc177x_8x_libcfg_default.h"
+  41:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** #endif /* __BUILD_WITH_EXAMPLE__ */
+  42:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** #ifdef _PWM
+  43:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+  44:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /* Includes ------------------------------------------------------------------- */
+  45:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** #include "lpc177x_8x_pwm.h"
+  46:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** #include "lpc177x_8x_clkpwr.h"
+  47:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+  48:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /* Public Functions ----------------------------------------------------------- */
+  49:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /** @addtogroup PWM_Public_Functions
+  50:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @{
+  51:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  */
+  52:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+  53:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** static LPC_PWM_TypeDef* PWM_GetPointer (uint8_t pwmId);
+  54:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+  55:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /*********************************************************************//**
+  56:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @brief       Setting CAN baud rate (bps)
+  57:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]   canId point to LPC_CAN_TypeDef object, should be:
+  58:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - LPC_CAN1: CAN1 peripheral
+  59:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - LPC_CAN2: CAN2 peripheral
+  60:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @return      The pointer to CAN peripheral that's expected to use
+  61:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  ***********************************************************************/
+  62:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** static LPC_PWM_TypeDef* PWM_GetPointer (uint8_t pwmId)
+  63:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** {
+  25              		.loc 1 63 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 16
+  28              		@ frame_needed = 1, uses_anonymous_args = 0
+  29              		@ link register save eliminated.
+  30 0000 80B4     		push	{r7}
+  31              	.LCFI0:
+  32              		.cfi_def_cfa_offset 4
+  33              		.cfi_offset 7, -4
+  34 0002 85B0     		sub	sp, sp, #20
+  35              	.LCFI1:
+  36              		.cfi_def_cfa_offset 24
+  37 0004 00AF     		add	r7, sp, #0
+  38              	.LCFI2:
+  39              		.cfi_def_cfa_register 7
+  40 0006 0346     		mov	r3, r0
+  41 0008 FB71     		strb	r3, [r7, #7]
+  64:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     LPC_PWM_TypeDef* pPwm;
+  65:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+  66:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     switch (pwmId)
+  42              		.loc 1 66 0
+  43 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  44 000c 002B     		cmp	r3, #0
+  45 000e 02D0     		beq	.L3
+  46 0010 012B     		cmp	r3, #1
+  47 0012 03D0     		beq	.L4
+  48 0014 05E0     		b	.L7
+  49              	.L3:
+  67:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+  68:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         case PWM_0:
+  69:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             pPwm = LPC_PWM0;
+  50              		.loc 1 69 0
+  51 0016 084B     		ldr	r3, .L8
+  52 0018 FB60     		str	r3, [r7, #12]
+  70:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             break;
+  53              		.loc 1 70 0
+  54 001a 06E0     		b	.L5
+  55              	.L4:
+  71:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+  72:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         case PWM_1:
+  73:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             pPwm = LPC_PWM1;
+  56              		.loc 1 73 0
+  57 001c 074B     		ldr	r3, .L8+4
+  58 001e FB60     		str	r3, [r7, #12]
+  74:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             break;
+  59              		.loc 1 74 0
+  60 0020 03E0     		b	.L5
+  61              	.L7:
+  75:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+  76:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         default:
+  77:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             pPwm = NULL;
+  62              		.loc 1 77 0
+  63 0022 4FF00003 		mov	r3, #0
+  64 0026 FB60     		str	r3, [r7, #12]
+  78:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             break;
+  65              		.loc 1 78 0
+  66 0028 00BF     		nop
+  67              	.L5:
+  79:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+  80:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+  81:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     return pPwm;
+  68              		.loc 1 81 0
+  69 002a FB68     		ldr	r3, [r7, #12]
+  82:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** }
+  70              		.loc 1 82 0
+  71 002c 1846     		mov	r0, r3
+  72 002e 07F11407 		add	r7, r7, #20
+  73 0032 BD46     		mov	sp, r7
+  74 0034 80BC     		pop	{r7}
+  75 0036 7047     		bx	lr
+  76              	.L9:
+  77              		.align	2
+  78              	.L8:
+  79 0038 00400140 		.word	1073823744
+  80 003c 00800140 		.word	1073840128
+  81              		.cfi_endproc
+  82              	.LFE55:
+  84              		.align	2
+  85              		.global	PWM_GetIntStatus
+  86              		.thumb
+  87              		.thumb_func
+  89              	PWM_GetIntStatus:
+  90              	.LFB56:
+  83:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+  84:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+  85:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /*********************************************************************//**
+  86:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @brief       Check whether specified interrupt flag in PWM is set or not
+  87:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]    pwmId           The Id of the expected PWM component
+  88:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *
+  89:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]   IntFlag: PWM interrupt flag, should be:
+  90:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_MR0: Interrupt flag for PWM match channel 0
+  91:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_MR1: Interrupt flag for PWM match channel 1
+  92:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_MR2: Interrupt flag for PWM match channel 2
+  93:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_MR3: Interrupt flag for PWM match channel 3
+  94:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_MR4: Interrupt flag for PWM match channel 4
+  95:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_MR5: Interrupt flag for PWM match channel 5
+  96:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_MR6: Interrupt flag for PWM match channel 6
+  97:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_CAP0: Interrupt flag for capture input 0
+  98:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_CAP1: Interrupt flag for capture input 1
+  99:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @return      New State of PWM interrupt flag (SET or RESET)
+ 100:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  **********************************************************************/
+ 101:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** IntStatus PWM_GetIntStatus(uint8_t pwmId, uint32_t IntFlag)
+ 102:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** {
+  91              		.loc 1 102 0
+  92              		.cfi_startproc
+  93              		@ args = 0, pretend = 0, frame = 16
+  94              		@ frame_needed = 1, uses_anonymous_args = 0
+  95 0040 80B5     		push	{r7, lr}
+  96              	.LCFI3:
+  97              		.cfi_def_cfa_offset 8
+  98              		.cfi_offset 7, -8
+  99              		.cfi_offset 14, -4
+ 100 0042 84B0     		sub	sp, sp, #16
+ 101              	.LCFI4:
+ 102              		.cfi_def_cfa_offset 24
+ 103 0044 00AF     		add	r7, sp, #0
+ 104              	.LCFI5:
+ 105              		.cfi_def_cfa_register 7
+ 106 0046 0346     		mov	r3, r0
+ 107 0048 3960     		str	r1, [r7, #0]
+ 108 004a FB71     		strb	r3, [r7, #7]
+ 103:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     LPC_PWM_TypeDef* pPwm = PWM_GetPointer(pwmId);
+ 109              		.loc 1 103 0
+ 110 004c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 111 004e 1846     		mov	r0, r3
+ 112 0050 FFF7D6FF 		bl	PWM_GetPointer
+ 113 0054 F860     		str	r0, [r7, #12]
+ 104:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 105:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     return ((pPwm->IR & IntFlag) ? SET : RESET);
+ 114              		.loc 1 105 0
+ 115 0056 FB68     		ldr	r3, [r7, #12]
+ 116 0058 1A68     		ldr	r2, [r3, #0]
+ 117 005a 3B68     		ldr	r3, [r7, #0]
+ 118 005c 1340     		ands	r3, r3, r2
+ 119 005e 002B     		cmp	r3, #0
+ 120 0060 0CBF     		ite	eq
+ 121 0062 0023     		moveq	r3, #0
+ 122 0064 0123     		movne	r3, #1
+ 123 0066 DBB2     		uxtb	r3, r3
+ 106:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** }
+ 124              		.loc 1 106 0
+ 125 0068 1846     		mov	r0, r3
+ 126 006a 07F11007 		add	r7, r7, #16
+ 127 006e BD46     		mov	sp, r7
+ 128 0070 80BD     		pop	{r7, pc}
+ 129              		.cfi_endproc
+ 130              	.LFE56:
+ 132 0072 00BF     		.align	2
+ 133              		.global	PWM_ClearIntPending
+ 134              		.thumb
+ 135              		.thumb_func
+ 137              	PWM_ClearIntPending:
+ 138              	.LFB57:
+ 107:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 108:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 109:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 110:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /*********************************************************************//**
+ 111:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @brief       Clear specified PWM Interrupt pending
+ 112:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]    pwmId           The Id of the expected PWM component
+ 113:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *
+ 114:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]   IntFlag: PWM interrupt flag, should be:
+ 115:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_MR0: Interrupt flag for PWM match channel 0
+ 116:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_MR1: Interrupt flag for PWM match channel 1
+ 117:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_MR2: Interrupt flag for PWM match channel 2
+ 118:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_MR3: Interrupt flag for PWM match channel 3
+ 119:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_MR4: Interrupt flag for PWM match channel 4
+ 120:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_MR5: Interrupt flag for PWM match channel 5
+ 121:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_MR6: Interrupt flag for PWM match channel 6
+ 122:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_CAP0: Interrupt flag for capture input 0
+ 123:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_INTSTAT_CAP1: Interrupt flag for capture input 1
+ 124:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @return      None
+ 125:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  **********************************************************************/
+ 126:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** void PWM_ClearIntPending(uint8_t pwmId, uint32_t IntFlag)
+ 127:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** {
+ 139              		.loc 1 127 0
+ 140              		.cfi_startproc
+ 141              		@ args = 0, pretend = 0, frame = 16
+ 142              		@ frame_needed = 1, uses_anonymous_args = 0
+ 143 0074 80B5     		push	{r7, lr}
+ 144              	.LCFI6:
+ 145              		.cfi_def_cfa_offset 8
+ 146              		.cfi_offset 7, -8
+ 147              		.cfi_offset 14, -4
+ 148 0076 84B0     		sub	sp, sp, #16
+ 149              	.LCFI7:
+ 150              		.cfi_def_cfa_offset 24
+ 151 0078 00AF     		add	r7, sp, #0
+ 152              	.LCFI8:
+ 153              		.cfi_def_cfa_register 7
+ 154 007a 0346     		mov	r3, r0
+ 155 007c 3960     		str	r1, [r7, #0]
+ 156 007e FB71     		strb	r3, [r7, #7]
+ 128:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     LPC_PWM_TypeDef* pPwm = PWM_GetPointer(pwmId);
+ 157              		.loc 1 128 0
+ 158 0080 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 159 0082 1846     		mov	r0, r3
+ 160 0084 FFF7BCFF 		bl	PWM_GetPointer
+ 161 0088 F860     		str	r0, [r7, #12]
+ 129:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 130:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     pPwm->IR = IntFlag;
+ 162              		.loc 1 130 0
+ 163 008a FB68     		ldr	r3, [r7, #12]
+ 164 008c 3A68     		ldr	r2, [r7, #0]
+ 165 008e 1A60     		str	r2, [r3, #0]
+ 131:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** }
+ 166              		.loc 1 131 0
+ 167 0090 07F11007 		add	r7, r7, #16
+ 168 0094 BD46     		mov	sp, r7
+ 169 0096 80BD     		pop	{r7, pc}
+ 170              		.cfi_endproc
+ 171              	.LFE57:
+ 173              		.align	2
+ 174              		.global	PWM_ConfigStructInit
+ 175              		.thumb
+ 176              		.thumb_func
+ 178              	PWM_ConfigStructInit:
+ 179              	.LFB58:
+ 132:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 133:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 134:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 135:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /*****************************************************************************//**
+ 136:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * @brief        Fills each PWM_InitStruct member with its default value:
+ 137:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** *               - If PWMCounterMode = PWM_MODE_TIMER:
+ 138:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** *                   + PrescaleOption = PWM_TIMER_PRESCALE_USVAL
+ 139:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** *                   + PrescaleValue = 1
+ 140:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** *               - If PWMCounterMode = PWM_MODE_COUNTER:
+ 141:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** *                   + CountInputSelect = PWM_COUNTER_PCAP1_0
+ 142:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** *                   + CounterOption = PWM_COUNTER_RISING
+ 143:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * @param[in]    PWMTimerCounterMode Timer or Counter mode, should be:
+ 144:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** *               - PWM_MODE_TIMER: Counter of PWM peripheral is in Timer mode
+ 145:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** *               - PWM_MODE_COUNTER: Counter of PWM peripheral is in Counter mode
+ 146:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * @param[in]    PWM_InitStruct Pointer to structure (PWM_TIMERCFG_Type or
+ 147:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** *                PWM_COUNTERCFG_Type) which will be initialized.
+ 148:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * @return       None
+ 149:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** * Note: PWM_InitStruct pointer will be assigned to corresponding structure
+ 150:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** *       (PWM_TIMERCFG_Type or PWM_COUNTERCFG_Type) due to PWMTimerCounterMode.
+ 151:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** *******************************************************************************/
+ 152:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** void PWM_ConfigStructInit(uint8_t PWMTimerCounterMode, void *PWM_InitStruct)
+ 153:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** {
+ 180              		.loc 1 153 0
+ 181              		.cfi_startproc
+ 182              		@ args = 0, pretend = 0, frame = 16
+ 183              		@ frame_needed = 1, uses_anonymous_args = 0
+ 184              		@ link register save eliminated.
+ 185 0098 80B4     		push	{r7}
+ 186              	.LCFI9:
+ 187              		.cfi_def_cfa_offset 4
+ 188              		.cfi_offset 7, -4
+ 189 009a 85B0     		sub	sp, sp, #20
+ 190              	.LCFI10:
+ 191              		.cfi_def_cfa_offset 24
+ 192 009c 00AF     		add	r7, sp, #0
+ 193              	.LCFI11:
+ 194              		.cfi_def_cfa_register 7
+ 195 009e 0346     		mov	r3, r0
+ 196 00a0 3960     		str	r1, [r7, #0]
+ 197 00a2 FB71     		strb	r3, [r7, #7]
+ 154:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     PWM_TIMERCFG_Type *pTimeCfg;
+ 155:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     PWM_COUNTERCFG_Type *pCounterCfg;
+ 156:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 157:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     pTimeCfg = (PWM_TIMERCFG_Type *) PWM_InitStruct;
+ 198              		.loc 1 157 0
+ 199 00a4 3B68     		ldr	r3, [r7, #0]
+ 200 00a6 FB60     		str	r3, [r7, #12]
+ 158:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     pCounterCfg = (PWM_COUNTERCFG_Type *) PWM_InitStruct;
+ 201              		.loc 1 158 0
+ 202 00a8 3B68     		ldr	r3, [r7, #0]
+ 203 00aa BB60     		str	r3, [r7, #8]
+ 159:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 160:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     if (PWMTimerCounterMode == PWM_MODE_TIMER )
+ 204              		.loc 1 160 0
+ 205 00ac FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 206 00ae 002B     		cmp	r3, #0
+ 207 00b0 08D1     		bne	.L14
+ 161:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 162:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pTimeCfg->PrescaleOption = PWM_TIMER_PRESCALE_USVAL;
+ 208              		.loc 1 162 0
+ 209 00b2 FB68     		ldr	r3, [r7, #12]
+ 210 00b4 4FF00102 		mov	r2, #1
+ 211 00b8 1A70     		strb	r2, [r3, #0]
+ 163:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pTimeCfg->PrescaleValue = 1;
+ 212              		.loc 1 163 0
+ 213 00ba FB68     		ldr	r3, [r7, #12]
+ 214 00bc 4FF00102 		mov	r2, #1
+ 215 00c0 5A60     		str	r2, [r3, #4]
+ 216 00c2 0AE0     		b	.L13
+ 217              	.L14:
+ 164:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 165:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     else if (PWMTimerCounterMode == PWM_MODE_COUNTER)
+ 218              		.loc 1 165 0
+ 219 00c4 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 220 00c6 012B     		cmp	r3, #1
+ 221 00c8 07D1     		bne	.L13
+ 166:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 167:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pCounterCfg->CountInputSelect = PWM_COUNTER_PCAP1_0;
+ 222              		.loc 1 167 0
+ 223 00ca BB68     		ldr	r3, [r7, #8]
+ 224 00cc 4FF00002 		mov	r2, #0
+ 225 00d0 5A70     		strb	r2, [r3, #1]
+ 168:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pCounterCfg->CounterOption = PWM_COUNTER_RISING;
+ 226              		.loc 1 168 0
+ 227 00d2 BB68     		ldr	r3, [r7, #8]
+ 228 00d4 4FF00102 		mov	r2, #1
+ 229 00d8 1A70     		strb	r2, [r3, #0]
+ 230              	.L13:
+ 169:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 170:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** }
+ 231              		.loc 1 170 0
+ 232 00da 07F11407 		add	r7, r7, #20
+ 233 00de BD46     		mov	sp, r7
+ 234 00e0 80BC     		pop	{r7}
+ 235 00e2 7047     		bx	lr
+ 236              		.cfi_endproc
+ 237              	.LFE58:
+ 239              		.global	__aeabi_uldivmod
+ 240              		.align	2
+ 241              		.global	PWM_Init
+ 242              		.thumb
+ 243              		.thumb_func
+ 245              	PWM_Init:
+ 246              	.LFB59:
+ 171:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 172:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 173:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /*********************************************************************//**
+ 174:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @brief       Initializes the pPwm peripheral corresponding to the specified
+ 175:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *               parameters in the PWM_ConfigStruct.
+ 176:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]    pwmId           The Id of the expected PWM component
+ 177:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *
+ 178:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *
+ 179:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]   PWMTimerCounterMode Timer or Counter mode, should be:
+ 180:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_MODE_TIMER: Counter of PWM peripheral is in Timer mode
+ 181:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_MODE_COUNTER: Counter of PWM peripheral is in Counter mode
+ 182:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]   PWM_ConfigStruct Pointer to structure (PWM_TIMERCFG_Type or
+ 183:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *               PWM_COUNTERCFG_Type) which will be initialized.
+ 184:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @return      None
+ 185:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * Note: PWM_ConfigStruct pointer will be assigned to corresponding structure
+ 186:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *      (PWM_TIMERCFG_Type or PWM_COUNTERCFG_Type) due to PWMTimerCounterMode.
+ 187:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  **********************************************************************/
+ 188:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** void PWM_Init(uint8_t pwmId, uint32_t PWMTimerCounterMode, void *PWM_ConfigStruct)
+ 189:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** {
+ 247              		.loc 1 189 0
+ 248              		.cfi_startproc
+ 249              		@ args = 0, pretend = 0, frame = 40
+ 250              		@ frame_needed = 1, uses_anonymous_args = 0
+ 251 00e4 80B5     		push	{r7, lr}
+ 252              	.LCFI12:
+ 253              		.cfi_def_cfa_offset 8
+ 254              		.cfi_offset 7, -8
+ 255              		.cfi_offset 14, -4
+ 256 00e6 8AB0     		sub	sp, sp, #40
+ 257              	.LCFI13:
+ 258              		.cfi_def_cfa_offset 48
+ 259 00e8 00AF     		add	r7, sp, #0
+ 260              	.LCFI14:
+ 261              		.cfi_def_cfa_register 7
+ 262 00ea 0346     		mov	r3, r0
+ 263 00ec B960     		str	r1, [r7, #8]
+ 264 00ee 7A60     		str	r2, [r7, #4]
+ 265 00f0 FB73     		strb	r3, [r7, #15]
+ 190:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     LPC_PWM_TypeDef* pPwm = PWM_GetPointer(pwmId);
+ 266              		.loc 1 190 0
+ 267 00f2 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 268 00f4 1846     		mov	r0, r3
+ 269 00f6 FFF783FF 		bl	PWM_GetPointer
+ 270 00fa 7862     		str	r0, [r7, #36]
+ 191:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 192:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     PWM_TIMERCFG_Type *pTimeCfg;
+ 193:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     PWM_COUNTERCFG_Type *pCounterCfg;
+ 194:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     uint64_t clkdlycnt;
+ 195:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 196:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     pTimeCfg = (PWM_TIMERCFG_Type *)PWM_ConfigStruct;
+ 271              		.loc 1 196 0
+ 272 00fc 7B68     		ldr	r3, [r7, #4]
+ 273 00fe 3B62     		str	r3, [r7, #32]
+ 197:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     pCounterCfg = (PWM_COUNTERCFG_Type *)PWM_ConfigStruct;
+ 274              		.loc 1 197 0
+ 275 0100 7B68     		ldr	r3, [r7, #4]
+ 276 0102 FB61     		str	r3, [r7, #28]
+ 198:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 199:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     if(pwmId == PWM_0)
+ 277              		.loc 1 199 0
+ 278 0104 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 279 0106 002B     		cmp	r3, #0
+ 280 0108 06D1     		bne	.L17
+ 200:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 201:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         CLKPWR_ConfigPPWR (CLKPWR_PCONP_PCPWM0, ENABLE);
+ 281              		.loc 1 201 0
+ 282 010a 4FF02000 		mov	r0, #32
+ 283 010e 4FF00101 		mov	r1, #1
+ 284 0112 FFF7FEFF 		bl	CLKPWR_ConfigPPWR
+ 285 0116 0AE0     		b	.L18
+ 286              	.L17:
+ 202:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 203:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     else if(pwmId == PWM_1)
+ 287              		.loc 1 203 0
+ 288 0118 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 289 011a 012B     		cmp	r3, #1
+ 290 011c 06D1     		bne	.L19
+ 204:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 205:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         CLKPWR_ConfigPPWR (CLKPWR_PCONP_PCPWM1, ENABLE);
+ 291              		.loc 1 205 0
+ 292 011e 4FF04000 		mov	r0, #64
+ 293 0122 4FF00101 		mov	r1, #1
+ 294 0126 FFF7FEFF 		bl	CLKPWR_ConfigPPWR
+ 295 012a 00E0     		b	.L18
+ 296              	.L19:
+ 206:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 207:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     else
+ 208:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 209:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         //Trap the error
+ 210:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         while(1);
+ 297              		.loc 1 210 0 discriminator 1
+ 298 012c FEE7     		b	.L19
+ 299              	.L18:
+ 211:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 212:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 213:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     // Get peripheral clock of PWM1
+ 214:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     clkdlycnt = CLKPWR_GetCLK(CLKPWR_CLKTYPE_PER);
+ 300              		.loc 1 214 0
+ 301 012e 4FF00100 		mov	r0, #1
+ 302 0132 FFF7FEFF 		bl	CLKPWR_GetCLK
+ 303 0136 0146     		mov	r1, r0
+ 304 0138 0A46     		mov	r2, r1
+ 305 013a 4FF00003 		mov	r3, #0
+ 306 013e C7E90423 		strd	r2, [r7, #16]
+ 215:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 216:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     // Clear all interrupts pending
+ 217:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     pPwm->IR = 0xFF & PWM_IR_BITMASK;
+ 307              		.loc 1 217 0
+ 308 0142 7B6A     		ldr	r3, [r7, #36]
+ 309 0144 4FF03F02 		mov	r2, #63
+ 310 0148 1A60     		str	r2, [r3, #0]
+ 218:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     pPwm->TCR = 0x00;
+ 311              		.loc 1 218 0
+ 312 014a 7B6A     		ldr	r3, [r7, #36]
+ 313 014c 4FF00002 		mov	r2, #0
+ 314 0150 5A60     		str	r2, [r3, #4]
+ 219:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     pPwm->CTCR = 0x00;
+ 315              		.loc 1 219 0
+ 316 0152 7B6A     		ldr	r3, [r7, #36]
+ 317 0154 4FF00002 		mov	r2, #0
+ 318 0158 1A67     		str	r2, [r3, #112]
+ 220:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     pPwm->MCR = 0x00;
+ 319              		.loc 1 220 0
+ 320 015a 7B6A     		ldr	r3, [r7, #36]
+ 321 015c 4FF00002 		mov	r2, #0
+ 322 0160 5A61     		str	r2, [r3, #20]
+ 221:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     pPwm->CCR = 0x00;
+ 323              		.loc 1 221 0
+ 324 0162 7B6A     		ldr	r3, [r7, #36]
+ 325 0164 4FF00002 		mov	r2, #0
+ 326 0168 9A62     		str	r2, [r3, #40]
+ 222:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     pPwm->PCR = 0x00;
+ 327              		.loc 1 222 0
+ 328 016a 7B6A     		ldr	r3, [r7, #36]
+ 329 016c 4FF00002 		mov	r2, #0
+ 330 0170 DA64     		str	r2, [r3, #76]
+ 223:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     pPwm->LER = 0x00;
+ 331              		.loc 1 223 0
+ 332 0172 7B6A     		ldr	r3, [r7, #36]
+ 333 0174 4FF00002 		mov	r2, #0
+ 334 0178 1A65     		str	r2, [r3, #80]
+ 224:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 225:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     if (PWMTimerCounterMode == PWM_MODE_TIMER)
+ 335              		.loc 1 225 0
+ 336 017a BB68     		ldr	r3, [r7, #8]
+ 337 017c 002B     		cmp	r3, #0
+ 338 017e 2FD1     		bne	.L20
+ 226:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 227:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         /* Absolute prescale value */
+ 228:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         if (pTimeCfg->PrescaleOption == PWM_TIMER_PRESCALE_TICKVAL)
+ 339              		.loc 1 228 0
+ 340 0180 3B6A     		ldr	r3, [r7, #32]
+ 341 0182 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 342 0184 002B     		cmp	r3, #0
+ 343 0186 06D1     		bne	.L21
+ 229:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         {
+ 230:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             pPwm->PR   = pTimeCfg->PrescaleValue - 1;
+ 344              		.loc 1 230 0
+ 345 0188 3B6A     		ldr	r3, [r7, #32]
+ 346 018a 5B68     		ldr	r3, [r3, #4]
+ 347 018c 03F1FF32 		add	r2, r3, #-1
+ 348 0190 7B6A     		ldr	r3, [r7, #36]
+ 349 0192 DA60     		str	r2, [r3, #12]
+ 350 0194 37E0     		b	.L16
+ 351              	.L21:
+ 231:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         }
+ 232:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         /* uSecond prescale value */
+ 233:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         else
+ 234:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         {
+ 235:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             clkdlycnt = (clkdlycnt * pTimeCfg->PrescaleValue) / 1000000;
+ 352              		.loc 1 235 0
+ 353 0196 3B6A     		ldr	r3, [r7, #32]
+ 354 0198 5968     		ldr	r1, [r3, #4]
+ 355 019a 0A46     		mov	r2, r1
+ 356 019c 4FF00003 		mov	r3, #0
+ 357 01a0 3969     		ldr	r1, [r7, #16]
+ 358 01a2 03FB01F0 		mul	r0, r3, r1
+ 359 01a6 7969     		ldr	r1, [r7, #20]
+ 360 01a8 02FB01F1 		mul	r1, r2, r1
+ 361 01ac 4118     		adds	r1, r0, r1
+ 362 01ae 3869     		ldr	r0, [r7, #16]
+ 363 01b0 A0FB0223 		umull	r2, r3, r0, r2
+ 364 01b4 C918     		adds	r1, r1, r3
+ 365 01b6 0B46     		mov	r3, r1
+ 366 01b8 1046     		mov	r0, r2
+ 367 01ba 1946     		mov	r1, r3
+ 368 01bc 4FF47422 		mov	r2, #999424
+ 369 01c0 02F51072 		add	r2, r2, #576
+ 370 01c4 4FF00003 		mov	r3, #0
+ 371 01c8 FFF7FEFF 		bl	__aeabi_uldivmod
+ 372 01cc 0246     		mov	r2, r0
+ 373 01ce 0B46     		mov	r3, r1
+ 374 01d0 C7E90423 		strd	r2, [r7, #16]
+ 236:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             pPwm->PR = ((uint32_t) clkdlycnt) - 1;
+ 375              		.loc 1 236 0
+ 376 01d4 3B69     		ldr	r3, [r7, #16]
+ 377 01d6 03F1FF32 		add	r2, r3, #-1
+ 378 01da 7B6A     		ldr	r3, [r7, #36]
+ 379 01dc DA60     		str	r2, [r3, #12]
+ 380 01de 12E0     		b	.L16
+ 381              	.L20:
+ 237:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         }
+ 238:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 239:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 240:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     else if (PWMTimerCounterMode == PWM_MODE_COUNTER)
+ 382              		.loc 1 240 0
+ 383 01e0 BB68     		ldr	r3, [r7, #8]
+ 384 01e2 012B     		cmp	r3, #1
+ 385 01e4 0FD1     		bne	.L16
+ 241:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 242:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 243:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->CTCR |= (PWM_CTCR_MODE((uint32_t)pCounterCfg->CounterOption)) \
+ 386              		.loc 1 243 0
+ 387 01e6 7B6A     		ldr	r3, [r7, #36]
+ 388 01e8 1A6F     		ldr	r2, [r3, #112]
+ 389 01ea FB69     		ldr	r3, [r7, #28]
+ 390 01ec 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 391 01ee 03F00301 		and	r1, r3, #3
+ 244:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****                         | (PWM_CTCR_SELECT_INPUT((uint32_t)pCounterCfg->CountInputSelect));
+ 392              		.loc 1 244 0
+ 393 01f2 FB69     		ldr	r3, [r7, #28]
+ 394 01f4 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 395 01f6 03F00303 		and	r3, r3, #3
+ 396 01fa 4FEA8303 		lsl	r3, r3, #2
+ 397 01fe 0B43     		orrs	r3, r3, r1
+ 243:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->CTCR |= (PWM_CTCR_MODE((uint32_t)pCounterCfg->CounterOption)) \
+ 398              		.loc 1 243 0
+ 399 0200 1A43     		orrs	r2, r2, r3
+ 400 0202 7B6A     		ldr	r3, [r7, #36]
+ 401 0204 1A67     		str	r2, [r3, #112]
+ 402              	.L16:
+ 245:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 246:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** }
+ 403              		.loc 1 246 0
+ 404 0206 07F12807 		add	r7, r7, #40
+ 405 020a BD46     		mov	sp, r7
+ 406 020c 80BD     		pop	{r7, pc}
+ 407              		.cfi_endproc
+ 408              	.LFE59:
+ 410 020e 00BF     		.align	2
+ 411              		.global	PWM_DeInit
+ 412              		.thumb
+ 413              		.thumb_func
+ 415              	PWM_DeInit:
+ 416              	.LFB60:
+ 247:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 248:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /*********************************************************************//**
+ 249:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @brief       De-initializes the PWM peripheral registers to their
+ 250:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** *                  default reset values.
+ 251:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]    pwmId           The Id of the expected PWM component
+ 252:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *
+ 253:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @return      None
+ 254:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  **********************************************************************/
+ 255:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** void PWM_DeInit (uint8_t pwmId)
+ 256:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** {
+ 417              		.loc 1 256 0
+ 418              		.cfi_startproc
+ 419              		@ args = 0, pretend = 0, frame = 16
+ 420              		@ frame_needed = 1, uses_anonymous_args = 0
+ 421 0210 80B5     		push	{r7, lr}
+ 422              	.LCFI15:
+ 423              		.cfi_def_cfa_offset 8
+ 424              		.cfi_offset 7, -8
+ 425              		.cfi_offset 14, -4
+ 426 0212 84B0     		sub	sp, sp, #16
+ 427              	.LCFI16:
+ 428              		.cfi_def_cfa_offset 24
+ 429 0214 00AF     		add	r7, sp, #0
+ 430              	.LCFI17:
+ 431              		.cfi_def_cfa_register 7
+ 432 0216 0346     		mov	r3, r0
+ 433 0218 FB71     		strb	r3, [r7, #7]
+ 257:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     LPC_PWM_TypeDef* pPwm = PWM_GetPointer(pwmId);
+ 434              		.loc 1 257 0
+ 435 021a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 436 021c 1846     		mov	r0, r3
+ 437 021e FFF7EFFE 		bl	PWM_GetPointer
+ 438 0222 F860     		str	r0, [r7, #12]
+ 258:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 259:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     // Disable PWM control (timer, counter and PWM)
+ 260:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     pPwm->TCR = 0x00;
+ 439              		.loc 1 260 0
+ 440 0224 FB68     		ldr	r3, [r7, #12]
+ 441 0226 4FF00002 		mov	r2, #0
+ 442 022a 5A60     		str	r2, [r3, #4]
+ 261:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 262:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     if(pwmId == PWM_0)
+ 443              		.loc 1 262 0
+ 444 022c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 445 022e 002B     		cmp	r3, #0
+ 446 0230 06D1     		bne	.L24
+ 263:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 264:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****        CLKPWR_ConfigPPWR (CLKPWR_PCONP_PCPWM0, DISABLE);
+ 447              		.loc 1 264 0
+ 448 0232 4FF02000 		mov	r0, #32
+ 449 0236 4FF00001 		mov	r1, #0
+ 450 023a FFF7FEFF 		bl	CLKPWR_ConfigPPWR
+ 451 023e 08E0     		b	.L23
+ 452              	.L24:
+ 265:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 266:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     else if(pwmId == PWM_1)
+ 453              		.loc 1 266 0
+ 454 0240 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 455 0242 012B     		cmp	r3, #1
+ 456 0244 05D1     		bne	.L23
+ 267:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 268:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****        CLKPWR_ConfigPPWR (CLKPWR_PCONP_PCPWM1, DISABLE);
+ 457              		.loc 1 268 0
+ 458 0246 4FF04000 		mov	r0, #64
+ 459 024a 4FF00001 		mov	r1, #0
+ 460 024e FFF7FEFF 		bl	CLKPWR_ConfigPPWR
+ 461              	.L23:
+ 269:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 270:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** }
+ 462              		.loc 1 270 0
+ 463 0252 07F11007 		add	r7, r7, #16
+ 464 0256 BD46     		mov	sp, r7
+ 465 0258 80BD     		pop	{r7, pc}
+ 466              		.cfi_endproc
+ 467              	.LFE60:
+ 469 025a 00BF     		.align	2
+ 470              		.global	PWM_Cmd
+ 471              		.thumb
+ 472              		.thumb_func
+ 474              	PWM_Cmd:
+ 475              	.LFB61:
+ 271:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 272:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 273:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /*********************************************************************//**
+ 274:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @brief       Enable/Disable PWM peripheral
+ 275:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]    pwmId           The Id of the expected PWM component
+ 276:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *
+ 277:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]   NewState    New State of this function, should be:
+ 278:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *                          - ENABLE: Enable PWM peripheral
+ 279:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *                          - DISABLE: Disable PWM peripheral
+ 280:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @return      None
+ 281:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  **********************************************************************/
+ 282:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** void PWM_Cmd(uint8_t pwmId, FunctionalState NewState)
+ 283:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** {
+ 476              		.loc 1 283 0
+ 477              		.cfi_startproc
+ 478              		@ args = 0, pretend = 0, frame = 16
+ 479              		@ frame_needed = 1, uses_anonymous_args = 0
+ 480 025c 80B5     		push	{r7, lr}
+ 481              	.LCFI18:
+ 482              		.cfi_def_cfa_offset 8
+ 483              		.cfi_offset 7, -8
+ 484              		.cfi_offset 14, -4
+ 485 025e 84B0     		sub	sp, sp, #16
+ 486              	.LCFI19:
+ 487              		.cfi_def_cfa_offset 24
+ 488 0260 00AF     		add	r7, sp, #0
+ 489              	.LCFI20:
+ 490              		.cfi_def_cfa_register 7
+ 491 0262 0246     		mov	r2, r0
+ 492 0264 0B46     		mov	r3, r1
+ 493 0266 FA71     		strb	r2, [r7, #7]
+ 494 0268 BB71     		strb	r3, [r7, #6]
+ 284:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     LPC_PWM_TypeDef* pPwm = PWM_GetPointer(pwmId);
+ 495              		.loc 1 284 0
+ 496 026a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 497 026c 1846     		mov	r0, r3
+ 498 026e FFF7C7FE 		bl	PWM_GetPointer
+ 499 0272 F860     		str	r0, [r7, #12]
+ 285:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 286:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     if (NewState == ENABLE)
+ 500              		.loc 1 286 0
+ 501 0274 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 502 0276 012B     		cmp	r3, #1
+ 503 0278 06D1     		bne	.L27
+ 287:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 288:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->TCR   |=  PWM_TCR_PWM_ENABLE;
+ 504              		.loc 1 288 0
+ 505 027a FB68     		ldr	r3, [r7, #12]
+ 506 027c 5B68     		ldr	r3, [r3, #4]
+ 507 027e 43F00802 		orr	r2, r3, #8
+ 508 0282 FB68     		ldr	r3, [r7, #12]
+ 509 0284 5A60     		str	r2, [r3, #4]
+ 510 0286 05E0     		b	.L26
+ 511              	.L27:
+ 289:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 290:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     else
+ 291:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 292:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->TCR &= (~PWM_TCR_PWM_ENABLE) & PWM_TCR_BITMASK;
+ 512              		.loc 1 292 0
+ 513 0288 FB68     		ldr	r3, [r7, #12]
+ 514 028a 5B68     		ldr	r3, [r3, #4]
+ 515 028c 03F00302 		and	r2, r3, #3
+ 516 0290 FB68     		ldr	r3, [r7, #12]
+ 517 0292 5A60     		str	r2, [r3, #4]
+ 518              	.L26:
+ 293:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 294:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** }
+ 519              		.loc 1 294 0
+ 520 0294 07F11007 		add	r7, r7, #16
+ 521 0298 BD46     		mov	sp, r7
+ 522 029a 80BD     		pop	{r7, pc}
+ 523              		.cfi_endproc
+ 524              	.LFE61:
+ 526              		.align	2
+ 527              		.global	PWM_CounterCmd
+ 528              		.thumb
+ 529              		.thumb_func
+ 531              	PWM_CounterCmd:
+ 532              	.LFB62:
+ 295:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 296:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 297:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /*********************************************************************//**
+ 298:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @brief       Enable/Disable Counter in PWM peripheral
+ 299:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]    pwmId           The Id of the expected PWM component
+ 300:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *
+ 301:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]   NewState New State of this function, should be:
+ 302:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *                          - ENABLE: Enable Counter in PWM peripheral
+ 303:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *                          - DISABLE: Disable Counter in PWM peripheral
+ 304:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @return      None
+ 305:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  **********************************************************************/
+ 306:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** void PWM_CounterCmd(uint8_t pwmId, FunctionalState NewState)
+ 307:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** {
+ 533              		.loc 1 307 0
+ 534              		.cfi_startproc
+ 535              		@ args = 0, pretend = 0, frame = 16
+ 536              		@ frame_needed = 1, uses_anonymous_args = 0
+ 537 029c 80B5     		push	{r7, lr}
+ 538              	.LCFI21:
+ 539              		.cfi_def_cfa_offset 8
+ 540              		.cfi_offset 7, -8
+ 541              		.cfi_offset 14, -4
+ 542 029e 84B0     		sub	sp, sp, #16
+ 543              	.LCFI22:
+ 544              		.cfi_def_cfa_offset 24
+ 545 02a0 00AF     		add	r7, sp, #0
+ 546              	.LCFI23:
+ 547              		.cfi_def_cfa_register 7
+ 548 02a2 0246     		mov	r2, r0
+ 549 02a4 0B46     		mov	r3, r1
+ 550 02a6 FA71     		strb	r2, [r7, #7]
+ 551 02a8 BB71     		strb	r3, [r7, #6]
+ 308:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     LPC_PWM_TypeDef* pPwm = PWM_GetPointer(pwmId);
+ 552              		.loc 1 308 0
+ 553 02aa FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 554 02ac 1846     		mov	r0, r3
+ 555 02ae FFF7A7FE 		bl	PWM_GetPointer
+ 556 02b2 F860     		str	r0, [r7, #12]
+ 309:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 310:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     if (NewState == ENABLE)
+ 557              		.loc 1 310 0
+ 558 02b4 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 559 02b6 012B     		cmp	r3, #1
+ 560 02b8 06D1     		bne	.L30
+ 311:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 312:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->TCR   |=  PWM_TCR_COUNTER_ENABLE;
+ 561              		.loc 1 312 0
+ 562 02ba FB68     		ldr	r3, [r7, #12]
+ 563 02bc 5B68     		ldr	r3, [r3, #4]
+ 564 02be 43F00102 		orr	r2, r3, #1
+ 565 02c2 FB68     		ldr	r3, [r7, #12]
+ 566 02c4 5A60     		str	r2, [r3, #4]
+ 567 02c6 05E0     		b	.L29
+ 568              	.L30:
+ 313:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 314:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     else
+ 315:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 316:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->TCR &= (~PWM_TCR_COUNTER_ENABLE) & PWM_TCR_BITMASK;
+ 569              		.loc 1 316 0
+ 570 02c8 FB68     		ldr	r3, [r7, #12]
+ 571 02ca 5B68     		ldr	r3, [r3, #4]
+ 572 02cc 03F00A02 		and	r2, r3, #10
+ 573 02d0 FB68     		ldr	r3, [r7, #12]
+ 574 02d2 5A60     		str	r2, [r3, #4]
+ 575              	.L29:
+ 317:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 318:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** }
+ 576              		.loc 1 318 0
+ 577 02d4 07F11007 		add	r7, r7, #16
+ 578 02d8 BD46     		mov	sp, r7
+ 579 02da 80BD     		pop	{r7, pc}
+ 580              		.cfi_endproc
+ 581              	.LFE62:
+ 583              		.align	2
+ 584              		.global	PWM_ResetCounter
+ 585              		.thumb
+ 586              		.thumb_func
+ 588              	PWM_ResetCounter:
+ 589              	.LFB63:
+ 319:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 320:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 321:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /*********************************************************************//**
+ 322:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @brief       Reset Counter in PWM peripheral
+ 323:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]    pwmId           The Id of the expected PWM component
+ 324:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *
+ 325:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @return      None
+ 326:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  **********************************************************************/
+ 327:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** void PWM_ResetCounter(uint8_t pwmId)
+ 328:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** {
+ 590              		.loc 1 328 0
+ 591              		.cfi_startproc
+ 592              		@ args = 0, pretend = 0, frame = 16
+ 593              		@ frame_needed = 1, uses_anonymous_args = 0
+ 594 02dc 80B5     		push	{r7, lr}
+ 595              	.LCFI24:
+ 596              		.cfi_def_cfa_offset 8
+ 597              		.cfi_offset 7, -8
+ 598              		.cfi_offset 14, -4
+ 599 02de 84B0     		sub	sp, sp, #16
+ 600              	.LCFI25:
+ 601              		.cfi_def_cfa_offset 24
+ 602 02e0 00AF     		add	r7, sp, #0
+ 603              	.LCFI26:
+ 604              		.cfi_def_cfa_register 7
+ 605 02e2 0346     		mov	r3, r0
+ 606 02e4 FB71     		strb	r3, [r7, #7]
+ 329:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     LPC_PWM_TypeDef* pPwm = PWM_GetPointer(pwmId);
+ 607              		.loc 1 329 0
+ 608 02e6 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 609 02e8 1846     		mov	r0, r3
+ 610 02ea FFF789FE 		bl	PWM_GetPointer
+ 611 02ee F860     		str	r0, [r7, #12]
+ 330:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 331:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     pPwm->TCR |= PWM_TCR_COUNTER_RESET;
+ 612              		.loc 1 331 0
+ 613 02f0 FB68     		ldr	r3, [r7, #12]
+ 614 02f2 5B68     		ldr	r3, [r3, #4]
+ 615 02f4 43F00202 		orr	r2, r3, #2
+ 616 02f8 FB68     		ldr	r3, [r7, #12]
+ 617 02fa 5A60     		str	r2, [r3, #4]
+ 332:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 333:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     pPwm->TCR &= (~PWM_TCR_COUNTER_RESET) & PWM_TCR_BITMASK;
+ 618              		.loc 1 333 0
+ 619 02fc FB68     		ldr	r3, [r7, #12]
+ 620 02fe 5B68     		ldr	r3, [r3, #4]
+ 621 0300 03F00902 		and	r2, r3, #9
+ 622 0304 FB68     		ldr	r3, [r7, #12]
+ 623 0306 5A60     		str	r2, [r3, #4]
+ 334:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** }
+ 624              		.loc 1 334 0
+ 625 0308 07F11007 		add	r7, r7, #16
+ 626 030c BD46     		mov	sp, r7
+ 627 030e 80BD     		pop	{r7, pc}
+ 628              		.cfi_endproc
+ 629              	.LFE63:
+ 631              		.align	2
+ 632              		.global	PWM_ConfigMatch
+ 633              		.thumb
+ 634              		.thumb_func
+ 636              	PWM_ConfigMatch:
+ 637              	.LFB64:
+ 335:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 336:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 337:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /*********************************************************************//**
+ 338:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @brief       Configures match for PWM peripheral
+ 339:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]    pwmId           The Id of the expected PWM component
+ 340:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *
+ 341:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]   PWM_MatchConfigStruct   Pointer to a PWM_MATCHCFG_Type structure
+ 342:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** *                    that contains the configuration information for the
+ 343:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** *                    specified PWM match function.
+ 344:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @return      None
+ 345:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  **********************************************************************/
+ 346:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** void PWM_ConfigMatch(uint8_t pwmId, PWM_MATCHCFG_Type *PWM_MatchConfigStruct)
+ 347:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** {
+ 638              		.loc 1 347 0
+ 639              		.cfi_startproc
+ 640              		@ args = 0, pretend = 0, frame = 16
+ 641              		@ frame_needed = 1, uses_anonymous_args = 0
+ 642 0310 80B5     		push	{r7, lr}
+ 643              	.LCFI27:
+ 644              		.cfi_def_cfa_offset 8
+ 645              		.cfi_offset 7, -8
+ 646              		.cfi_offset 14, -4
+ 647 0312 84B0     		sub	sp, sp, #16
+ 648              	.LCFI28:
+ 649              		.cfi_def_cfa_offset 24
+ 650 0314 00AF     		add	r7, sp, #0
+ 651              	.LCFI29:
+ 652              		.cfi_def_cfa_register 7
+ 653 0316 0346     		mov	r3, r0
+ 654 0318 3960     		str	r1, [r7, #0]
+ 655 031a FB71     		strb	r3, [r7, #7]
+ 348:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     LPC_PWM_TypeDef* pPwm = PWM_GetPointer(pwmId);
+ 656              		.loc 1 348 0
+ 657 031c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 658 031e 1846     		mov	r0, r3
+ 659 0320 FFF76EFE 		bl	PWM_GetPointer
+ 660 0324 F860     		str	r0, [r7, #12]
+ 349:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 350:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     //interrupt on MRn
+ 351:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     if (PWM_MatchConfigStruct->IntOnMatch == ENABLE)
+ 661              		.loc 1 351 0
+ 662 0326 3B68     		ldr	r3, [r7, #0]
+ 663 0328 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 664 032a 012B     		cmp	r3, #1
+ 665 032c 14D1     		bne	.L34
+ 352:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 353:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->MCR |= PWM_MCR_INT_ON_MATCH(PWM_MatchConfigStruct->MatchChannel);
+ 666              		.loc 1 353 0
+ 667 032e FB68     		ldr	r3, [r7, #12]
+ 668 0330 5A69     		ldr	r2, [r3, #20]
+ 669 0332 3B68     		ldr	r3, [r7, #0]
+ 670 0334 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 671 0336 03F00703 		and	r3, r3, #7
+ 672 033a 4FEA4301 		lsl	r1, r3, #1
+ 673 033e 3B68     		ldr	r3, [r7, #0]
+ 674 0340 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 675 0342 03F00703 		and	r3, r3, #7
+ 676 0346 CB18     		adds	r3, r1, r3
+ 677 0348 4FF00101 		mov	r1, #1
+ 678 034c 01FA03F3 		lsl	r3, r1, r3
+ 679 0350 1A43     		orrs	r2, r2, r3
+ 680 0352 FB68     		ldr	r3, [r7, #12]
+ 681 0354 5A61     		str	r2, [r3, #20]
+ 682 0356 19E0     		b	.L35
+ 683              	.L34:
+ 354:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 355:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     else
+ 356:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 357:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->MCR &= (~ PWM_MCR_INT_ON_MATCH(PWM_MatchConfigStruct->MatchChannel)) \
+ 684              		.loc 1 357 0
+ 685 0358 FB68     		ldr	r3, [r7, #12]
+ 686 035a 5A69     		ldr	r2, [r3, #20]
+ 687 035c 3B68     		ldr	r3, [r7, #0]
+ 688 035e 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 689 0360 03F00703 		and	r3, r3, #7
+ 690 0364 4FEA4301 		lsl	r1, r3, #1
+ 691 0368 3B68     		ldr	r3, [r7, #0]
+ 692 036a 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 693 036c 03F00703 		and	r3, r3, #7
+ 694 0370 CB18     		adds	r3, r1, r3
+ 695 0372 4FF00101 		mov	r1, #1
+ 696 0376 01FA03F3 		lsl	r3, r1, r3
+ 697 037a 6FEA0303 		mvn	r3, r3
+ 698 037e 1340     		ands	r3, r3, r2
+ 699 0380 23F07F43 		bic	r3, r3, #-16777216
+ 700 0384 23F46003 		bic	r3, r3, #14680064
+ 701 0388 FA68     		ldr	r2, [r7, #12]
+ 702 038a 5361     		str	r3, [r2, #20]
+ 703              	.L35:
+ 358:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****                                                                         & PWM_MCR_BITMASK;
+ 359:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 360:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 361:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     //reset on MRn
+ 362:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     if (PWM_MatchConfigStruct->ResetOnMatch == ENABLE)
+ 704              		.loc 1 362 0
+ 705 038c 3B68     		ldr	r3, [r7, #0]
+ 706 038e DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+ 707 0390 012B     		cmp	r3, #1
+ 708 0392 16D1     		bne	.L36
+ 363:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 364:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->MCR |= PWM_MCR_RESET_ON_MATCH(PWM_MatchConfigStruct->MatchChannel);
+ 709              		.loc 1 364 0
+ 710 0394 FB68     		ldr	r3, [r7, #12]
+ 711 0396 5A69     		ldr	r2, [r3, #20]
+ 712 0398 3B68     		ldr	r3, [r7, #0]
+ 713 039a 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 714 039c 03F00703 		and	r3, r3, #7
+ 715 03a0 4FEA4301 		lsl	r1, r3, #1
+ 716 03a4 3B68     		ldr	r3, [r7, #0]
+ 717 03a6 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 718 03a8 03F00703 		and	r3, r3, #7
+ 719 03ac CB18     		adds	r3, r1, r3
+ 720 03ae 03F10103 		add	r3, r3, #1
+ 721 03b2 4FF00101 		mov	r1, #1
+ 722 03b6 01FA03F3 		lsl	r3, r1, r3
+ 723 03ba 1A43     		orrs	r2, r2, r3
+ 724 03bc FB68     		ldr	r3, [r7, #12]
+ 725 03be 5A61     		str	r2, [r3, #20]
+ 726 03c0 1BE0     		b	.L37
+ 727              	.L36:
+ 365:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 366:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     else
+ 367:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 368:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->MCR &= (~ PWM_MCR_RESET_ON_MATCH(PWM_MatchConfigStruct->MatchChannel)) \
+ 728              		.loc 1 368 0
+ 729 03c2 FB68     		ldr	r3, [r7, #12]
+ 730 03c4 5A69     		ldr	r2, [r3, #20]
+ 731 03c6 3B68     		ldr	r3, [r7, #0]
+ 732 03c8 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 733 03ca 03F00703 		and	r3, r3, #7
+ 734 03ce 4FEA4301 		lsl	r1, r3, #1
+ 735 03d2 3B68     		ldr	r3, [r7, #0]
+ 736 03d4 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 737 03d6 03F00703 		and	r3, r3, #7
+ 738 03da CB18     		adds	r3, r1, r3
+ 739 03dc 03F10103 		add	r3, r3, #1
+ 740 03e0 4FF00101 		mov	r1, #1
+ 741 03e4 01FA03F3 		lsl	r3, r1, r3
+ 742 03e8 6FEA0303 		mvn	r3, r3
+ 743 03ec 1340     		ands	r3, r3, r2
+ 744 03ee 23F07F43 		bic	r3, r3, #-16777216
+ 745 03f2 23F46003 		bic	r3, r3, #14680064
+ 746 03f6 FA68     		ldr	r2, [r7, #12]
+ 747 03f8 5361     		str	r3, [r2, #20]
+ 748              	.L37:
+ 369:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****                                                                         & PWM_MCR_BITMASK;
+ 370:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 371:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 372:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     //stop on MRn
+ 373:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     if (PWM_MatchConfigStruct->StopOnMatch == ENABLE)
+ 749              		.loc 1 373 0
+ 750 03fa 3B68     		ldr	r3, [r7, #0]
+ 751 03fc 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 752 03fe 012B     		cmp	r3, #1
+ 753 0400 16D1     		bne	.L38
+ 374:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 375:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->MCR |= PWM_MCR_STOP_ON_MATCH(PWM_MatchConfigStruct->MatchChannel);
+ 754              		.loc 1 375 0
+ 755 0402 FB68     		ldr	r3, [r7, #12]
+ 756 0404 5A69     		ldr	r2, [r3, #20]
+ 757 0406 3B68     		ldr	r3, [r7, #0]
+ 758 0408 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 759 040a 03F00703 		and	r3, r3, #7
+ 760 040e 4FEA4301 		lsl	r1, r3, #1
+ 761 0412 3B68     		ldr	r3, [r7, #0]
+ 762 0414 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 763 0416 03F00703 		and	r3, r3, #7
+ 764 041a CB18     		adds	r3, r1, r3
+ 765 041c 03F10203 		add	r3, r3, #2
+ 766 0420 4FF00101 		mov	r1, #1
+ 767 0424 01FA03F3 		lsl	r3, r1, r3
+ 768 0428 1A43     		orrs	r2, r2, r3
+ 769 042a FB68     		ldr	r3, [r7, #12]
+ 770 042c 5A61     		str	r2, [r3, #20]
+ 771 042e 1BE0     		b	.L33
+ 772              	.L38:
+ 376:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 377:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     else
+ 378:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 379:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->MCR &= (~ PWM_MCR_STOP_ON_MATCH(PWM_MatchConfigStruct->MatchChannel)) \
+ 773              		.loc 1 379 0
+ 774 0430 FB68     		ldr	r3, [r7, #12]
+ 775 0432 5A69     		ldr	r2, [r3, #20]
+ 776 0434 3B68     		ldr	r3, [r7, #0]
+ 777 0436 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 778 0438 03F00703 		and	r3, r3, #7
+ 779 043c 4FEA4301 		lsl	r1, r3, #1
+ 780 0440 3B68     		ldr	r3, [r7, #0]
+ 781 0442 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 782 0444 03F00703 		and	r3, r3, #7
+ 783 0448 CB18     		adds	r3, r1, r3
+ 784 044a 03F10203 		add	r3, r3, #2
+ 785 044e 4FF00101 		mov	r1, #1
+ 786 0452 01FA03F3 		lsl	r3, r1, r3
+ 787 0456 6FEA0303 		mvn	r3, r3
+ 788 045a 1340     		ands	r3, r3, r2
+ 789 045c 23F07F43 		bic	r3, r3, #-16777216
+ 790 0460 23F46003 		bic	r3, r3, #14680064
+ 791 0464 FA68     		ldr	r2, [r7, #12]
+ 792 0466 5361     		str	r3, [r2, #20]
+ 793              	.L33:
+ 380:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****                                                                         & PWM_MCR_BITMASK;
+ 381:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 382:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** }
+ 794              		.loc 1 382 0
+ 795 0468 07F11007 		add	r7, r7, #16
+ 796 046c BD46     		mov	sp, r7
+ 797 046e 80BD     		pop	{r7, pc}
+ 798              		.cfi_endproc
+ 799              	.LFE64:
+ 801              		.align	2
+ 802              		.global	PWM_ConfigCapture
+ 803              		.thumb
+ 804              		.thumb_func
+ 806              	PWM_ConfigCapture:
+ 807              	.LFB65:
+ 383:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 384:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 385:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /*********************************************************************//**
+ 386:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @brief       Configures capture input for PWM peripheral
+ 387:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]    pwmId           The Id of the expected PWM component
+ 388:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *
+ 389:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]   PWM_CaptureConfigStruct Pointer to a PWM_CAPTURECFG_Type structure
+ 390:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *                    that contains the configuration information for the
+ 391:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *                    specified PWM capture input function.
+ 392:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @return      None
+ 393:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  **********************************************************************/
+ 394:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** void PWM_ConfigCapture(uint8_t pwmId, PWM_CAPTURECFG_Type *PWM_CaptureConfigStruct)
+ 395:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** {
+ 808              		.loc 1 395 0
+ 809              		.cfi_startproc
+ 810              		@ args = 0, pretend = 0, frame = 16
+ 811              		@ frame_needed = 1, uses_anonymous_args = 0
+ 812 0470 80B5     		push	{r7, lr}
+ 813              	.LCFI30:
+ 814              		.cfi_def_cfa_offset 8
+ 815              		.cfi_offset 7, -8
+ 816              		.cfi_offset 14, -4
+ 817 0472 84B0     		sub	sp, sp, #16
+ 818              	.LCFI31:
+ 819              		.cfi_def_cfa_offset 24
+ 820 0474 00AF     		add	r7, sp, #0
+ 821              	.LCFI32:
+ 822              		.cfi_def_cfa_register 7
+ 823 0476 0346     		mov	r3, r0
+ 824 0478 3960     		str	r1, [r7, #0]
+ 825 047a FB71     		strb	r3, [r7, #7]
+ 396:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     LPC_PWM_TypeDef* pPwm = PWM_GetPointer(pwmId);
+ 826              		.loc 1 396 0
+ 827 047c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 828 047e 1846     		mov	r0, r3
+ 829 0480 FFF7BEFD 		bl	PWM_GetPointer
+ 830 0484 F860     		str	r0, [r7, #12]
+ 397:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 398:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     if (PWM_CaptureConfigStruct->RisingEdge == ENABLE)
+ 831              		.loc 1 398 0
+ 832 0486 3B68     		ldr	r3, [r7, #0]
+ 833 0488 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 834 048a 012B     		cmp	r3, #1
+ 835 048c 14D1     		bne	.L41
+ 399:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 400:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->CCR |= PWM_CCR_CAP_RISING(PWM_CaptureConfigStruct->CaptureChannel);
+ 836              		.loc 1 400 0
+ 837 048e FB68     		ldr	r3, [r7, #12]
+ 838 0490 9A6A     		ldr	r2, [r3, #40]
+ 839 0492 3B68     		ldr	r3, [r7, #0]
+ 840 0494 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 841 0496 03F00203 		and	r3, r3, #2
+ 842 049a 4FEA4301 		lsl	r1, r3, #1
+ 843 049e 3B68     		ldr	r3, [r7, #0]
+ 844 04a0 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 845 04a2 03F00103 		and	r3, r3, #1
+ 846 04a6 CB18     		adds	r3, r1, r3
+ 847 04a8 4FF00101 		mov	r1, #1
+ 848 04ac 01FA03F3 		lsl	r3, r1, r3
+ 849 04b0 1A43     		orrs	r2, r2, r3
+ 850 04b2 FB68     		ldr	r3, [r7, #12]
+ 851 04b4 9A62     		str	r2, [r3, #40]
+ 852 04b6 17E0     		b	.L42
+ 853              	.L41:
+ 401:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 402:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     else
+ 403:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 404:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->CCR &= (~ PWM_CCR_CAP_RISING(PWM_CaptureConfigStruct->CaptureChannel)) \
+ 854              		.loc 1 404 0
+ 855 04b8 FB68     		ldr	r3, [r7, #12]
+ 856 04ba 9A6A     		ldr	r2, [r3, #40]
+ 857 04bc 3B68     		ldr	r3, [r7, #0]
+ 858 04be 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 859 04c0 03F00203 		and	r3, r3, #2
+ 860 04c4 4FEA4301 		lsl	r1, r3, #1
+ 861 04c8 3B68     		ldr	r3, [r7, #0]
+ 862 04ca 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 863 04cc 03F00103 		and	r3, r3, #1
+ 864 04d0 CB18     		adds	r3, r1, r3
+ 865 04d2 4FF00101 		mov	r1, #1
+ 866 04d6 01FA03F3 		lsl	r3, r1, r3
+ 867 04da 6FEA0303 		mvn	r3, r3
+ 868 04de 1340     		ands	r3, r3, r2
+ 869 04e0 03F03F02 		and	r2, r3, #63
+ 870 04e4 FB68     		ldr	r3, [r7, #12]
+ 871 04e6 9A62     		str	r2, [r3, #40]
+ 872              	.L42:
+ 405:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****                                                                         & PWM_CCR_BITMASK;
+ 406:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 407:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 408:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     if (PWM_CaptureConfigStruct->FallingEdge == ENABLE)
+ 873              		.loc 1 408 0
+ 874 04e8 3B68     		ldr	r3, [r7, #0]
+ 875 04ea 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 876 04ec 012B     		cmp	r3, #1
+ 877 04ee 16D1     		bne	.L43
+ 409:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 410:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->CCR |= PWM_CCR_CAP_FALLING(PWM_CaptureConfigStruct->CaptureChannel);
+ 878              		.loc 1 410 0
+ 879 04f0 FB68     		ldr	r3, [r7, #12]
+ 880 04f2 9A6A     		ldr	r2, [r3, #40]
+ 881 04f4 3B68     		ldr	r3, [r7, #0]
+ 882 04f6 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 883 04f8 03F00203 		and	r3, r3, #2
+ 884 04fc 4FEA4301 		lsl	r1, r3, #1
+ 885 0500 3B68     		ldr	r3, [r7, #0]
+ 886 0502 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 887 0504 03F00103 		and	r3, r3, #1
+ 888 0508 CB18     		adds	r3, r1, r3
+ 889 050a 03F10103 		add	r3, r3, #1
+ 890 050e 4FF00101 		mov	r1, #1
+ 891 0512 01FA03F3 		lsl	r3, r1, r3
+ 892 0516 1A43     		orrs	r2, r2, r3
+ 893 0518 FB68     		ldr	r3, [r7, #12]
+ 894 051a 9A62     		str	r2, [r3, #40]
+ 895 051c 19E0     		b	.L44
+ 896              	.L43:
+ 411:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 412:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     else
+ 413:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 414:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->CCR &= (~ PWM_CCR_CAP_FALLING(PWM_CaptureConfigStruct->CaptureChannel)) \
+ 897              		.loc 1 414 0
+ 898 051e FB68     		ldr	r3, [r7, #12]
+ 899 0520 9A6A     		ldr	r2, [r3, #40]
+ 900 0522 3B68     		ldr	r3, [r7, #0]
+ 901 0524 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 902 0526 03F00203 		and	r3, r3, #2
+ 903 052a 4FEA4301 		lsl	r1, r3, #1
+ 904 052e 3B68     		ldr	r3, [r7, #0]
+ 905 0530 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 906 0532 03F00103 		and	r3, r3, #1
+ 907 0536 CB18     		adds	r3, r1, r3
+ 908 0538 03F10103 		add	r3, r3, #1
+ 909 053c 4FF00101 		mov	r1, #1
+ 910 0540 01FA03F3 		lsl	r3, r1, r3
+ 911 0544 6FEA0303 		mvn	r3, r3
+ 912 0548 1340     		ands	r3, r3, r2
+ 913 054a 03F03F02 		and	r2, r3, #63
+ 914 054e FB68     		ldr	r3, [r7, #12]
+ 915 0550 9A62     		str	r2, [r3, #40]
+ 916              	.L44:
+ 415:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****                                                                         & PWM_CCR_BITMASK;
+ 416:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 417:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 418:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     if (PWM_CaptureConfigStruct->IntOnCaption == ENABLE)
+ 917              		.loc 1 418 0
+ 918 0552 3B68     		ldr	r3, [r7, #0]
+ 919 0554 DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+ 920 0556 012B     		cmp	r3, #1
+ 921 0558 16D1     		bne	.L45
+ 419:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 420:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->CCR |= PWM_CCR_INT_ON_CAP(PWM_CaptureConfigStruct->CaptureChannel);
+ 922              		.loc 1 420 0
+ 923 055a FB68     		ldr	r3, [r7, #12]
+ 924 055c 9A6A     		ldr	r2, [r3, #40]
+ 925 055e 3B68     		ldr	r3, [r7, #0]
+ 926 0560 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 927 0562 03F00203 		and	r3, r3, #2
+ 928 0566 4FEA4301 		lsl	r1, r3, #1
+ 929 056a 3B68     		ldr	r3, [r7, #0]
+ 930 056c 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 931 056e 03F00103 		and	r3, r3, #1
+ 932 0572 CB18     		adds	r3, r1, r3
+ 933 0574 03F10203 		add	r3, r3, #2
+ 934 0578 4FF00101 		mov	r1, #1
+ 935 057c 01FA03F3 		lsl	r3, r1, r3
+ 936 0580 1A43     		orrs	r2, r2, r3
+ 937 0582 FB68     		ldr	r3, [r7, #12]
+ 938 0584 9A62     		str	r2, [r3, #40]
+ 939 0586 19E0     		b	.L40
+ 940              	.L45:
+ 421:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 422:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     else
+ 423:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 424:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->CCR &= (~ PWM_CCR_INT_ON_CAP(PWM_CaptureConfigStruct->CaptureChannel)) \
+ 941              		.loc 1 424 0
+ 942 0588 FB68     		ldr	r3, [r7, #12]
+ 943 058a 9A6A     		ldr	r2, [r3, #40]
+ 944 058c 3B68     		ldr	r3, [r7, #0]
+ 945 058e 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 946 0590 03F00203 		and	r3, r3, #2
+ 947 0594 4FEA4301 		lsl	r1, r3, #1
+ 948 0598 3B68     		ldr	r3, [r7, #0]
+ 949 059a 1B78     		ldrb	r3, [r3, #0]	@ zero_extendqisi2
+ 950 059c 03F00103 		and	r3, r3, #1
+ 951 05a0 CB18     		adds	r3, r1, r3
+ 952 05a2 03F10203 		add	r3, r3, #2
+ 953 05a6 4FF00101 		mov	r1, #1
+ 954 05aa 01FA03F3 		lsl	r3, r1, r3
+ 955 05ae 6FEA0303 		mvn	r3, r3
+ 956 05b2 1340     		ands	r3, r3, r2
+ 957 05b4 03F03F02 		and	r2, r3, #63
+ 958 05b8 FB68     		ldr	r3, [r7, #12]
+ 959 05ba 9A62     		str	r2, [r3, #40]
+ 960              	.L40:
+ 425:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****                                                                         & PWM_CCR_BITMASK;
+ 426:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 427:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** }
+ 961              		.loc 1 427 0
+ 962 05bc 07F11007 		add	r7, r7, #16
+ 963 05c0 BD46     		mov	sp, r7
+ 964 05c2 80BD     		pop	{r7, pc}
+ 965              		.cfi_endproc
+ 966              	.LFE65:
+ 968              		.align	2
+ 969              		.global	PWM_GetCaptureValue
+ 970              		.thumb
+ 971              		.thumb_func
+ 973              	PWM_GetCaptureValue:
+ 974              	.LFB66:
+ 428:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 429:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 430:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /*********************************************************************//**
+ 431:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @brief       Read value of capture register PWM peripheral
+ 432:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]    pwmId           The Id of the expected PWM component
+ 433:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *
+ 434:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]   CaptureChannel: capture channel number, should be in
+ 435:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              range 0 to 1
+ 436:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @return      Value of capture register
+ 437:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  **********************************************************************/
+ 438:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** uint32_t PWM_GetCaptureValue(uint8_t pwmId, uint8_t CaptureChannel)
+ 439:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** {
+ 975              		.loc 1 439 0
+ 976              		.cfi_startproc
+ 977              		@ args = 0, pretend = 0, frame = 16
+ 978              		@ frame_needed = 1, uses_anonymous_args = 0
+ 979 05c4 80B5     		push	{r7, lr}
+ 980              	.LCFI33:
+ 981              		.cfi_def_cfa_offset 8
+ 982              		.cfi_offset 7, -8
+ 983              		.cfi_offset 14, -4
+ 984 05c6 84B0     		sub	sp, sp, #16
+ 985              	.LCFI34:
+ 986              		.cfi_def_cfa_offset 24
+ 987 05c8 00AF     		add	r7, sp, #0
+ 988              	.LCFI35:
+ 989              		.cfi_def_cfa_register 7
+ 990 05ca 0246     		mov	r2, r0
+ 991 05cc 0B46     		mov	r3, r1
+ 992 05ce FA71     		strb	r2, [r7, #7]
+ 993 05d0 BB71     		strb	r3, [r7, #6]
+ 440:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     LPC_PWM_TypeDef* pPwm = PWM_GetPointer(pwmId);
+ 994              		.loc 1 440 0
+ 995 05d2 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 996 05d4 1846     		mov	r0, r3
+ 997 05d6 FFF713FD 		bl	PWM_GetPointer
+ 998 05da F860     		str	r0, [r7, #12]
+ 441:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 442:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     switch (CaptureChannel)
+ 999              		.loc 1 442 0
+ 1000 05dc BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1001 05de 002B     		cmp	r3, #0
+ 1002 05e0 02D0     		beq	.L49
+ 1003 05e2 012B     		cmp	r3, #1
+ 1004 05e4 03D0     		beq	.L50
+ 1005 05e6 05E0     		b	.L52
+ 1006              	.L49:
+ 443:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 444:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         case 0:
+ 445:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             return pPwm->CR0;
+ 1007              		.loc 1 445 0
+ 1008 05e8 FB68     		ldr	r3, [r7, #12]
+ 1009 05ea DB6A     		ldr	r3, [r3, #44]
+ 1010 05ec 04E0     		b	.L51
+ 1011              	.L50:
+ 446:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 447:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         case 1:
+ 448:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             return pPwm->CR1;
+ 1012              		.loc 1 448 0
+ 1013 05ee FB68     		ldr	r3, [r7, #12]
+ 1014 05f0 1B6B     		ldr	r3, [r3, #48]
+ 1015 05f2 01E0     		b	.L51
+ 1016              	.L52:
+ 449:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 450:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         default:
+ 451:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             return (0);
+ 1017              		.loc 1 451 0
+ 1018 05f4 4FF00003 		mov	r3, #0
+ 1019              	.L51:
+ 452:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 453:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** }
+ 1020              		.loc 1 453 0
+ 1021 05f8 1846     		mov	r0, r3
+ 1022 05fa 07F11007 		add	r7, r7, #16
+ 1023 05fe BD46     		mov	sp, r7
+ 1024 0600 80BD     		pop	{r7, pc}
+ 1025              		.cfi_endproc
+ 1026              	.LFE66:
+ 1028 0602 00BF     		.align	2
+ 1029              		.global	PWM_MatchUpdate
+ 1030              		.thumb
+ 1031              		.thumb_func
+ 1033              	PWM_MatchUpdate:
+ 1034              	.LFB67:
+ 454:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 455:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 456:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /********************************************************************//**
+ 457:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @brief       Update value for each PWM channel with update type option
+ 458:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]    pwmId           The Id of the expected PWM component
+ 459:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *
+ 460:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]   MatchChannel Match channel
+ 461:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]   MatchValue Match value
+ 462:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]   UpdateType Type of Update, should be:
+ 463:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_MATCH_UPDATE_NOW: The update value will be updated for
+ 464:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *                  this channel immediately
+ 465:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_MATCH_UPDATE_NEXT_RST: The update value will be updated for
+ 466:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *                  this channel on next reset by a PWM Match event.
+ 467:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @return      None
+ 468:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *********************************************************************/
+ 469:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** void PWM_MatchUpdate(uint8_t pwmId, uint8_t MatchChannel,
+ 470:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****                                         uint32_t MatchValue, uint8_t UpdateType)
+ 471:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** {
+ 1035              		.loc 1 471 0
+ 1036              		.cfi_startproc
+ 1037              		@ args = 0, pretend = 0, frame = 16
+ 1038              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1039 0604 80B5     		push	{r7, lr}
+ 1040              	.LCFI36:
+ 1041              		.cfi_def_cfa_offset 8
+ 1042              		.cfi_offset 7, -8
+ 1043              		.cfi_offset 14, -4
+ 1044 0606 84B0     		sub	sp, sp, #16
+ 1045              	.LCFI37:
+ 1046              		.cfi_def_cfa_offset 24
+ 1047 0608 00AF     		add	r7, sp, #0
+ 1048              	.LCFI38:
+ 1049              		.cfi_def_cfa_register 7
+ 1050 060a 3A60     		str	r2, [r7, #0]
+ 1051 060c 0246     		mov	r2, r0
+ 1052 060e FA71     		strb	r2, [r7, #7]
+ 1053 0610 0A46     		mov	r2, r1
+ 1054 0612 BA71     		strb	r2, [r7, #6]
+ 1055 0614 7B71     		strb	r3, [r7, #5]
+ 472:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     LPC_PWM_TypeDef* pPwm = PWM_GetPointer(pwmId);
+ 1056              		.loc 1 472 0
+ 1057 0616 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1058 0618 1846     		mov	r0, r3
+ 1059 061a FFF7F1FC 		bl	PWM_GetPointer
+ 1060 061e F860     		str	r0, [r7, #12]
+ 473:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 474:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     switch (MatchChannel)
+ 1061              		.loc 1 474 0
+ 1062 0620 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1063 0622 062B     		cmp	r3, #6
+ 1064 0624 2CD8     		bhi	.L54
+ 1065 0626 01A2     		adr	r2, .L62
+ 1066 0628 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 1067              		.align	2
+ 1068              	.L62:
+ 1069 062c 49060000 		.word	.L55+1
+ 1070 0630 51060000 		.word	.L56+1
+ 1071 0634 59060000 		.word	.L57+1
+ 1072 0638 61060000 		.word	.L58+1
+ 1073 063c 69060000 		.word	.L59+1
+ 1074 0640 71060000 		.word	.L60+1
+ 1075 0644 79060000 		.word	.L61+1
+ 1076              	.L55:
+ 475:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 476:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         case 0:
+ 477:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             pPwm->MR0 = MatchValue;
+ 1077              		.loc 1 477 0
+ 1078 0648 FB68     		ldr	r3, [r7, #12]
+ 1079 064a 3A68     		ldr	r2, [r7, #0]
+ 1080 064c 9A61     		str	r2, [r3, #24]
+ 478:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             break;
+ 1081              		.loc 1 478 0
+ 1082 064e 17E0     		b	.L54
+ 1083              	.L56:
+ 479:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 480:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         case 1:
+ 481:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             pPwm->MR1 = MatchValue;
+ 1084              		.loc 1 481 0
+ 1085 0650 FB68     		ldr	r3, [r7, #12]
+ 1086 0652 3A68     		ldr	r2, [r7, #0]
+ 1087 0654 DA61     		str	r2, [r3, #28]
+ 482:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             break;
+ 1088              		.loc 1 482 0
+ 1089 0656 13E0     		b	.L54
+ 1090              	.L57:
+ 483:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 484:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         case 2:
+ 485:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             pPwm->MR2 = MatchValue;
+ 1091              		.loc 1 485 0
+ 1092 0658 FB68     		ldr	r3, [r7, #12]
+ 1093 065a 3A68     		ldr	r2, [r7, #0]
+ 1094 065c 1A62     		str	r2, [r3, #32]
+ 486:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             break;
+ 1095              		.loc 1 486 0
+ 1096 065e 0FE0     		b	.L54
+ 1097              	.L58:
+ 487:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 488:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         case 3:
+ 489:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             pPwm->MR3 = MatchValue;
+ 1098              		.loc 1 489 0
+ 1099 0660 FB68     		ldr	r3, [r7, #12]
+ 1100 0662 3A68     		ldr	r2, [r7, #0]
+ 1101 0664 5A62     		str	r2, [r3, #36]
+ 490:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             break;
+ 1102              		.loc 1 490 0
+ 1103 0666 0BE0     		b	.L54
+ 1104              	.L59:
+ 491:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 492:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         case 4:
+ 493:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             pPwm->MR4 = MatchValue;
+ 1105              		.loc 1 493 0
+ 1106 0668 FB68     		ldr	r3, [r7, #12]
+ 1107 066a 3A68     		ldr	r2, [r7, #0]
+ 1108 066c 1A64     		str	r2, [r3, #64]
+ 494:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             break;
+ 1109              		.loc 1 494 0
+ 1110 066e 07E0     		b	.L54
+ 1111              	.L60:
+ 495:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 496:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         case 5:
+ 497:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             pPwm->MR5 = MatchValue;
+ 1112              		.loc 1 497 0
+ 1113 0670 FB68     		ldr	r3, [r7, #12]
+ 1114 0672 3A68     		ldr	r2, [r7, #0]
+ 1115 0674 5A64     		str	r2, [r3, #68]
+ 498:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             break;
+ 1116              		.loc 1 498 0
+ 1117 0676 03E0     		b	.L54
+ 1118              	.L61:
+ 499:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 500:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         case 6:
+ 501:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             pPwm->MR6 = MatchValue;
+ 1119              		.loc 1 501 0
+ 1120 0678 FB68     		ldr	r3, [r7, #12]
+ 1121 067a 3A68     		ldr	r2, [r7, #0]
+ 1122 067c 9A64     		str	r2, [r3, #72]
+ 502:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****             break;
+ 1123              		.loc 1 502 0
+ 1124 067e 00BF     		nop
+ 1125              	.L54:
+ 503:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 504:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 505:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     // Write Latch register
+ 506:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     pPwm->LER |= PWM_LER_EN_MATCHn_LATCH(MatchChannel);
+ 1126              		.loc 1 506 0
+ 1127 0680 FB68     		ldr	r3, [r7, #12]
+ 1128 0682 1A6D     		ldr	r2, [r3, #80]
+ 1129 0684 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1130 0686 062B     		cmp	r3, #6
+ 1131 0688 05D8     		bhi	.L63
+ 1132              		.loc 1 506 0 is_stmt 0 discriminator 1
+ 1133 068a BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1134 068c 4FF00101 		mov	r1, #1
+ 1135 0690 01FA03F3 		lsl	r3, r1, r3
+ 1136 0694 01E0     		b	.L64
+ 1137              	.L63:
+ 1138              		.loc 1 506 0 discriminator 2
+ 1139 0696 4FF00003 		mov	r3, #0
+ 1140              	.L64:
+ 1141              		.loc 1 506 0 discriminator 3
+ 1142 069a 1A43     		orrs	r2, r2, r3
+ 1143 069c FB68     		ldr	r3, [r7, #12]
+ 1144 069e 1A65     		str	r2, [r3, #80]
+ 507:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 508:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     // In case of update now
+ 509:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     if (UpdateType == PWM_MATCH_UPDATE_NOW)
+ 1145              		.loc 1 509 0 is_stmt 1 discriminator 3
+ 1146 06a0 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 1147 06a2 002B     		cmp	r3, #0
+ 1148 06a4 0BD1     		bne	.L53
+ 510:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 511:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->TCR |= PWM_TCR_COUNTER_RESET;
+ 1149              		.loc 1 511 0
+ 1150 06a6 FB68     		ldr	r3, [r7, #12]
+ 1151 06a8 5B68     		ldr	r3, [r3, #4]
+ 1152 06aa 43F00202 		orr	r2, r3, #2
+ 1153 06ae FB68     		ldr	r3, [r7, #12]
+ 1154 06b0 5A60     		str	r2, [r3, #4]
+ 512:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->TCR &= (~PWM_TCR_COUNTER_RESET) & PWM_TCR_BITMASK;
+ 1155              		.loc 1 512 0
+ 1156 06b2 FB68     		ldr	r3, [r7, #12]
+ 1157 06b4 5B68     		ldr	r3, [r3, #4]
+ 1158 06b6 03F00902 		and	r2, r3, #9
+ 1159 06ba FB68     		ldr	r3, [r7, #12]
+ 1160 06bc 5A60     		str	r2, [r3, #4]
+ 1161              	.L53:
+ 513:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 514:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** }
+ 1162              		.loc 1 514 0
+ 1163 06be 07F11007 		add	r7, r7, #16
+ 1164 06c2 BD46     		mov	sp, r7
+ 1165 06c4 80BD     		pop	{r7, pc}
+ 1166              		.cfi_endproc
+ 1167              	.LFE67:
+ 1169 06c6 00BF     		.align	2
+ 1170              		.global	PWM_ChannelConfig
+ 1171              		.thumb
+ 1172              		.thumb_func
+ 1174              	PWM_ChannelConfig:
+ 1175              	.LFB68:
+ 515:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 516:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 517:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /********************************************************************//**
+ 518:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @brief       Configure Edge mode for each PWM channel
+ 519:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]    pwmId           The Id of the expected PWM component
+ 520:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *
+ 521:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]   PWMChannel PWM channel, should be in range from 2 to 6
+ 522:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]   ModeOption PWM mode option, should be:
+ 523:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_CHANNEL_SINGLE_EDGE: Single Edge mode
+ 524:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - PWM_CHANNEL_DUAL_EDGE: Dual Edge mode
+ 525:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @return      None
+ 526:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * Note: PWM Channel 1 can not be selected for mode option
+ 527:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *********************************************************************/
+ 528:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** void PWM_ChannelConfig(uint8_t pwmId, uint8_t PWMChannel, uint8_t ModeOption)
+ 529:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** {
+ 1176              		.loc 1 529 0
+ 1177              		.cfi_startproc
+ 1178              		@ args = 0, pretend = 0, frame = 16
+ 1179              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1180 06c8 80B5     		push	{r7, lr}
+ 1181              	.LCFI39:
+ 1182              		.cfi_def_cfa_offset 8
+ 1183              		.cfi_offset 7, -8
+ 1184              		.cfi_offset 14, -4
+ 1185 06ca 84B0     		sub	sp, sp, #16
+ 1186              	.LCFI40:
+ 1187              		.cfi_def_cfa_offset 24
+ 1188 06cc 00AF     		add	r7, sp, #0
+ 1189              	.LCFI41:
+ 1190              		.cfi_def_cfa_register 7
+ 1191 06ce 1346     		mov	r3, r2
+ 1192 06d0 0246     		mov	r2, r0
+ 1193 06d2 FA71     		strb	r2, [r7, #7]
+ 1194 06d4 0A46     		mov	r2, r1
+ 1195 06d6 BA71     		strb	r2, [r7, #6]
+ 1196 06d8 7B71     		strb	r3, [r7, #5]
+ 530:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     LPC_PWM_TypeDef* pPwm = PWM_GetPointer(pwmId);
+ 1197              		.loc 1 530 0
+ 1198 06da FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1199 06dc 1846     		mov	r0, r3
+ 1200 06de FFF78FFC 		bl	PWM_GetPointer
+ 1201 06e2 F860     		str	r0, [r7, #12]
+ 531:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 532:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     // Single edge mode
+ 533:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     if (ModeOption == PWM_CHANNEL_SINGLE_EDGE)
+ 1202              		.loc 1 533 0
+ 1203 06e4 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 1204 06e6 002B     		cmp	r3, #0
+ 1205 06e8 17D1     		bne	.L67
+ 534:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 535:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->PCR &= (~ PWM_PCR_PWMSELn(PWMChannel)) & PWM_PCR_BITMASK;
+ 1206              		.loc 1 535 0
+ 1207 06ea FB68     		ldr	r3, [r7, #12]
+ 1208 06ec DA6C     		ldr	r2, [r3, #76]
+ 1209 06ee BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1210 06f0 03F00703 		and	r3, r3, #7
+ 1211 06f4 012B     		cmp	r3, #1
+ 1212 06f6 0ADD     		ble	.L68
+ 1213              		.loc 1 535 0 is_stmt 0 discriminator 1
+ 1214 06f8 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1215 06fa 4FF00101 		mov	r1, #1
+ 1216 06fe 01FA03F3 		lsl	r3, r1, r3
+ 1217 0702 6FEA0301 		mvn	r1, r3
+ 1218 0706 47F67C63 		movw	r3, #32380
+ 1219 070a 0B40     		ands	r3, r3, r1
+ 1220 070c 01E0     		b	.L69
+ 1221              	.L68:
+ 1222              		.loc 1 535 0 discriminator 2
+ 1223 070e 47F67C63 		movw	r3, #32380
+ 1224              	.L69:
+ 1225              		.loc 1 535 0 discriminator 3
+ 1226 0712 1A40     		ands	r2, r2, r3
+ 1227 0714 FB68     		ldr	r3, [r7, #12]
+ 1228 0716 DA64     		str	r2, [r3, #76]
+ 1229 0718 11E0     		b	.L66
+ 1230              	.L67:
+ 536:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 537:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     // Double edge mode
+ 538:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     else if (PWM_CHANNEL_DUAL_EDGE)
+ 539:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 540:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->PCR |= PWM_PCR_PWMSELn(PWMChannel);
+ 1231              		.loc 1 540 0 is_stmt 1
+ 1232 071a FB68     		ldr	r3, [r7, #12]
+ 1233 071c DA6C     		ldr	r2, [r3, #76]
+ 1234 071e BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1235 0720 03F00703 		and	r3, r3, #7
+ 1236 0724 012B     		cmp	r3, #1
+ 1237 0726 05DD     		ble	.L71
+ 1238              		.loc 1 540 0 is_stmt 0 discriminator 1
+ 1239 0728 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1240 072a 4FF00101 		mov	r1, #1
+ 1241 072e 01FA03F3 		lsl	r3, r1, r3
+ 1242 0732 01E0     		b	.L72
+ 1243              	.L71:
+ 1244              		.loc 1 540 0 discriminator 2
+ 1245 0734 4FF00003 		mov	r3, #0
+ 1246              	.L72:
+ 1247              		.loc 1 540 0 discriminator 3
+ 1248 0738 1A43     		orrs	r2, r2, r3
+ 1249 073a FB68     		ldr	r3, [r7, #12]
+ 1250 073c DA64     		str	r2, [r3, #76]
+ 1251              	.L66:
+ 541:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 542:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** }
+ 1252              		.loc 1 542 0 is_stmt 1
+ 1253 073e 07F11007 		add	r7, r7, #16
+ 1254 0742 BD46     		mov	sp, r7
+ 1255 0744 80BD     		pop	{r7, pc}
+ 1256              		.cfi_endproc
+ 1257              	.LFE68:
+ 1259 0746 00BF     		.align	2
+ 1260              		.global	PWM_ChannelCmd
+ 1261              		.thumb
+ 1262              		.thumb_func
+ 1264              	PWM_ChannelCmd:
+ 1265              	.LFB69:
+ 543:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 544:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 545:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 546:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** /********************************************************************//**
+ 547:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @brief       Enable/Disable PWM channel output
+ 548:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]    pwmId           The Id of the expected PWM component
+ 549:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *
+ 550:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]   PWMChannel PWM channel, should be in range from 1 to 6
+ 551:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @param[in]   NewState New State of this function, should be:
+ 552:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - ENABLE: Enable this PWM channel output
+ 553:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *              - DISABLE: Disable this PWM channel output
+ 554:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  * @return      None
+ 555:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****  *********************************************************************/
+ 556:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** void PWM_ChannelCmd(uint8_t pwmId, uint8_t PWMChannel, FunctionalState NewState)
+ 557:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** {
+ 1266              		.loc 1 557 0
+ 1267              		.cfi_startproc
+ 1268              		@ args = 0, pretend = 0, frame = 16
+ 1269              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1270 0748 80B5     		push	{r7, lr}
+ 1271              	.LCFI42:
+ 1272              		.cfi_def_cfa_offset 8
+ 1273              		.cfi_offset 7, -8
+ 1274              		.cfi_offset 14, -4
+ 1275 074a 84B0     		sub	sp, sp, #16
+ 1276              	.LCFI43:
+ 1277              		.cfi_def_cfa_offset 24
+ 1278 074c 00AF     		add	r7, sp, #0
+ 1279              	.LCFI44:
+ 1280              		.cfi_def_cfa_register 7
+ 1281 074e 1346     		mov	r3, r2
+ 1282 0750 0246     		mov	r2, r0
+ 1283 0752 FA71     		strb	r2, [r7, #7]
+ 1284 0754 0A46     		mov	r2, r1
+ 1285 0756 BA71     		strb	r2, [r7, #6]
+ 1286 0758 7B71     		strb	r3, [r7, #5]
+ 558:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     LPC_PWM_TypeDef* pPwm = PWM_GetPointer(pwmId);
+ 1287              		.loc 1 558 0
+ 1288 075a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1289 075c 1846     		mov	r0, r3
+ 1290 075e FFF74FFC 		bl	PWM_GetPointer
+ 1291 0762 F860     		str	r0, [r7, #12]
+ 559:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** 
+ 560:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     if (NewState == ENABLE)
+ 1292              		.loc 1 560 0
+ 1293 0764 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 1294 0766 012B     		cmp	r3, #1
+ 1295 0768 14D1     		bne	.L74
+ 561:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 562:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->PCR |= PWM_PCR_PWMENAn(PWMChannel);
+ 1296              		.loc 1 562 0
+ 1297 076a FB68     		ldr	r3, [r7, #12]
+ 1298 076c DA6C     		ldr	r2, [r3, #76]
+ 1299 076e BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1300 0770 03F00703 		and	r3, r3, #7
+ 1301 0774 002B     		cmp	r3, #0
+ 1302 0776 07DD     		ble	.L75
+ 1303              		.loc 1 562 0 is_stmt 0 discriminator 1
+ 1304 0778 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1305 077a 03F10803 		add	r3, r3, #8
+ 1306 077e 4FF00101 		mov	r1, #1
+ 1307 0782 01FA03F3 		lsl	r3, r1, r3
+ 1308 0786 01E0     		b	.L76
+ 1309              	.L75:
+ 1310              		.loc 1 562 0 discriminator 2
+ 1311 0788 4FF00003 		mov	r3, #0
+ 1312              	.L76:
+ 1313              		.loc 1 562 0 discriminator 3
+ 1314 078c 1A43     		orrs	r2, r2, r3
+ 1315 078e FB68     		ldr	r3, [r7, #12]
+ 1316 0790 DA64     		str	r2, [r3, #76]
+ 1317 0792 18E0     		b	.L73
+ 1318              	.L74:
+ 563:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 564:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     else
+ 565:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     {
+ 566:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****         pPwm->PCR &= (~ PWM_PCR_PWMENAn(PWMChannel)) & PWM_PCR_BITMASK;
+ 1319              		.loc 1 566 0 is_stmt 1
+ 1320 0794 FB68     		ldr	r3, [r7, #12]
+ 1321 0796 DA6C     		ldr	r2, [r3, #76]
+ 1322 0798 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1323 079a 03F00703 		and	r3, r3, #7
+ 1324 079e 002B     		cmp	r3, #0
+ 1325 07a0 0CDD     		ble	.L78
+ 1326              		.loc 1 566 0 is_stmt 0 discriminator 1
+ 1327 07a2 BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1328 07a4 03F10803 		add	r3, r3, #8
+ 1329 07a8 4FF00101 		mov	r1, #1
+ 1330 07ac 01FA03F3 		lsl	r3, r1, r3
+ 1331 07b0 6FEA0301 		mvn	r1, r3
+ 1332 07b4 47F67C63 		movw	r3, #32380
+ 1333 07b8 0B40     		ands	r3, r3, r1
+ 1334 07ba 01E0     		b	.L79
+ 1335              	.L78:
+ 1336              		.loc 1 566 0 discriminator 2
+ 1337 07bc 47F67C63 		movw	r3, #32380
+ 1338              	.L79:
+ 1339              		.loc 1 566 0 discriminator 3
+ 1340 07c0 1A40     		ands	r2, r2, r3
+ 1341 07c2 FB68     		ldr	r3, [r7, #12]
+ 1342 07c4 DA64     		str	r2, [r3, #76]
+ 1343              	.L73:
+ 567:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c ****     }
+ 568:../src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.c **** }
+ 1344              		.loc 1 568 0 is_stmt 1
+ 1345 07c6 07F11007 		add	r7, r7, #16
+ 1346 07ca BD46     		mov	sp, r7
+ 1347 07cc 80BD     		pop	{r7, pc}
+ 1348              		.cfi_endproc
+ 1349              	.LFE69:
+ 1351              	.Letext0:
+ 1352              		.file 2 "g:\\program files\\codesourcery\\sourcery_codebench_lite_for_arm_eabi\\bin\\../lib/gcc/ar
+ 1353              		.file 3 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Drivers\\include/lpc_types.h"
+ 1354              		.file 4 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Core\\Device\\NXP\\LPC177x_8x\\Includ
+ 1355              		.file 5 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Drivers\\include/lpc177x_8x_pwm.h"
+ 1356              		.file 6 "D:\\workspace_gnu\\RTT_Demo0\\src\\lib\\lpc177x_8x\\Core\\CMSIS\\Include/core_cm3.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 lpc177x_8x_pwm.c
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:18     .text:00000000 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:22     .text:00000000 PWM_GetPointer
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:79     .text:00000038 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:84     .text:00000040 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:89     .text:00000040 PWM_GetIntStatus
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:137    .text:00000074 PWM_ClearIntPending
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:178    .text:00000098 PWM_ConfigStructInit
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:245    .text:000000e4 PWM_Init
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:415    .text:00000210 PWM_DeInit
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:474    .text:0000025c PWM_Cmd
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:531    .text:0000029c PWM_CounterCmd
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:588    .text:000002dc PWM_ResetCounter
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:636    .text:00000310 PWM_ConfigMatch
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:806    .text:00000470 PWM_ConfigCapture
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:973    .text:000005c4 PWM_GetCaptureValue
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:1033   .text:00000604 PWM_MatchUpdate
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:1069   .text:0000062c $d
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:1078   .text:00000648 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:1174   .text:000006c8 PWM_ChannelConfig
+C:\Users\YANGZH~1\AppData\Local\Temp\cc3V24Cn.s:1264   .text:00000748 PWM_ChannelCmd
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.1.9fa2be94b3b27131c651c32db681ca6e
+                           .group:00000000 wm4.stdint.h.10.90b695f550ca6cc3fb08fa83baf01e05
+                           .group:00000000 wm4.lpc_types.h.61.500abe635b953859f645467b1debaa34
+                           .group:00000000 wm4.lpc177x_8x_libcfg_default.h.42.c21d4d8531a15b96cd9ccfa94b76f68e
+                           .group:00000000 wm4.LPC177x_8x.h.34.ced9b468ef83bb68f280515946661353
+                           .group:00000000 wm4.core_cm3.h.32.790cc16ac64d67f02f3790c90a28e38c
+                           .group:00000000 wm4.core_cmInstr.h.25.dd98b40e8e0d1d9ee958eb9cce5e7898
+                           .group:00000000 wm4.core_cm3.h.132.82da42f2eaa4f3e645984b3550bd4c22
+                           .group:00000000 wm4.LPC177x_8x.h.1353.9b0a09b2831088a36b3e4060dcdc4532
+                           .group:00000000 wm4.lpc177x_8x_pwm.h.63.995af7a69084c503a4cd81e353cf0753
+                           .group:00000000 wm4.system_LPC177x_8x.h.34.e57b19a2859ef593a5974e6904d3f0ac
+                           .group:00000000 wm4.lpc177x_8x_clkpwr.h.61.8bfb9350f1be3b242e7e7c6f04f31221
+
+UNDEFINED SYMBOLS
+__aeabi_uldivmod
+CLKPWR_ConfigPPWR
+CLKPWR_GetCLK

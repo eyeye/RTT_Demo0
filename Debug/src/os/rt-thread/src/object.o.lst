@@ -1,0 +1,1681 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m4
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"object.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.align	2
+  19              		.thumb
+  20              		.thumb_func
+  22              	rt_list_insert_after:
+  23              	.LFB1:
+  24              		.file 1 "D:\\workspace_gnu\\RTT_Demo0\\src\\os\\rt-thread\\include/rtservice.h"
+   1:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** /*
+   2:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * File      : rtservice.h
+   3:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * This file is part of RT-Thread RTOS
+   4:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * COPYRIGHT (C) 2006 - 2012, RT-Thread Development Team
+   5:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  *
+   6:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * The license and distribution terms for this file may be
+   7:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * found in the file LICENSE in this distribution or at
+   8:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * http://www.rt-thread.org/license/LICENSE
+   9:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  *
+  10:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * Change Logs:
+  11:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * Date           Author       Notes
+  12:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * 2006-03-16     Bernard      the first version
+  13:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * 2006-09-07     Bernard      move the kservice APIs to rtthread.h
+  14:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * 2007-06-27     Bernard      fix the rt_list_remove bug
+  15:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * 2012-03-22     Bernard      rename kservice.h to rtservice.h
+  16:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  */
+  17:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  18:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** #ifndef __RT_SERVICE_H__
+  19:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** #define __RT_SERVICE_H__
+  20:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  21:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** #ifdef __cplusplus
+  22:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** extern "C" {
+  23:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** #endif
+  24:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  25:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** /**
+  26:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @addtogroup KernelService
+  27:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  */
+  28:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  29:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** /*@{*/
+  30:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  31:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** /**
+  32:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @brief initialize a list object
+  33:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  */
+  34:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** #define RT_LIST_OBJECT_INIT(object) { &(object), &(object) }
+  35:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  36:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** /**
+  37:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @brief initialize a list
+  38:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  *
+  39:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @param l list to be initialized
+  40:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  */
+  41:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** rt_inline void rt_list_init(rt_list_t *l)
+  42:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** {
+  43:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     l->next = l->prev = l;
+  44:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** }
+  45:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  46:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** /**
+  47:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @brief insert a node after a list
+  48:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  *
+  49:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @param l list to insert it
+  50:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @param n new node to be inserted
+  51:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  */
+  52:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** rt_inline void rt_list_insert_after(rt_list_t *l, rt_list_t *n)
+  53:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** {
+  25              		.loc 1 53 0
+  26              		.cfi_startproc
+  27              		@ args = 0, pretend = 0, frame = 8
+  28              		@ frame_needed = 1, uses_anonymous_args = 0
+  29              		@ link register save eliminated.
+  30 0000 80B4     		push	{r7}
+  31              	.LCFI0:
+  32              		.cfi_def_cfa_offset 4
+  33              		.cfi_offset 7, -4
+  34 0002 83B0     		sub	sp, sp, #12
+  35              	.LCFI1:
+  36              		.cfi_def_cfa_offset 16
+  37 0004 00AF     		add	r7, sp, #0
+  38              	.LCFI2:
+  39              		.cfi_def_cfa_register 7
+  40 0006 7860     		str	r0, [r7, #4]
+  41 0008 3960     		str	r1, [r7, #0]
+  54:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     l->next->prev = n;
+  42              		.loc 1 54 0
+  43 000a 7B68     		ldr	r3, [r7, #4]
+  44 000c 1B68     		ldr	r3, [r3, #0]
+  45 000e 3A68     		ldr	r2, [r7, #0]
+  46 0010 5A60     		str	r2, [r3, #4]
+  55:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     n->next = l->next;
+  47              		.loc 1 55 0
+  48 0012 7B68     		ldr	r3, [r7, #4]
+  49 0014 1A68     		ldr	r2, [r3, #0]
+  50 0016 3B68     		ldr	r3, [r7, #0]
+  51 0018 1A60     		str	r2, [r3, #0]
+  56:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  57:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     l->next = n;
+  52              		.loc 1 57 0
+  53 001a 7B68     		ldr	r3, [r7, #4]
+  54 001c 3A68     		ldr	r2, [r7, #0]
+  55 001e 1A60     		str	r2, [r3, #0]
+  58:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     n->prev = l;
+  56              		.loc 1 58 0
+  57 0020 3B68     		ldr	r3, [r7, #0]
+  58 0022 7A68     		ldr	r2, [r7, #4]
+  59 0024 5A60     		str	r2, [r3, #4]
+  59:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** }
+  60              		.loc 1 59 0
+  61 0026 07F10C07 		add	r7, r7, #12
+  62 002a BD46     		mov	sp, r7
+  63 002c 80BC     		pop	{r7}
+  64 002e 7047     		bx	lr
+  65              		.cfi_endproc
+  66              	.LFE1:
+  68              		.align	2
+  69              		.thumb
+  70              		.thumb_func
+  72              	rt_list_remove:
+  73              	.LFB3:
+  60:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  61:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** /**
+  62:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @brief insert a node before a list
+  63:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  *
+  64:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @param n new node to be inserted
+  65:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @param l list to insert it
+  66:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  */
+  67:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** rt_inline void rt_list_insert_before(rt_list_t *l, rt_list_t *n)
+  68:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** {
+  69:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     l->prev->next = n;
+  70:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     n->prev = l->prev;
+  71:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  72:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     l->prev = n;
+  73:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     n->next = l;
+  74:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** }
+  75:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  76:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** /**
+  77:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @brief remove node from list.
+  78:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  * @param n the node to remove from the list.
+  79:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****  */
+  80:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** rt_inline void rt_list_remove(rt_list_t *n)
+  81:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** {
+  74              		.loc 1 81 0
+  75              		.cfi_startproc
+  76              		@ args = 0, pretend = 0, frame = 8
+  77              		@ frame_needed = 1, uses_anonymous_args = 0
+  78              		@ link register save eliminated.
+  79 0030 80B4     		push	{r7}
+  80              	.LCFI3:
+  81              		.cfi_def_cfa_offset 4
+  82              		.cfi_offset 7, -4
+  83 0032 83B0     		sub	sp, sp, #12
+  84              	.LCFI4:
+  85              		.cfi_def_cfa_offset 16
+  86 0034 00AF     		add	r7, sp, #0
+  87              	.LCFI5:
+  88              		.cfi_def_cfa_register 7
+  89 0036 7860     		str	r0, [r7, #4]
+  82:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     n->next->prev = n->prev;
+  90              		.loc 1 82 0
+  91 0038 7B68     		ldr	r3, [r7, #4]
+  92 003a 1B68     		ldr	r3, [r3, #0]
+  93 003c 7A68     		ldr	r2, [r7, #4]
+  94 003e 5268     		ldr	r2, [r2, #4]
+  95 0040 5A60     		str	r2, [r3, #4]
+  83:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     n->prev->next = n->next;
+  96              		.loc 1 83 0
+  97 0042 7B68     		ldr	r3, [r7, #4]
+  98 0044 5B68     		ldr	r3, [r3, #4]
+  99 0046 7A68     		ldr	r2, [r7, #4]
+ 100 0048 1268     		ldr	r2, [r2, #0]
+ 101 004a 1A60     		str	r2, [r3, #0]
+  84:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** 
+  85:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h ****     n->next = n->prev = n;
+ 102              		.loc 1 85 0
+ 103 004c 7B68     		ldr	r3, [r7, #4]
+ 104 004e 7A68     		ldr	r2, [r7, #4]
+ 105 0050 5A60     		str	r2, [r3, #4]
+ 106 0052 7B68     		ldr	r3, [r7, #4]
+ 107 0054 5A68     		ldr	r2, [r3, #4]
+ 108 0056 7B68     		ldr	r3, [r7, #4]
+ 109 0058 1A60     		str	r2, [r3, #0]
+  86:D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include\rtservice.h **** }
+ 110              		.loc 1 86 0
+ 111 005a 07F10C07 		add	r7, r7, #12
+ 112 005e BD46     		mov	sp, r7
+ 113 0060 80BC     		pop	{r7}
+ 114 0062 7047     		bx	lr
+ 115              		.cfi_endproc
+ 116              	.LFE3:
+ 118              		.global	rt_object_container
+ 119              		.data
+ 120              		.align	2
+ 123              	rt_object_container:
+ 124 0000 00       		.byte	0
+ 125 0001 000000   		.space	3
+ 126 0004 04000000 		.word	rt_object_container+4
+ 127 0008 04000000 		.word	rt_object_container+4
+ 128 000c 78000000 		.word	120
+ 129 0010 01       		.byte	1
+ 130 0011 000000   		.space	3
+ 131 0014 14000000 		.word	rt_object_container+20
+ 132 0018 14000000 		.word	rt_object_container+20
+ 133 001c 1C000000 		.word	28
+ 134 0020 02       		.byte	2
+ 135 0021 000000   		.space	3
+ 136 0024 24000000 		.word	rt_object_container+36
+ 137 0028 24000000 		.word	rt_object_container+36
+ 138 002c 20000000 		.word	32
+ 139 0030 03       		.byte	3
+ 140 0031 000000   		.space	3
+ 141 0034 34000000 		.word	rt_object_container+52
+ 142 0038 34000000 		.word	rt_object_container+52
+ 143 003c 1C000000 		.word	28
+ 144 0040 04       		.byte	4
+ 145 0041 000000   		.space	3
+ 146 0044 44000000 		.word	rt_object_container+68
+ 147 0048 44000000 		.word	rt_object_container+68
+ 148 004c 2C000000 		.word	44
+ 149 0050 05       		.byte	5
+ 150 0051 000000   		.space	3
+ 151 0054 54000000 		.word	rt_object_container+84
+ 152 0058 54000000 		.word	rt_object_container+84
+ 153 005c 30000000 		.word	48
+ 154 0060 06       		.byte	6
+ 155 0061 000000   		.space	3
+ 156 0064 64000000 		.word	rt_object_container+100
+ 157 0068 64000000 		.word	rt_object_container+100
+ 158 006c 5C000000 		.word	92
+ 159 0070 07       		.byte	7
+ 160 0071 000000   		.space	3
+ 161 0074 74000000 		.word	rt_object_container+116
+ 162 0078 74000000 		.word	rt_object_container+116
+ 163 007c 34000000 		.word	52
+ 164 0080 08       		.byte	8
+ 165 0081 000000   		.space	3
+ 166 0084 84000000 		.word	rt_object_container+132
+ 167 0088 84000000 		.word	rt_object_container+132
+ 168 008c 3C000000 		.word	60
+ 169 0090 09       		.byte	9
+ 170 0091 000000   		.space	3
+ 171 0094 94000000 		.word	rt_object_container+148
+ 172 0098 94000000 		.word	rt_object_container+148
+ 173 009c 28000000 		.word	40
+ 174              		.bss
+ 175              		.align	2
+ 176              	rt_object_attach_hook:
+ 177 0000 00000000 		.space	4
+ 178              		.align	2
+ 179              	rt_object_detach_hook:
+ 180 0004 00000000 		.space	4
+ 181              		.comm	rt_object_trytake_hook,4,4
+ 182              		.comm	rt_object_take_hook,4,4
+ 183              		.comm	rt_object_put_hook,4,4
+ 184              		.text
+ 185              		.align	2
+ 186              		.global	rt_object_attach_sethook
+ 187              		.thumb
+ 188              		.thumb_func
+ 190              	rt_object_attach_sethook:
+ 191              	.LFB5:
+ 192              		.file 2 "../src/os/rt-thread/src/object.c"
+   1:../src/os/rt-thread/src/object.c **** /*
+   2:../src/os/rt-thread/src/object.c ****  * File      : object.c
+   3:../src/os/rt-thread/src/object.c ****  * This file is part of RT-Thread RTOS
+   4:../src/os/rt-thread/src/object.c ****  * COPYRIGHT (C) 2006 - 2012, RT-Thread Development Team
+   5:../src/os/rt-thread/src/object.c ****  *
+   6:../src/os/rt-thread/src/object.c ****  * The license and distribution terms for this file may be
+   7:../src/os/rt-thread/src/object.c ****  * found in the file LICENSE in this distribution or at
+   8:../src/os/rt-thread/src/object.c ****  * http://www.rt-thread.org/license/LICENSE
+   9:../src/os/rt-thread/src/object.c ****  *
+  10:../src/os/rt-thread/src/object.c ****  * Change Logs:
+  11:../src/os/rt-thread/src/object.c ****  * Date           Author       Notes
+  12:../src/os/rt-thread/src/object.c ****  * 2006-03-14     Bernard      the first version
+  13:../src/os/rt-thread/src/object.c ****  * 2006-04-21     Bernard      change the scheduler lock to interrupt lock
+  14:../src/os/rt-thread/src/object.c ****  * 2006-05-18     Bernard      fix the object init bug
+  15:../src/os/rt-thread/src/object.c ****  * 2006-08-03     Bernard      add hook support
+  16:../src/os/rt-thread/src/object.c ****  * 2007-01-28     Bernard      rename RT_OBJECT_Class_Static to RT_Object_Class_Static
+  17:../src/os/rt-thread/src/object.c ****  * 2010-10-26     yi.qiu       add module support in rt_object_allocate and rt_object_free
+  18:../src/os/rt-thread/src/object.c ****  */
+  19:../src/os/rt-thread/src/object.c **** 
+  20:../src/os/rt-thread/src/object.c **** #include <rtthread.h>
+  21:../src/os/rt-thread/src/object.c **** #include <rthw.h>
+  22:../src/os/rt-thread/src/object.c **** 
+  23:../src/os/rt-thread/src/object.c **** #define _OBJ_CONTAINER_LIST_INIT(c) 	\
+  24:../src/os/rt-thread/src/object.c **** 	{&(rt_object_container[c].object_list), &(rt_object_container[c].object_list)}
+  25:../src/os/rt-thread/src/object.c **** struct rt_object_information rt_object_container[RT_Object_Class_Unknown] =
+  26:../src/os/rt-thread/src/object.c **** {
+  27:../src/os/rt-thread/src/object.c **** 	/* initialize object container - thread */
+  28:../src/os/rt-thread/src/object.c **** 	{RT_Object_Class_Thread, _OBJ_CONTAINER_LIST_INIT(RT_Object_Class_Thread), sizeof(struct rt_thread
+  29:../src/os/rt-thread/src/object.c **** #ifdef RT_USING_SEMAPHORE
+  30:../src/os/rt-thread/src/object.c **** 	/* initialize object container - semaphore */
+  31:../src/os/rt-thread/src/object.c **** 	{RT_Object_Class_Semaphore, _OBJ_CONTAINER_LIST_INIT(RT_Object_Class_Semaphore), sizeof(struct rt_
+  32:../src/os/rt-thread/src/object.c **** #endif
+  33:../src/os/rt-thread/src/object.c **** #ifdef RT_USING_MUTEX
+  34:../src/os/rt-thread/src/object.c **** 	/* initialize object container - mutex */
+  35:../src/os/rt-thread/src/object.c **** 	{RT_Object_Class_Mutex, _OBJ_CONTAINER_LIST_INIT(RT_Object_Class_Mutex), sizeof(struct rt_mutex)},
+  36:../src/os/rt-thread/src/object.c **** #endif
+  37:../src/os/rt-thread/src/object.c **** #ifdef RT_USING_EVENT
+  38:../src/os/rt-thread/src/object.c **** 	/* initialize object container - event */
+  39:../src/os/rt-thread/src/object.c **** 	{RT_Object_Class_Event, _OBJ_CONTAINER_LIST_INIT(RT_Object_Class_Event), sizeof(struct rt_event)},
+  40:../src/os/rt-thread/src/object.c **** #endif
+  41:../src/os/rt-thread/src/object.c **** #ifdef RT_USING_MAILBOX
+  42:../src/os/rt-thread/src/object.c **** 	/* initialize object container - mailbox */
+  43:../src/os/rt-thread/src/object.c **** 	{RT_Object_Class_MailBox, _OBJ_CONTAINER_LIST_INIT(RT_Object_Class_MailBox), sizeof(struct rt_mail
+  44:../src/os/rt-thread/src/object.c **** #endif
+  45:../src/os/rt-thread/src/object.c **** #ifdef RT_USING_MESSAGEQUEUE
+  46:../src/os/rt-thread/src/object.c **** 	/* initialize object container - message queue */
+  47:../src/os/rt-thread/src/object.c **** 	{RT_Object_Class_MessageQueue, _OBJ_CONTAINER_LIST_INIT(RT_Object_Class_MessageQueue), sizeof(stru
+  48:../src/os/rt-thread/src/object.c **** #endif
+  49:../src/os/rt-thread/src/object.c **** #ifdef RT_USING_MEMHEAP
+  50:../src/os/rt-thread/src/object.c **** 	/* initialize object container - memory heap */
+  51:../src/os/rt-thread/src/object.c **** 	{RT_Object_Class_MemHeap, _OBJ_CONTAINER_LIST_INIT(RT_Object_Class_MemHeap), sizeof(struct rt_memh
+  52:../src/os/rt-thread/src/object.c **** #endif
+  53:../src/os/rt-thread/src/object.c **** #ifdef RT_USING_MEMPOOL
+  54:../src/os/rt-thread/src/object.c **** 	/* initialize object container - memory pool */
+  55:../src/os/rt-thread/src/object.c **** 	{RT_Object_Class_MemPool, _OBJ_CONTAINER_LIST_INIT(RT_Object_Class_MemPool), sizeof(struct rt_memp
+  56:../src/os/rt-thread/src/object.c **** #endif
+  57:../src/os/rt-thread/src/object.c **** #ifdef RT_USING_DEVICE
+  58:../src/os/rt-thread/src/object.c **** 	/* initialize object container - device */
+  59:../src/os/rt-thread/src/object.c **** 	{RT_Object_Class_Device, _OBJ_CONTAINER_LIST_INIT(RT_Object_Class_Device), sizeof(struct rt_device
+  60:../src/os/rt-thread/src/object.c **** #endif
+  61:../src/os/rt-thread/src/object.c **** 	/* initialize object container - timer */
+  62:../src/os/rt-thread/src/object.c **** 	{RT_Object_Class_Timer, _OBJ_CONTAINER_LIST_INIT(RT_Object_Class_Timer), sizeof(struct rt_timer)},
+  63:../src/os/rt-thread/src/object.c **** #ifdef RT_USING_MODULE
+  64:../src/os/rt-thread/src/object.c **** 	/* initialize object container - module */
+  65:../src/os/rt-thread/src/object.c **** 	{RT_Object_Class_Module, _OBJ_CONTAINER_LIST_INIT(RT_Object_Class_Module), sizeof(struct rt_module
+  66:../src/os/rt-thread/src/object.c **** #endif
+  67:../src/os/rt-thread/src/object.c **** };
+  68:../src/os/rt-thread/src/object.c **** 
+  69:../src/os/rt-thread/src/object.c **** #ifdef RT_USING_HOOK
+  70:../src/os/rt-thread/src/object.c **** static void (*rt_object_attach_hook)(struct rt_object *object);
+  71:../src/os/rt-thread/src/object.c **** static void (*rt_object_detach_hook)(struct rt_object *object);
+  72:../src/os/rt-thread/src/object.c **** void (*rt_object_trytake_hook)(struct rt_object *object);
+  73:../src/os/rt-thread/src/object.c **** void (*rt_object_take_hook)(struct rt_object *object);
+  74:../src/os/rt-thread/src/object.c **** void (*rt_object_put_hook)(struct rt_object *object);
+  75:../src/os/rt-thread/src/object.c **** 
+  76:../src/os/rt-thread/src/object.c **** /**
+  77:../src/os/rt-thread/src/object.c ****  * @addtogroup Hook
+  78:../src/os/rt-thread/src/object.c ****  */
+  79:../src/os/rt-thread/src/object.c **** 
+  80:../src/os/rt-thread/src/object.c **** /*@{*/
+  81:../src/os/rt-thread/src/object.c **** 
+  82:../src/os/rt-thread/src/object.c **** /**
+  83:../src/os/rt-thread/src/object.c ****  * This function will set a hook function, which will be invoked when object
+  84:../src/os/rt-thread/src/object.c ****  * attaches to kernel object system.
+  85:../src/os/rt-thread/src/object.c ****  *
+  86:../src/os/rt-thread/src/object.c ****  * @param hook the hook function
+  87:../src/os/rt-thread/src/object.c ****  */
+  88:../src/os/rt-thread/src/object.c **** void rt_object_attach_sethook(void (*hook)(struct rt_object *object))
+  89:../src/os/rt-thread/src/object.c **** {
+ 193              		.loc 2 89 0
+ 194              		.cfi_startproc
+ 195              		@ args = 0, pretend = 0, frame = 8
+ 196              		@ frame_needed = 1, uses_anonymous_args = 0
+ 197              		@ link register save eliminated.
+ 198 0064 80B4     		push	{r7}
+ 199              	.LCFI6:
+ 200              		.cfi_def_cfa_offset 4
+ 201              		.cfi_offset 7, -4
+ 202 0066 83B0     		sub	sp, sp, #12
+ 203              	.LCFI7:
+ 204              		.cfi_def_cfa_offset 16
+ 205 0068 00AF     		add	r7, sp, #0
+ 206              	.LCFI8:
+ 207              		.cfi_def_cfa_register 7
+ 208 006a 7860     		str	r0, [r7, #4]
+  90:../src/os/rt-thread/src/object.c **** 	rt_object_attach_hook = hook;
+ 209              		.loc 2 90 0
+ 210 006c 034B     		ldr	r3, .L4
+ 211 006e 7A68     		ldr	r2, [r7, #4]
+ 212 0070 1A60     		str	r2, [r3, #0]
+  91:../src/os/rt-thread/src/object.c **** }
+ 213              		.loc 2 91 0
+ 214 0072 07F10C07 		add	r7, r7, #12
+ 215 0076 BD46     		mov	sp, r7
+ 216 0078 80BC     		pop	{r7}
+ 217 007a 7047     		bx	lr
+ 218              	.L5:
+ 219              		.align	2
+ 220              	.L4:
+ 221 007c 00000000 		.word	rt_object_attach_hook
+ 222              		.cfi_endproc
+ 223              	.LFE5:
+ 225              		.align	2
+ 226              		.global	rt_object_detach_sethook
+ 227              		.thumb
+ 228              		.thumb_func
+ 230              	rt_object_detach_sethook:
+ 231              	.LFB6:
+  92:../src/os/rt-thread/src/object.c **** 
+  93:../src/os/rt-thread/src/object.c **** /**
+  94:../src/os/rt-thread/src/object.c ****  * This function will set a hook function, which will be invoked when object
+  95:../src/os/rt-thread/src/object.c ****  * detaches from kernel object system.
+  96:../src/os/rt-thread/src/object.c ****  *
+  97:../src/os/rt-thread/src/object.c ****  * @param hook the hook function
+  98:../src/os/rt-thread/src/object.c ****  */
+  99:../src/os/rt-thread/src/object.c **** void rt_object_detach_sethook(void (*hook)(struct rt_object *object))
+ 100:../src/os/rt-thread/src/object.c **** {
+ 232              		.loc 2 100 0
+ 233              		.cfi_startproc
+ 234              		@ args = 0, pretend = 0, frame = 8
+ 235              		@ frame_needed = 1, uses_anonymous_args = 0
+ 236              		@ link register save eliminated.
+ 237 0080 80B4     		push	{r7}
+ 238              	.LCFI9:
+ 239              		.cfi_def_cfa_offset 4
+ 240              		.cfi_offset 7, -4
+ 241 0082 83B0     		sub	sp, sp, #12
+ 242              	.LCFI10:
+ 243              		.cfi_def_cfa_offset 16
+ 244 0084 00AF     		add	r7, sp, #0
+ 245              	.LCFI11:
+ 246              		.cfi_def_cfa_register 7
+ 247 0086 7860     		str	r0, [r7, #4]
+ 101:../src/os/rt-thread/src/object.c **** 	rt_object_detach_hook = hook;
+ 248              		.loc 2 101 0
+ 249 0088 034B     		ldr	r3, .L7
+ 250 008a 7A68     		ldr	r2, [r7, #4]
+ 251 008c 1A60     		str	r2, [r3, #0]
+ 102:../src/os/rt-thread/src/object.c **** }
+ 252              		.loc 2 102 0
+ 253 008e 07F10C07 		add	r7, r7, #12
+ 254 0092 BD46     		mov	sp, r7
+ 255 0094 80BC     		pop	{r7}
+ 256 0096 7047     		bx	lr
+ 257              	.L8:
+ 258              		.align	2
+ 259              	.L7:
+ 260 0098 04000000 		.word	rt_object_detach_hook
+ 261              		.cfi_endproc
+ 262              	.LFE6:
+ 264              		.align	2
+ 265              		.global	rt_object_trytake_sethook
+ 266              		.thumb
+ 267              		.thumb_func
+ 269              	rt_object_trytake_sethook:
+ 270              	.LFB7:
+ 103:../src/os/rt-thread/src/object.c **** 
+ 104:../src/os/rt-thread/src/object.c **** /**
+ 105:../src/os/rt-thread/src/object.c ****  * This function will set a hook function, which will be invoked when object
+ 106:../src/os/rt-thread/src/object.c ****  * is taken from kernel object system.
+ 107:../src/os/rt-thread/src/object.c ****  *
+ 108:../src/os/rt-thread/src/object.c ****  * The object is taken means:
+ 109:../src/os/rt-thread/src/object.c ****  * semaphore - semaphore is taken by thread
+ 110:../src/os/rt-thread/src/object.c ****  * mutex - mutex is taken by thread
+ 111:../src/os/rt-thread/src/object.c ****  * event - event is received by thread
+ 112:../src/os/rt-thread/src/object.c ****  * mailbox - mail is received by thread
+ 113:../src/os/rt-thread/src/object.c ****  * message queue - message is received by thread
+ 114:../src/os/rt-thread/src/object.c ****  *
+ 115:../src/os/rt-thread/src/object.c ****  * @param hook the hook function
+ 116:../src/os/rt-thread/src/object.c ****  */
+ 117:../src/os/rt-thread/src/object.c **** void rt_object_trytake_sethook(void (*hook)(struct rt_object *object))
+ 118:../src/os/rt-thread/src/object.c **** {
+ 271              		.loc 2 118 0
+ 272              		.cfi_startproc
+ 273              		@ args = 0, pretend = 0, frame = 8
+ 274              		@ frame_needed = 1, uses_anonymous_args = 0
+ 275              		@ link register save eliminated.
+ 276 009c 80B4     		push	{r7}
+ 277              	.LCFI12:
+ 278              		.cfi_def_cfa_offset 4
+ 279              		.cfi_offset 7, -4
+ 280 009e 83B0     		sub	sp, sp, #12
+ 281              	.LCFI13:
+ 282              		.cfi_def_cfa_offset 16
+ 283 00a0 00AF     		add	r7, sp, #0
+ 284              	.LCFI14:
+ 285              		.cfi_def_cfa_register 7
+ 286 00a2 7860     		str	r0, [r7, #4]
+ 119:../src/os/rt-thread/src/object.c **** 	rt_object_trytake_hook = hook;
+ 287              		.loc 2 119 0
+ 288 00a4 034B     		ldr	r3, .L10
+ 289 00a6 7A68     		ldr	r2, [r7, #4]
+ 290 00a8 1A60     		str	r2, [r3, #0]
+ 120:../src/os/rt-thread/src/object.c **** }
+ 291              		.loc 2 120 0
+ 292 00aa 07F10C07 		add	r7, r7, #12
+ 293 00ae BD46     		mov	sp, r7
+ 294 00b0 80BC     		pop	{r7}
+ 295 00b2 7047     		bx	lr
+ 296              	.L11:
+ 297              		.align	2
+ 298              	.L10:
+ 299 00b4 00000000 		.word	rt_object_trytake_hook
+ 300              		.cfi_endproc
+ 301              	.LFE7:
+ 303              		.align	2
+ 304              		.global	rt_object_take_sethook
+ 305              		.thumb
+ 306              		.thumb_func
+ 308              	rt_object_take_sethook:
+ 309              	.LFB8:
+ 121:../src/os/rt-thread/src/object.c **** 
+ 122:../src/os/rt-thread/src/object.c **** /**
+ 123:../src/os/rt-thread/src/object.c ****  * This function will set a hook function, which will be invoked when object
+ 124:../src/os/rt-thread/src/object.c ****  * have been taken from kernel object system.
+ 125:../src/os/rt-thread/src/object.c ****  *
+ 126:../src/os/rt-thread/src/object.c ****  * The object have been taken means:
+ 127:../src/os/rt-thread/src/object.c ****  * semaphore - semaphore have been taken by thread
+ 128:../src/os/rt-thread/src/object.c ****  * mutex - mutex have been taken by thread
+ 129:../src/os/rt-thread/src/object.c ****  * event - event have been received by thread
+ 130:../src/os/rt-thread/src/object.c ****  * mailbox - mail have been received by thread
+ 131:../src/os/rt-thread/src/object.c ****  * message queue - message have been received by thread
+ 132:../src/os/rt-thread/src/object.c ****  * timer - timer is started
+ 133:../src/os/rt-thread/src/object.c ****  *
+ 134:../src/os/rt-thread/src/object.c ****  * @param hook the hook function
+ 135:../src/os/rt-thread/src/object.c ****  */
+ 136:../src/os/rt-thread/src/object.c **** void rt_object_take_sethook(void (*hook)(struct rt_object *object))
+ 137:../src/os/rt-thread/src/object.c **** {
+ 310              		.loc 2 137 0
+ 311              		.cfi_startproc
+ 312              		@ args = 0, pretend = 0, frame = 8
+ 313              		@ frame_needed = 1, uses_anonymous_args = 0
+ 314              		@ link register save eliminated.
+ 315 00b8 80B4     		push	{r7}
+ 316              	.LCFI15:
+ 317              		.cfi_def_cfa_offset 4
+ 318              		.cfi_offset 7, -4
+ 319 00ba 83B0     		sub	sp, sp, #12
+ 320              	.LCFI16:
+ 321              		.cfi_def_cfa_offset 16
+ 322 00bc 00AF     		add	r7, sp, #0
+ 323              	.LCFI17:
+ 324              		.cfi_def_cfa_register 7
+ 325 00be 7860     		str	r0, [r7, #4]
+ 138:../src/os/rt-thread/src/object.c **** 	rt_object_take_hook = hook;
+ 326              		.loc 2 138 0
+ 327 00c0 034B     		ldr	r3, .L13
+ 328 00c2 7A68     		ldr	r2, [r7, #4]
+ 329 00c4 1A60     		str	r2, [r3, #0]
+ 139:../src/os/rt-thread/src/object.c **** }
+ 330              		.loc 2 139 0
+ 331 00c6 07F10C07 		add	r7, r7, #12
+ 332 00ca BD46     		mov	sp, r7
+ 333 00cc 80BC     		pop	{r7}
+ 334 00ce 7047     		bx	lr
+ 335              	.L14:
+ 336              		.align	2
+ 337              	.L13:
+ 338 00d0 00000000 		.word	rt_object_take_hook
+ 339              		.cfi_endproc
+ 340              	.LFE8:
+ 342              		.align	2
+ 343              		.global	rt_object_put_sethook
+ 344              		.thumb
+ 345              		.thumb_func
+ 347              	rt_object_put_sethook:
+ 348              	.LFB9:
+ 140:../src/os/rt-thread/src/object.c **** 
+ 141:../src/os/rt-thread/src/object.c **** /**
+ 142:../src/os/rt-thread/src/object.c ****  * This function will set a hook function, which will be invoked when object
+ 143:../src/os/rt-thread/src/object.c ****  * is put to kernel object system.
+ 144:../src/os/rt-thread/src/object.c ****  *
+ 145:../src/os/rt-thread/src/object.c ****  * @param hook the hook function
+ 146:../src/os/rt-thread/src/object.c ****  */
+ 147:../src/os/rt-thread/src/object.c **** void rt_object_put_sethook(void (*hook)(struct rt_object *object))
+ 148:../src/os/rt-thread/src/object.c **** {
+ 349              		.loc 2 148 0
+ 350              		.cfi_startproc
+ 351              		@ args = 0, pretend = 0, frame = 8
+ 352              		@ frame_needed = 1, uses_anonymous_args = 0
+ 353              		@ link register save eliminated.
+ 354 00d4 80B4     		push	{r7}
+ 355              	.LCFI18:
+ 356              		.cfi_def_cfa_offset 4
+ 357              		.cfi_offset 7, -4
+ 358 00d6 83B0     		sub	sp, sp, #12
+ 359              	.LCFI19:
+ 360              		.cfi_def_cfa_offset 16
+ 361 00d8 00AF     		add	r7, sp, #0
+ 362              	.LCFI20:
+ 363              		.cfi_def_cfa_register 7
+ 364 00da 7860     		str	r0, [r7, #4]
+ 149:../src/os/rt-thread/src/object.c **** 	rt_object_put_hook = hook;
+ 365              		.loc 2 149 0
+ 366 00dc 034B     		ldr	r3, .L16
+ 367 00de 7A68     		ldr	r2, [r7, #4]
+ 368 00e0 1A60     		str	r2, [r3, #0]
+ 150:../src/os/rt-thread/src/object.c **** }
+ 369              		.loc 2 150 0
+ 370 00e2 07F10C07 		add	r7, r7, #12
+ 371 00e6 BD46     		mov	sp, r7
+ 372 00e8 80BC     		pop	{r7}
+ 373 00ea 7047     		bx	lr
+ 374              	.L17:
+ 375              		.align	2
+ 376              	.L16:
+ 377 00ec 00000000 		.word	rt_object_put_hook
+ 378              		.cfi_endproc
+ 379              	.LFE9:
+ 381              		.align	2
+ 382              		.global	rt_system_object_init
+ 383              		.thumb
+ 384              		.thumb_func
+ 386              	rt_system_object_init:
+ 387              	.LFB10:
+ 151:../src/os/rt-thread/src/object.c **** 
+ 152:../src/os/rt-thread/src/object.c **** /*@}*/
+ 153:../src/os/rt-thread/src/object.c **** #endif
+ 154:../src/os/rt-thread/src/object.c **** 
+ 155:../src/os/rt-thread/src/object.c **** /**
+ 156:../src/os/rt-thread/src/object.c ****  * @ingroup SystemInit
+ 157:../src/os/rt-thread/src/object.c ****  *
+ 158:../src/os/rt-thread/src/object.c ****  * This function will initialize system object management.
+ 159:../src/os/rt-thread/src/object.c ****  *
+ 160:../src/os/rt-thread/src/object.c ****  * @deprecated since 0.3.0, this function does not need to be invoked
+ 161:../src/os/rt-thread/src/object.c ****  * in the system initialization.
+ 162:../src/os/rt-thread/src/object.c ****  */
+ 163:../src/os/rt-thread/src/object.c **** void rt_system_object_init(void)
+ 164:../src/os/rt-thread/src/object.c **** {
+ 388              		.loc 2 164 0
+ 389              		.cfi_startproc
+ 390              		@ args = 0, pretend = 0, frame = 0
+ 391              		@ frame_needed = 1, uses_anonymous_args = 0
+ 392              		@ link register save eliminated.
+ 393 00f0 80B4     		push	{r7}
+ 394              	.LCFI21:
+ 395              		.cfi_def_cfa_offset 4
+ 396              		.cfi_offset 7, -4
+ 397 00f2 00AF     		add	r7, sp, #0
+ 398              	.LCFI22:
+ 399              		.cfi_def_cfa_register 7
+ 165:../src/os/rt-thread/src/object.c **** }
+ 400              		.loc 2 165 0
+ 401 00f4 BD46     		mov	sp, r7
+ 402 00f6 80BC     		pop	{r7}
+ 403 00f8 7047     		bx	lr
+ 404              		.cfi_endproc
+ 405              	.LFE10:
+ 407 00fa 00BF     		.align	2
+ 408              		.global	rt_object_get_information
+ 409              		.thumb
+ 410              		.thumb_func
+ 412              	rt_object_get_information:
+ 413              	.LFB11:
+ 166:../src/os/rt-thread/src/object.c **** 
+ 167:../src/os/rt-thread/src/object.c **** /**
+ 168:../src/os/rt-thread/src/object.c ****  * @addtogroup KernelObject
+ 169:../src/os/rt-thread/src/object.c ****  */
+ 170:../src/os/rt-thread/src/object.c **** 
+ 171:../src/os/rt-thread/src/object.c **** /*@{*/
+ 172:../src/os/rt-thread/src/object.c **** 
+ 173:../src/os/rt-thread/src/object.c **** /**
+ 174:../src/os/rt-thread/src/object.c ****  * This function will return the specified type of object information.
+ 175:../src/os/rt-thread/src/object.c ****  * 
+ 176:../src/os/rt-thread/src/object.c ****  * @param type the type of object
+ 177:../src/os/rt-thread/src/object.c ****  * @return the object type information or RT_NULL
+ 178:../src/os/rt-thread/src/object.c ****  */
+ 179:../src/os/rt-thread/src/object.c **** struct rt_object_information *rt_object_get_information(enum rt_object_class_type type)
+ 180:../src/os/rt-thread/src/object.c **** {
+ 414              		.loc 2 180 0
+ 415              		.cfi_startproc
+ 416              		@ args = 0, pretend = 0, frame = 8
+ 417              		@ frame_needed = 1, uses_anonymous_args = 0
+ 418              		@ link register save eliminated.
+ 419 00fc 80B4     		push	{r7}
+ 420              	.LCFI23:
+ 421              		.cfi_def_cfa_offset 4
+ 422              		.cfi_offset 7, -4
+ 423 00fe 83B0     		sub	sp, sp, #12
+ 424              	.LCFI24:
+ 425              		.cfi_def_cfa_offset 16
+ 426 0100 00AF     		add	r7, sp, #0
+ 427              	.LCFI25:
+ 428              		.cfi_def_cfa_register 7
+ 429 0102 0346     		mov	r3, r0
+ 430 0104 FB71     		strb	r3, [r7, #7]
+ 181:../src/os/rt-thread/src/object.c **** 	return &rt_object_container[type];
+ 431              		.loc 2 181 0
+ 432 0106 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 433 0108 4FEA0312 		lsl	r2, r3, #4
+ 434 010c 034B     		ldr	r3, .L21
+ 435 010e D318     		adds	r3, r2, r3
+ 182:../src/os/rt-thread/src/object.c **** }
+ 436              		.loc 2 182 0
+ 437 0110 1846     		mov	r0, r3
+ 438 0112 07F10C07 		add	r7, r7, #12
+ 439 0116 BD46     		mov	sp, r7
+ 440 0118 80BC     		pop	{r7}
+ 441 011a 7047     		bx	lr
+ 442              	.L22:
+ 443              		.align	2
+ 444              	.L21:
+ 445 011c 00000000 		.word	rt_object_container
+ 446              		.cfi_endproc
+ 447              	.LFE11:
+ 449              		.align	2
+ 450              		.global	rt_object_init
+ 451              		.thumb
+ 452              		.thumb_func
+ 454              	rt_object_init:
+ 455              	.LFB12:
+ 183:../src/os/rt-thread/src/object.c **** RTM_EXPORT(rt_object_get_information);
+ 184:../src/os/rt-thread/src/object.c **** 
+ 185:../src/os/rt-thread/src/object.c **** /**
+ 186:../src/os/rt-thread/src/object.c ****  * This function will initialize an object and add it to object system management.
+ 187:../src/os/rt-thread/src/object.c ****  *
+ 188:../src/os/rt-thread/src/object.c ****  * @param object the specified object to be initialized.
+ 189:../src/os/rt-thread/src/object.c ****  * @param type the object type.
+ 190:../src/os/rt-thread/src/object.c ****  * @param name the object name. In system, the object's name must be unique.
+ 191:../src/os/rt-thread/src/object.c ****  */
+ 192:../src/os/rt-thread/src/object.c **** void rt_object_init(struct rt_object *object, enum rt_object_class_type type, const char *name)
+ 193:../src/os/rt-thread/src/object.c **** {
+ 456              		.loc 2 193 0
+ 457              		.cfi_startproc
+ 458              		@ args = 0, pretend = 0, frame = 24
+ 459              		@ frame_needed = 1, uses_anonymous_args = 0
+ 460 0120 90B5     		push	{r4, r7, lr}
+ 461              	.LCFI26:
+ 462              		.cfi_def_cfa_offset 12
+ 463              		.cfi_offset 4, -12
+ 464              		.cfi_offset 7, -8
+ 465              		.cfi_offset 14, -4
+ 466 0122 87B0     		sub	sp, sp, #28
+ 467              	.LCFI27:
+ 468              		.cfi_def_cfa_offset 40
+ 469 0124 00AF     		add	r7, sp, #0
+ 470              	.LCFI28:
+ 471              		.cfi_def_cfa_register 7
+ 472 0126 F860     		str	r0, [r7, #12]
+ 473 0128 0B46     		mov	r3, r1
+ 474 012a 7A60     		str	r2, [r7, #4]
+ 475 012c FB72     		strb	r3, [r7, #11]
+ 194:../src/os/rt-thread/src/object.c **** 	register rt_base_t temp;
+ 195:../src/os/rt-thread/src/object.c **** 	struct rt_object_information *information;
+ 196:../src/os/rt-thread/src/object.c **** 
+ 197:../src/os/rt-thread/src/object.c **** #ifdef RT_USING_MODULE
+ 198:../src/os/rt-thread/src/object.c **** 	/* get module object information */
+ 199:../src/os/rt-thread/src/object.c **** 	information = (rt_module_self() != RT_NULL) ? 
+ 200:../src/os/rt-thread/src/object.c **** 		&rt_module_self()->module_object[type] : &rt_object_container[type];
+ 201:../src/os/rt-thread/src/object.c **** #else
+ 202:../src/os/rt-thread/src/object.c **** 	/* get object information */
+ 203:../src/os/rt-thread/src/object.c **** 	information = &rt_object_container[type];
+ 476              		.loc 2 203 0
+ 477 012e FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 478 0130 4FEA0312 		lsl	r2, r3, #4
+ 479 0134 154B     		ldr	r3, .L25
+ 480 0136 D318     		adds	r3, r2, r3
+ 481 0138 7B61     		str	r3, [r7, #20]
+ 204:../src/os/rt-thread/src/object.c **** #endif
+ 205:../src/os/rt-thread/src/object.c **** 
+ 206:../src/os/rt-thread/src/object.c **** 	/* initialize object's parameters */
+ 207:../src/os/rt-thread/src/object.c **** 
+ 208:../src/os/rt-thread/src/object.c **** 	/* set object type to static */
+ 209:../src/os/rt-thread/src/object.c **** 	object->type = type | RT_Object_Class_Static;
+ 482              		.loc 2 209 0
+ 483 013a FB7A     		ldrb	r3, [r7, #11]
+ 484 013c 63F07F03 		orn	r3, r3, #127
+ 485 0140 DAB2     		uxtb	r2, r3
+ 486 0142 FB68     		ldr	r3, [r7, #12]
+ 487 0144 9A71     		strb	r2, [r3, #6]
+ 210:../src/os/rt-thread/src/object.c **** 
+ 211:../src/os/rt-thread/src/object.c **** 	/* copy name */
+ 212:../src/os/rt-thread/src/object.c **** 	rt_strncpy(object->name, name, RT_NAME_MAX);
+ 488              		.loc 2 212 0
+ 489 0146 FB68     		ldr	r3, [r7, #12]
+ 490 0148 1846     		mov	r0, r3
+ 491 014a 7968     		ldr	r1, [r7, #4]
+ 492 014c 4FF00602 		mov	r2, #6
+ 493 0150 FFF7FEFF 		bl	rt_strncpy
+ 213:../src/os/rt-thread/src/object.c **** 
+ 214:../src/os/rt-thread/src/object.c **** 	RT_OBJECT_HOOK_CALL(rt_object_attach_hook, (object));
+ 494              		.loc 2 214 0
+ 495 0154 0E4B     		ldr	r3, .L25+4
+ 496 0156 1B68     		ldr	r3, [r3, #0]
+ 497 0158 002B     		cmp	r3, #0
+ 498 015a 03D0     		beq	.L24
+ 499              		.loc 2 214 0 is_stmt 0 discriminator 1
+ 500 015c 0C4B     		ldr	r3, .L25+4
+ 501 015e 1B68     		ldr	r3, [r3, #0]
+ 502 0160 F868     		ldr	r0, [r7, #12]
+ 503 0162 9847     		blx	r3
+ 504              	.L24:
+ 215:../src/os/rt-thread/src/object.c **** 
+ 216:../src/os/rt-thread/src/object.c **** 	/* lock interrupt */
+ 217:../src/os/rt-thread/src/object.c **** 	temp = rt_hw_interrupt_disable();
+ 505              		.loc 2 217 0 is_stmt 1
+ 506 0164 FFF7FEFF 		bl	rt_hw_interrupt_disable
+ 507 0168 0446     		mov	r4, r0
+ 218:../src/os/rt-thread/src/object.c **** 
+ 219:../src/os/rt-thread/src/object.c **** 	/* insert object into information object list */
+ 220:../src/os/rt-thread/src/object.c **** 	rt_list_insert_after(&(information->object_list), &(object->list));
+ 508              		.loc 2 220 0
+ 509 016a 7B69     		ldr	r3, [r7, #20]
+ 510 016c 03F10402 		add	r2, r3, #4
+ 511 0170 FB68     		ldr	r3, [r7, #12]
+ 512 0172 03F10803 		add	r3, r3, #8
+ 513 0176 1046     		mov	r0, r2
+ 514 0178 1946     		mov	r1, r3
+ 515 017a FFF741FF 		bl	rt_list_insert_after
+ 221:../src/os/rt-thread/src/object.c **** 
+ 222:../src/os/rt-thread/src/object.c **** 	/* unlock interrupt */
+ 223:../src/os/rt-thread/src/object.c **** 	rt_hw_interrupt_enable(temp);
+ 516              		.loc 2 223 0
+ 517 017e 2046     		mov	r0, r4
+ 518 0180 FFF7FEFF 		bl	rt_hw_interrupt_enable
+ 224:../src/os/rt-thread/src/object.c **** }
+ 519              		.loc 2 224 0
+ 520 0184 07F11C07 		add	r7, r7, #28
+ 521 0188 BD46     		mov	sp, r7
+ 522 018a 90BD     		pop	{r4, r7, pc}
+ 523              	.L26:
+ 524              		.align	2
+ 525              	.L25:
+ 526 018c 00000000 		.word	rt_object_container
+ 527 0190 00000000 		.word	rt_object_attach_hook
+ 528              		.cfi_endproc
+ 529              	.LFE12:
+ 531              		.section	.rodata
+ 532              		.align	2
+ 533              	.LC0:
+ 534 0000 28257329 		.ascii	"(%s) assert failed at %s:%d \012\000"
+ 534      20617373 
+ 534      65727420 
+ 534      6661696C 
+ 534      65642061 
+ 535 001e 0000     		.align	2
+ 536              	.LC1:
+ 537 0020 6F626A65 		.ascii	"object != RT_NULL\000"
+ 537      63742021 
+ 537      3D205254 
+ 537      5F4E554C 
+ 537      4C00
+ 538              		.text
+ 539              		.align	2
+ 540              		.global	rt_object_detach
+ 541              		.thumb
+ 542              		.thumb_func
+ 544              	rt_object_detach:
+ 545              	.LFB13:
+ 225:../src/os/rt-thread/src/object.c **** 
+ 226:../src/os/rt-thread/src/object.c **** /**
+ 227:../src/os/rt-thread/src/object.c ****  * This function will detach a static object from object system,
+ 228:../src/os/rt-thread/src/object.c ****  * and the memory of static object is not freed.
+ 229:../src/os/rt-thread/src/object.c ****  *
+ 230:../src/os/rt-thread/src/object.c ****  * @param object the specified object to be detached.
+ 231:../src/os/rt-thread/src/object.c ****  */
+ 232:../src/os/rt-thread/src/object.c **** void rt_object_detach(rt_object_t object)
+ 233:../src/os/rt-thread/src/object.c **** {
+ 546              		.loc 2 233 0
+ 547              		.cfi_startproc
+ 548              		@ args = 0, pretend = 0, frame = 16
+ 549              		@ frame_needed = 1, uses_anonymous_args = 0
+ 550 0194 90B5     		push	{r4, r7, lr}
+ 551              	.LCFI29:
+ 552              		.cfi_def_cfa_offset 12
+ 553              		.cfi_offset 4, -12
+ 554              		.cfi_offset 7, -8
+ 555              		.cfi_offset 14, -4
+ 556 0196 85B0     		sub	sp, sp, #20
+ 557              	.LCFI30:
+ 558              		.cfi_def_cfa_offset 32
+ 559 0198 00AF     		add	r7, sp, #0
+ 560              	.LCFI31:
+ 561              		.cfi_def_cfa_register 7
+ 562 019a 7860     		str	r0, [r7, #4]
+ 234:../src/os/rt-thread/src/object.c **** 	register rt_base_t temp;
+ 235:../src/os/rt-thread/src/object.c **** 
+ 236:../src/os/rt-thread/src/object.c **** 	/* object check */
+ 237:../src/os/rt-thread/src/object.c **** 	RT_ASSERT(object != RT_NULL);
+ 563              		.loc 2 237 0
+ 564 019c 7B68     		ldr	r3, [r7, #4]
+ 565 019e 002B     		cmp	r3, #0
+ 566 01a0 0DD1     		bne	.L28
+ 567              	.LBB2:
+ 568              		.loc 2 237 0 is_stmt 0 discriminator 1
+ 569 01a2 4FF00003 		mov	r3, #0
+ 570 01a6 FB73     		strb	r3, [r7, #15]
+ 571 01a8 1148     		ldr	r0, .L31
+ 572 01aa 1249     		ldr	r1, .L31+4
+ 573 01ac 124A     		ldr	r2, .L31+8
+ 574 01ae 4FF0ED03 		mov	r3, #237
+ 575 01b2 FFF7FEFF 		bl	rt_kprintf
+ 576              	.L29:
+ 577              		.loc 2 237 0 discriminator 2
+ 578 01b6 FB7B     		ldrb	r3, [r7, #15]
+ 579 01b8 DBB2     		uxtb	r3, r3
+ 580 01ba 002B     		cmp	r3, #0
+ 581 01bc FBD0     		beq	.L29
+ 582              	.L28:
+ 583              	.LBE2:
+ 238:../src/os/rt-thread/src/object.c **** 
+ 239:../src/os/rt-thread/src/object.c **** 	RT_OBJECT_HOOK_CALL(rt_object_detach_hook, (object));
+ 584              		.loc 2 239 0 is_stmt 1
+ 585 01be 0F4B     		ldr	r3, .L31+12
+ 586 01c0 1B68     		ldr	r3, [r3, #0]
+ 587 01c2 002B     		cmp	r3, #0
+ 588 01c4 03D0     		beq	.L30
+ 589              		.loc 2 239 0 is_stmt 0 discriminator 1
+ 590 01c6 0D4B     		ldr	r3, .L31+12
+ 591 01c8 1B68     		ldr	r3, [r3, #0]
+ 592 01ca 7868     		ldr	r0, [r7, #4]
+ 593 01cc 9847     		blx	r3
+ 594              	.L30:
+ 240:../src/os/rt-thread/src/object.c **** 
+ 241:../src/os/rt-thread/src/object.c **** 	/* lock interrupt */
+ 242:../src/os/rt-thread/src/object.c **** 	temp = rt_hw_interrupt_disable();
+ 595              		.loc 2 242 0 is_stmt 1
+ 596 01ce FFF7FEFF 		bl	rt_hw_interrupt_disable
+ 597 01d2 0446     		mov	r4, r0
+ 243:../src/os/rt-thread/src/object.c **** 
+ 244:../src/os/rt-thread/src/object.c **** 	/* remove from old list */
+ 245:../src/os/rt-thread/src/object.c **** 	rt_list_remove(&(object->list));
+ 598              		.loc 2 245 0
+ 599 01d4 7B68     		ldr	r3, [r7, #4]
+ 600 01d6 03F10803 		add	r3, r3, #8
+ 601 01da 1846     		mov	r0, r3
+ 602 01dc FFF728FF 		bl	rt_list_remove
+ 246:../src/os/rt-thread/src/object.c **** 
+ 247:../src/os/rt-thread/src/object.c **** 	/* unlock interrupt */
+ 248:../src/os/rt-thread/src/object.c **** 	rt_hw_interrupt_enable(temp);
+ 603              		.loc 2 248 0
+ 604 01e0 2046     		mov	r0, r4
+ 605 01e2 FFF7FEFF 		bl	rt_hw_interrupt_enable
+ 249:../src/os/rt-thread/src/object.c **** }
+ 606              		.loc 2 249 0
+ 607 01e6 07F11407 		add	r7, r7, #20
+ 608 01ea BD46     		mov	sp, r7
+ 609 01ec 90BD     		pop	{r4, r7, pc}
+ 610              	.L32:
+ 611 01ee 00BF     		.align	2
+ 612              	.L31:
+ 613 01f0 00000000 		.word	.LC0
+ 614 01f4 20000000 		.word	.LC1
+ 615 01f8 DC000000 		.word	__FUNCTION__.4886
+ 616 01fc 04000000 		.word	rt_object_detach_hook
+ 617              		.cfi_endproc
+ 618              	.LFE13:
+ 620              		.section	.rodata
+ 621 0032 0000     		.align	2
+ 622              	.LC2:
+ 623 0034 46756E63 		.ascii	"Function[%s] shall not used in ISR\012\000"
+ 623      74696F6E 
+ 623      5B25735D 
+ 623      20736861 
+ 623      6C6C206E 
+ 624              		.align	2
+ 625              	.LC3:
+ 626 0058 3000     		.ascii	"0\000"
+ 627              		.text
+ 628              		.align	2
+ 629              		.global	rt_object_allocate
+ 630              		.thumb
+ 631              		.thumb_func
+ 633              	rt_object_allocate:
+ 634              	.LFB14:
+ 250:../src/os/rt-thread/src/object.c **** 
+ 251:../src/os/rt-thread/src/object.c **** #ifdef RT_USING_HEAP
+ 252:../src/os/rt-thread/src/object.c **** /**
+ 253:../src/os/rt-thread/src/object.c ****  * This function will allocate an object from object system
+ 254:../src/os/rt-thread/src/object.c ****  *
+ 255:../src/os/rt-thread/src/object.c ****  * @param type the type of object
+ 256:../src/os/rt-thread/src/object.c ****  * @param name the object name. In system, the object's name must be unique.
+ 257:../src/os/rt-thread/src/object.c ****  *
+ 258:../src/os/rt-thread/src/object.c ****  * @return object
+ 259:../src/os/rt-thread/src/object.c ****  */
+ 260:../src/os/rt-thread/src/object.c **** rt_object_t rt_object_allocate(enum rt_object_class_type type, const char *name)
+ 261:../src/os/rt-thread/src/object.c **** {
+ 635              		.loc 2 261 0
+ 636              		.cfi_startproc
+ 637              		@ args = 0, pretend = 0, frame = 24
+ 638              		@ frame_needed = 1, uses_anonymous_args = 0
+ 639 0200 90B5     		push	{r4, r7, lr}
+ 640              	.LCFI32:
+ 641              		.cfi_def_cfa_offset 12
+ 642              		.cfi_offset 4, -12
+ 643              		.cfi_offset 7, -8
+ 644              		.cfi_offset 14, -4
+ 645 0202 87B0     		sub	sp, sp, #28
+ 646              	.LCFI33:
+ 647              		.cfi_def_cfa_offset 40
+ 648 0204 00AF     		add	r7, sp, #0
+ 649              	.LCFI34:
+ 650              		.cfi_def_cfa_register 7
+ 651 0206 0346     		mov	r3, r0
+ 652 0208 3960     		str	r1, [r7, #0]
+ 653 020a FB71     		strb	r3, [r7, #7]
+ 654              	.LBB3:
+ 262:../src/os/rt-thread/src/object.c **** 	struct rt_object *object;
+ 263:../src/os/rt-thread/src/object.c **** 	register rt_base_t temp;
+ 264:../src/os/rt-thread/src/object.c **** 	struct rt_object_information *information;
+ 265:../src/os/rt-thread/src/object.c **** 
+ 266:../src/os/rt-thread/src/object.c **** 	RT_DEBUG_NOT_IN_INTERRUPT;
+ 655              		.loc 2 266 0
+ 656 020c FFF7FEFF 		bl	rt_hw_interrupt_disable
+ 657 0210 7861     		str	r0, [r7, #20]
+ 658 0212 FFF7FEFF 		bl	rt_interrupt_get_nest
+ 659 0216 0346     		mov	r3, r0
+ 660 0218 002B     		cmp	r3, #0
+ 661 021a 11D0     		beq	.L34
+ 662              		.loc 2 266 0 is_stmt 0 discriminator 1
+ 663 021c 2948     		ldr	r0, .L39
+ 664 021e 2A49     		ldr	r1, .L39+4
+ 665 0220 FFF7FEFF 		bl	rt_kprintf
+ 666              	.LBB4:
+ 667 0224 4FF00003 		mov	r3, #0
+ 668 0228 FB72     		strb	r3, [r7, #11]
+ 669 022a 2848     		ldr	r0, .L39+8
+ 670 022c 2849     		ldr	r1, .L39+12
+ 671 022e 264A     		ldr	r2, .L39+4
+ 672 0230 4FF48573 		mov	r3, #266
+ 673 0234 FFF7FEFF 		bl	rt_kprintf
+ 674              	.L35:
+ 675              		.loc 2 266 0 discriminator 4
+ 676 0238 FB7A     		ldrb	r3, [r7, #11]
+ 677 023a DBB2     		uxtb	r3, r3
+ 678 023c 002B     		cmp	r3, #0
+ 679 023e FBD0     		beq	.L35
+ 680              	.L34:
+ 681              	.LBE4:
+ 682              		.loc 2 266 0 discriminator 2
+ 683 0240 7869     		ldr	r0, [r7, #20]
+ 684 0242 FFF7FEFF 		bl	rt_hw_interrupt_enable
+ 685              	.LBE3:
+ 267:../src/os/rt-thread/src/object.c **** 
+ 268:../src/os/rt-thread/src/object.c **** #ifdef RT_USING_MODULE
+ 269:../src/os/rt-thread/src/object.c **** 	/* get module object information, module object should be managed by kernel object container */
+ 270:../src/os/rt-thread/src/object.c **** 	information = (rt_module_self() != RT_NULL && (type != RT_Object_Class_Module)) ? 
+ 271:../src/os/rt-thread/src/object.c **** 		&rt_module_self()->module_object[type] : &rt_object_container[type];
+ 272:../src/os/rt-thread/src/object.c **** #else
+ 273:../src/os/rt-thread/src/object.c **** 	/* get object information */
+ 274:../src/os/rt-thread/src/object.c **** 	information = &rt_object_container[type];
+ 686              		.loc 2 274 0 is_stmt 1 discriminator 2
+ 687 0246 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 688 0248 4FEA0312 		lsl	r2, r3, #4
+ 689 024c 214B     		ldr	r3, .L39+16
+ 690 024e D318     		adds	r3, r2, r3
+ 691 0250 3B61     		str	r3, [r7, #16]
+ 275:../src/os/rt-thread/src/object.c **** #endif
+ 276:../src/os/rt-thread/src/object.c **** 
+ 277:../src/os/rt-thread/src/object.c **** 	object = (struct rt_object *)rt_malloc(information->object_size);
+ 692              		.loc 2 277 0 discriminator 2
+ 693 0252 3B69     		ldr	r3, [r7, #16]
+ 694 0254 DB68     		ldr	r3, [r3, #12]
+ 695 0256 1846     		mov	r0, r3
+ 696 0258 FFF7FEFF 		bl	rt_malloc
+ 697 025c F860     		str	r0, [r7, #12]
+ 278:../src/os/rt-thread/src/object.c **** 	if (object == RT_NULL)
+ 698              		.loc 2 278 0 discriminator 2
+ 699 025e FB68     		ldr	r3, [r7, #12]
+ 700 0260 002B     		cmp	r3, #0
+ 701 0262 02D1     		bne	.L36
+ 279:../src/os/rt-thread/src/object.c **** 	{
+ 280:../src/os/rt-thread/src/object.c **** 		/* no memory can be allocated */
+ 281:../src/os/rt-thread/src/object.c **** 		return RT_NULL;
+ 702              		.loc 2 281 0
+ 703 0264 4FF00003 		mov	r3, #0
+ 704 0268 26E0     		b	.L37
+ 705              	.L36:
+ 282:../src/os/rt-thread/src/object.c **** 	}
+ 283:../src/os/rt-thread/src/object.c **** 	
+ 284:../src/os/rt-thread/src/object.c **** 	/* initialize object's parameters */
+ 285:../src/os/rt-thread/src/object.c **** 
+ 286:../src/os/rt-thread/src/object.c **** 	/* set object type */
+ 287:../src/os/rt-thread/src/object.c **** 	object->type = type;
+ 706              		.loc 2 287 0
+ 707 026a FB68     		ldr	r3, [r7, #12]
+ 708 026c FA79     		ldrb	r2, [r7, #7]
+ 709 026e 9A71     		strb	r2, [r3, #6]
+ 288:../src/os/rt-thread/src/object.c **** 
+ 289:../src/os/rt-thread/src/object.c **** 	/* set object flag */
+ 290:../src/os/rt-thread/src/object.c **** 	object->flag = 0;
+ 710              		.loc 2 290 0
+ 711 0270 FB68     		ldr	r3, [r7, #12]
+ 712 0272 4FF00002 		mov	r2, #0
+ 713 0276 DA71     		strb	r2, [r3, #7]
+ 291:../src/os/rt-thread/src/object.c **** 
+ 292:../src/os/rt-thread/src/object.c **** #ifdef RT_USING_MODULE
+ 293:../src/os/rt-thread/src/object.c **** 	if (rt_module_self() != RT_NULL)
+ 294:../src/os/rt-thread/src/object.c **** 	{
+ 295:../src/os/rt-thread/src/object.c **** 		object->flag |= RT_OBJECT_FLAG_MODULE;
+ 296:../src/os/rt-thread/src/object.c **** 	}
+ 297:../src/os/rt-thread/src/object.c **** 	object->module_id = (void *)rt_module_self();
+ 298:../src/os/rt-thread/src/object.c **** #endif
+ 299:../src/os/rt-thread/src/object.c **** 
+ 300:../src/os/rt-thread/src/object.c **** 	/* copy name */
+ 301:../src/os/rt-thread/src/object.c **** 	rt_strncpy(object->name, name, RT_NAME_MAX);
+ 714              		.loc 2 301 0
+ 715 0278 FB68     		ldr	r3, [r7, #12]
+ 716 027a 1846     		mov	r0, r3
+ 717 027c 3968     		ldr	r1, [r7, #0]
+ 718 027e 4FF00602 		mov	r2, #6
+ 719 0282 FFF7FEFF 		bl	rt_strncpy
+ 302:../src/os/rt-thread/src/object.c **** 
+ 303:../src/os/rt-thread/src/object.c **** 	RT_OBJECT_HOOK_CALL(rt_object_attach_hook, (object));
+ 720              		.loc 2 303 0
+ 721 0286 144B     		ldr	r3, .L39+20
+ 722 0288 1B68     		ldr	r3, [r3, #0]
+ 723 028a 002B     		cmp	r3, #0
+ 724 028c 03D0     		beq	.L38
+ 725              		.loc 2 303 0 is_stmt 0 discriminator 1
+ 726 028e 124B     		ldr	r3, .L39+20
+ 727 0290 1B68     		ldr	r3, [r3, #0]
+ 728 0292 F868     		ldr	r0, [r7, #12]
+ 729 0294 9847     		blx	r3
+ 730              	.L38:
+ 304:../src/os/rt-thread/src/object.c **** 
+ 305:../src/os/rt-thread/src/object.c **** 	/* lock interrupt */
+ 306:../src/os/rt-thread/src/object.c **** 	temp = rt_hw_interrupt_disable();
+ 731              		.loc 2 306 0 is_stmt 1
+ 732 0296 FFF7FEFF 		bl	rt_hw_interrupt_disable
+ 733 029a 0446     		mov	r4, r0
+ 307:../src/os/rt-thread/src/object.c **** 
+ 308:../src/os/rt-thread/src/object.c **** 	/* insert object into information object list */
+ 309:../src/os/rt-thread/src/object.c **** 	rt_list_insert_after(&(information->object_list), &(object->list));
+ 734              		.loc 2 309 0
+ 735 029c 3B69     		ldr	r3, [r7, #16]
+ 736 029e 03F10402 		add	r2, r3, #4
+ 737 02a2 FB68     		ldr	r3, [r7, #12]
+ 738 02a4 03F10803 		add	r3, r3, #8
+ 739 02a8 1046     		mov	r0, r2
+ 740 02aa 1946     		mov	r1, r3
+ 741 02ac FFF7A8FE 		bl	rt_list_insert_after
+ 310:../src/os/rt-thread/src/object.c **** 
+ 311:../src/os/rt-thread/src/object.c **** 	/* unlock interrupt */
+ 312:../src/os/rt-thread/src/object.c **** 	rt_hw_interrupt_enable(temp);
+ 742              		.loc 2 312 0
+ 743 02b0 2046     		mov	r0, r4
+ 744 02b2 FFF7FEFF 		bl	rt_hw_interrupt_enable
+ 313:../src/os/rt-thread/src/object.c **** 
+ 314:../src/os/rt-thread/src/object.c **** 	/* return object */
+ 315:../src/os/rt-thread/src/object.c **** 	return object;
+ 745              		.loc 2 315 0
+ 746 02b6 FB68     		ldr	r3, [r7, #12]
+ 747              	.L37:
+ 316:../src/os/rt-thread/src/object.c **** }
+ 748              		.loc 2 316 0
+ 749 02b8 1846     		mov	r0, r3
+ 750 02ba 07F11C07 		add	r7, r7, #28
+ 751 02be BD46     		mov	sp, r7
+ 752 02c0 90BD     		pop	{r4, r7, pc}
+ 753              	.L40:
+ 754 02c2 00BF     		.align	2
+ 755              	.L39:
+ 756 02c4 34000000 		.word	.LC2
+ 757 02c8 C8000000 		.word	__FUNCTION__.4898
+ 758 02cc 00000000 		.word	.LC0
+ 759 02d0 58000000 		.word	.LC3
+ 760 02d4 00000000 		.word	rt_object_container
+ 761 02d8 00000000 		.word	rt_object_attach_hook
+ 762              		.cfi_endproc
+ 763              	.LFE14:
+ 765              		.section	.rodata
+ 766 005a 0000     		.align	2
+ 767              	.LC4:
+ 768 005c 21286F62 		.ascii	"!(object->type & RT_Object_Class_Static)\000"
+ 768      6A656374 
+ 768      2D3E7479 
+ 768      70652026 
+ 768      2052545F 
+ 769              		.text
+ 770              		.align	2
+ 771              		.global	rt_object_delete
+ 772              		.thumb
+ 773              		.thumb_func
+ 775              	rt_object_delete:
+ 776              	.LFB15:
+ 317:../src/os/rt-thread/src/object.c **** 
+ 318:../src/os/rt-thread/src/object.c **** /**
+ 319:../src/os/rt-thread/src/object.c ****  * This function will delete an object and release object memory.
+ 320:../src/os/rt-thread/src/object.c ****  *
+ 321:../src/os/rt-thread/src/object.c ****  * @param object the specified object to be deleted.
+ 322:../src/os/rt-thread/src/object.c ****  */
+ 323:../src/os/rt-thread/src/object.c **** void rt_object_delete(rt_object_t object)
+ 324:../src/os/rt-thread/src/object.c **** {
+ 777              		.loc 2 324 0
+ 778              		.cfi_startproc
+ 779              		@ args = 0, pretend = 0, frame = 16
+ 780              		@ frame_needed = 1, uses_anonymous_args = 0
+ 781 02dc 90B5     		push	{r4, r7, lr}
+ 782              	.LCFI35:
+ 783              		.cfi_def_cfa_offset 12
+ 784              		.cfi_offset 4, -12
+ 785              		.cfi_offset 7, -8
+ 786              		.cfi_offset 14, -4
+ 787 02de 85B0     		sub	sp, sp, #20
+ 788              	.LCFI36:
+ 789              		.cfi_def_cfa_offset 32
+ 790 02e0 00AF     		add	r7, sp, #0
+ 791              	.LCFI37:
+ 792              		.cfi_def_cfa_register 7
+ 793 02e2 7860     		str	r0, [r7, #4]
+ 325:../src/os/rt-thread/src/object.c **** 	register rt_base_t temp;
+ 326:../src/os/rt-thread/src/object.c **** 
+ 327:../src/os/rt-thread/src/object.c **** 	/* object check */
+ 328:../src/os/rt-thread/src/object.c **** 	RT_ASSERT(object != RT_NULL);
+ 794              		.loc 2 328 0
+ 795 02e4 7B68     		ldr	r3, [r7, #4]
+ 796 02e6 002B     		cmp	r3, #0
+ 797 02e8 0DD1     		bne	.L42
+ 798              	.LBB5:
+ 799              		.loc 2 328 0 is_stmt 0 discriminator 1
+ 800 02ea 4FF00003 		mov	r3, #0
+ 801 02ee FB73     		strb	r3, [r7, #15]
+ 802 02f0 1C48     		ldr	r0, .L47
+ 803 02f2 1D49     		ldr	r1, .L47+4
+ 804 02f4 1D4A     		ldr	r2, .L47+8
+ 805 02f6 4FF4A473 		mov	r3, #328
+ 806 02fa FFF7FEFF 		bl	rt_kprintf
+ 807              	.L43:
+ 808              		.loc 2 328 0 discriminator 2
+ 809 02fe FB7B     		ldrb	r3, [r7, #15]
+ 810 0300 DBB2     		uxtb	r3, r3
+ 811 0302 002B     		cmp	r3, #0
+ 812 0304 FBD0     		beq	.L43
+ 813              	.L42:
+ 814              	.LBE5:
+ 329:../src/os/rt-thread/src/object.c **** 	RT_ASSERT(!(object->type & RT_Object_Class_Static));
+ 815              		.loc 2 329 0 is_stmt 1
+ 816 0306 7B68     		ldr	r3, [r7, #4]
+ 817 0308 9B79     		ldrb	r3, [r3, #6]	@ zero_extendqisi2
+ 818 030a DBB2     		uxtb	r3, r3
+ 819 030c 5BB2     		sxtb	r3, r3
+ 820 030e 002B     		cmp	r3, #0
+ 821 0310 0DDA     		bge	.L44
+ 822              	.LBB6:
+ 823              		.loc 2 329 0 is_stmt 0 discriminator 1
+ 824 0312 4FF00003 		mov	r3, #0
+ 825 0316 BB73     		strb	r3, [r7, #14]
+ 826 0318 1248     		ldr	r0, .L47
+ 827 031a 1549     		ldr	r1, .L47+12
+ 828 031c 134A     		ldr	r2, .L47+8
+ 829 031e 40F24913 		movw	r3, #329
+ 830 0322 FFF7FEFF 		bl	rt_kprintf
+ 831              	.L45:
+ 832              		.loc 2 329 0 discriminator 2
+ 833 0326 BB7B     		ldrb	r3, [r7, #14]
+ 834 0328 DBB2     		uxtb	r3, r3
+ 835 032a 002B     		cmp	r3, #0
+ 836 032c FBD0     		beq	.L45
+ 837              	.L44:
+ 838              	.LBE6:
+ 330:../src/os/rt-thread/src/object.c **** 
+ 331:../src/os/rt-thread/src/object.c **** 	RT_OBJECT_HOOK_CALL(rt_object_detach_hook, (object));
+ 839              		.loc 2 331 0 is_stmt 1
+ 840 032e 114B     		ldr	r3, .L47+16
+ 841 0330 1B68     		ldr	r3, [r3, #0]
+ 842 0332 002B     		cmp	r3, #0
+ 843 0334 03D0     		beq	.L46
+ 844              		.loc 2 331 0 is_stmt 0 discriminator 1
+ 845 0336 0F4B     		ldr	r3, .L47+16
+ 846 0338 1B68     		ldr	r3, [r3, #0]
+ 847 033a 7868     		ldr	r0, [r7, #4]
+ 848 033c 9847     		blx	r3
+ 849              	.L46:
+ 332:../src/os/rt-thread/src/object.c **** 
+ 333:../src/os/rt-thread/src/object.c **** 	/* lock interrupt */
+ 334:../src/os/rt-thread/src/object.c **** 	temp = rt_hw_interrupt_disable();
+ 850              		.loc 2 334 0 is_stmt 1
+ 851 033e FFF7FEFF 		bl	rt_hw_interrupt_disable
+ 852 0342 0446     		mov	r4, r0
+ 335:../src/os/rt-thread/src/object.c **** 
+ 336:../src/os/rt-thread/src/object.c **** 	/* remove from old list */
+ 337:../src/os/rt-thread/src/object.c **** 	rt_list_remove(&(object->list));
+ 853              		.loc 2 337 0
+ 854 0344 7B68     		ldr	r3, [r7, #4]
+ 855 0346 03F10803 		add	r3, r3, #8
+ 856 034a 1846     		mov	r0, r3
+ 857 034c FFF770FE 		bl	rt_list_remove
+ 338:../src/os/rt-thread/src/object.c **** 
+ 339:../src/os/rt-thread/src/object.c **** 	/* unlock interrupt */
+ 340:../src/os/rt-thread/src/object.c **** 	rt_hw_interrupt_enable(temp);
+ 858              		.loc 2 340 0
+ 859 0350 2046     		mov	r0, r4
+ 860 0352 FFF7FEFF 		bl	rt_hw_interrupt_enable
+ 341:../src/os/rt-thread/src/object.c **** 
+ 342:../src/os/rt-thread/src/object.c **** #if defined(RT_USING_MODULE) && defined(RT_USING_SLAB)
+ 343:../src/os/rt-thread/src/object.c **** 	if (object->flag & RT_OBJECT_FLAG_MODULE) 
+ 344:../src/os/rt-thread/src/object.c **** 		rt_module_free((rt_module_t)object->module_id, object);
+ 345:../src/os/rt-thread/src/object.c **** 	else
+ 346:../src/os/rt-thread/src/object.c **** #endif
+ 347:../src/os/rt-thread/src/object.c **** 
+ 348:../src/os/rt-thread/src/object.c **** 	/* free the memory of object */
+ 349:../src/os/rt-thread/src/object.c **** 	rt_free(object);
+ 861              		.loc 2 349 0
+ 862 0356 7868     		ldr	r0, [r7, #4]
+ 863 0358 FFF7FEFF 		bl	rt_free
+ 350:../src/os/rt-thread/src/object.c **** }
+ 864              		.loc 2 350 0
+ 865 035c 07F11407 		add	r7, r7, #20
+ 866 0360 BD46     		mov	sp, r7
+ 867 0362 90BD     		pop	{r4, r7, pc}
+ 868              	.L48:
+ 869              		.align	2
+ 870              	.L47:
+ 871 0364 00000000 		.word	.LC0
+ 872 0368 20000000 		.word	.LC1
+ 873 036c B4000000 		.word	__FUNCTION__.4908
+ 874 0370 5C000000 		.word	.LC4
+ 875 0374 04000000 		.word	rt_object_detach_hook
+ 876              		.cfi_endproc
+ 877              	.LFE15:
+ 879              		.align	2
+ 880              		.global	rt_object_is_systemobject
+ 881              		.thumb
+ 882              		.thumb_func
+ 884              	rt_object_is_systemobject:
+ 885              	.LFB16:
+ 351:../src/os/rt-thread/src/object.c **** #endif
+ 352:../src/os/rt-thread/src/object.c **** 
+ 353:../src/os/rt-thread/src/object.c **** /**
+ 354:../src/os/rt-thread/src/object.c ****  * This function will judge the object is system object or not.
+ 355:../src/os/rt-thread/src/object.c ****  * Normally, the system object is a static object and the type
+ 356:../src/os/rt-thread/src/object.c ****  * of object set to RT_Object_Class_Static.
+ 357:../src/os/rt-thread/src/object.c ****  *
+ 358:../src/os/rt-thread/src/object.c ****  * @param object the specified object to be judged.
+ 359:../src/os/rt-thread/src/object.c ****  *
+ 360:../src/os/rt-thread/src/object.c ****  * @return RT_TRUE if a system object, RT_FALSE for others.
+ 361:../src/os/rt-thread/src/object.c ****  */
+ 362:../src/os/rt-thread/src/object.c **** rt_bool_t rt_object_is_systemobject(rt_object_t object)
+ 363:../src/os/rt-thread/src/object.c **** {
+ 886              		.loc 2 363 0
+ 887              		.cfi_startproc
+ 888              		@ args = 0, pretend = 0, frame = 16
+ 889              		@ frame_needed = 1, uses_anonymous_args = 0
+ 890 0378 80B5     		push	{r7, lr}
+ 891              	.LCFI38:
+ 892              		.cfi_def_cfa_offset 8
+ 893              		.cfi_offset 7, -8
+ 894              		.cfi_offset 14, -4
+ 895 037a 84B0     		sub	sp, sp, #16
+ 896              	.LCFI39:
+ 897              		.cfi_def_cfa_offset 24
+ 898 037c 00AF     		add	r7, sp, #0
+ 899              	.LCFI40:
+ 900              		.cfi_def_cfa_register 7
+ 901 037e 7860     		str	r0, [r7, #4]
+ 364:../src/os/rt-thread/src/object.c **** 	/* object check */
+ 365:../src/os/rt-thread/src/object.c **** 	RT_ASSERT(object != RT_NULL);
+ 902              		.loc 2 365 0
+ 903 0380 7B68     		ldr	r3, [r7, #4]
+ 904 0382 002B     		cmp	r3, #0
+ 905 0384 0DD1     		bne	.L50
+ 906              	.LBB7:
+ 907              		.loc 2 365 0 is_stmt 0 discriminator 1
+ 908 0386 4FF00003 		mov	r3, #0
+ 909 038a FB73     		strb	r3, [r7, #15]
+ 910 038c 0D48     		ldr	r0, .L54
+ 911 038e 0E49     		ldr	r1, .L54+4
+ 912 0390 0E4A     		ldr	r2, .L54+8
+ 913 0392 40F26D13 		movw	r3, #365
+ 914 0396 FFF7FEFF 		bl	rt_kprintf
+ 915              	.L51:
+ 916              		.loc 2 365 0 discriminator 2
+ 917 039a FB7B     		ldrb	r3, [r7, #15]
+ 918 039c DBB2     		uxtb	r3, r3
+ 919 039e 002B     		cmp	r3, #0
+ 920 03a0 FBD0     		beq	.L51
+ 921              	.L50:
+ 922              	.LBE7:
+ 366:../src/os/rt-thread/src/object.c **** 
+ 367:../src/os/rt-thread/src/object.c **** 	if (object->type & RT_Object_Class_Static)
+ 923              		.loc 2 367 0 is_stmt 1
+ 924 03a2 7B68     		ldr	r3, [r7, #4]
+ 925 03a4 9B79     		ldrb	r3, [r3, #6]	@ zero_extendqisi2
+ 926 03a6 DBB2     		uxtb	r3, r3
+ 927 03a8 5BB2     		sxtb	r3, r3
+ 928 03aa 002B     		cmp	r3, #0
+ 929 03ac 02DA     		bge	.L52
+ 368:../src/os/rt-thread/src/object.c **** 		return RT_TRUE;
+ 930              		.loc 2 368 0
+ 931 03ae 4FF00103 		mov	r3, #1
+ 932 03b2 01E0     		b	.L53
+ 933              	.L52:
+ 369:../src/os/rt-thread/src/object.c **** 
+ 370:../src/os/rt-thread/src/object.c **** 	return RT_FALSE;
+ 934              		.loc 2 370 0
+ 935 03b4 4FF00003 		mov	r3, #0
+ 936              	.L53:
+ 371:../src/os/rt-thread/src/object.c **** }
+ 937              		.loc 2 371 0
+ 938 03b8 1846     		mov	r0, r3
+ 939 03ba 07F11007 		add	r7, r7, #16
+ 940 03be BD46     		mov	sp, r7
+ 941 03c0 80BD     		pop	{r7, pc}
+ 942              	.L55:
+ 943 03c2 00BF     		.align	2
+ 944              	.L54:
+ 945 03c4 00000000 		.word	.LC0
+ 946 03c8 20000000 		.word	.LC1
+ 947 03cc 98000000 		.word	__FUNCTION__.4920
+ 948              		.cfi_endproc
+ 949              	.LFE16:
+ 951              		.align	2
+ 952              		.global	rt_object_find
+ 953              		.thumb
+ 954              		.thumb_func
+ 956              	rt_object_find:
+ 957              	.LFB17:
+ 372:../src/os/rt-thread/src/object.c **** 
+ 373:../src/os/rt-thread/src/object.c **** /**
+ 374:../src/os/rt-thread/src/object.c ****  * This function will find specified name object from object
+ 375:../src/os/rt-thread/src/object.c ****  * container.
+ 376:../src/os/rt-thread/src/object.c ****  *
+ 377:../src/os/rt-thread/src/object.c ****  * @param name the specified name of object.
+ 378:../src/os/rt-thread/src/object.c ****  * @param type the type of object
+ 379:../src/os/rt-thread/src/object.c ****  *
+ 380:../src/os/rt-thread/src/object.c ****  * @return the found object or RT_NULL if there is no this object
+ 381:../src/os/rt-thread/src/object.c ****  * in object container.
+ 382:../src/os/rt-thread/src/object.c ****  *
+ 383:../src/os/rt-thread/src/object.c ****  * @note this function shall not be invoked in interrupt status.
+ 384:../src/os/rt-thread/src/object.c ****  */
+ 385:../src/os/rt-thread/src/object.c **** rt_object_t rt_object_find(const char *name, rt_uint8_t type)
+ 386:../src/os/rt-thread/src/object.c **** {
+ 958              		.loc 2 386 0
+ 959              		.cfi_startproc
+ 960              		@ args = 0, pretend = 0, frame = 24
+ 961              		@ frame_needed = 1, uses_anonymous_args = 0
+ 962 03d0 80B5     		push	{r7, lr}
+ 963              	.LCFI41:
+ 964              		.cfi_def_cfa_offset 8
+ 965              		.cfi_offset 7, -8
+ 966              		.cfi_offset 14, -4
+ 967 03d2 86B0     		sub	sp, sp, #24
+ 968              	.LCFI42:
+ 969              		.cfi_def_cfa_offset 32
+ 970 03d4 00AF     		add	r7, sp, #0
+ 971              	.LCFI43:
+ 972              		.cfi_def_cfa_register 7
+ 973 03d6 7860     		str	r0, [r7, #4]
+ 974 03d8 0B46     		mov	r3, r1
+ 975 03da FB70     		strb	r3, [r7, #3]
+ 387:../src/os/rt-thread/src/object.c **** 	struct rt_object *object;
+ 388:../src/os/rt-thread/src/object.c **** 	struct rt_list_node *node;
+ 389:../src/os/rt-thread/src/object.c **** 	struct rt_object_information *information;
+ 390:../src/os/rt-thread/src/object.c **** 	extern volatile rt_uint8_t rt_interrupt_nest;
+ 391:../src/os/rt-thread/src/object.c **** 
+ 392:../src/os/rt-thread/src/object.c **** 	/* parameter check */
+ 393:../src/os/rt-thread/src/object.c **** 	if ((name == RT_NULL) || (type > RT_Object_Class_Unknown))
+ 976              		.loc 2 393 0
+ 977 03dc 7B68     		ldr	r3, [r7, #4]
+ 978 03de 002B     		cmp	r3, #0
+ 979 03e0 02D0     		beq	.L57
+ 980              		.loc 2 393 0 is_stmt 0 discriminator 1
+ 981 03e2 FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 982 03e4 0A2B     		cmp	r3, #10
+ 983 03e6 02D9     		bls	.L58
+ 984              	.L57:
+ 394:../src/os/rt-thread/src/object.c **** 		return RT_NULL;
+ 985              		.loc 2 394 0 is_stmt 1
+ 986 03e8 4FF00003 		mov	r3, #0
+ 987 03ec 3DE0     		b	.L59
+ 988              	.L58:
+ 395:../src/os/rt-thread/src/object.c **** 
+ 396:../src/os/rt-thread/src/object.c **** 	/* which is invoke in interrupt status */
+ 397:../src/os/rt-thread/src/object.c **** 	if (rt_interrupt_nest != 0)
+ 989              		.loc 2 397 0
+ 990 03ee 214B     		ldr	r3, .L65
+ 991 03f0 1B78     		ldrb	r3, [r3, #0]
+ 992 03f2 DBB2     		uxtb	r3, r3
+ 993 03f4 002B     		cmp	r3, #0
+ 994 03f6 0DD0     		beq	.L60
+ 995              	.LBB8:
+ 398:../src/os/rt-thread/src/object.c **** 		RT_ASSERT(0);
+ 996              		.loc 2 398 0 discriminator 1
+ 997 03f8 4FF00003 		mov	r3, #0
+ 998 03fc FB72     		strb	r3, [r7, #11]
+ 999 03fe 1E48     		ldr	r0, .L65+4
+ 1000 0400 1E49     		ldr	r1, .L65+8
+ 1001 0402 1F4A     		ldr	r2, .L65+12
+ 1002 0404 4FF4C773 		mov	r3, #398
+ 1003 0408 FFF7FEFF 		bl	rt_kprintf
+ 1004              	.L61:
+ 1005              		.loc 2 398 0 is_stmt 0 discriminator 2
+ 1006 040c FB7A     		ldrb	r3, [r7, #11]
+ 1007 040e DBB2     		uxtb	r3, r3
+ 1008 0410 002B     		cmp	r3, #0
+ 1009 0412 FBD0     		beq	.L61
+ 1010              	.L60:
+ 1011              	.LBE8:
+ 399:../src/os/rt-thread/src/object.c **** 
+ 400:../src/os/rt-thread/src/object.c **** 	/* enter critical */
+ 401:../src/os/rt-thread/src/object.c **** 	rt_enter_critical();
+ 1012              		.loc 2 401 0 is_stmt 1
+ 1013 0414 FFF7FEFF 		bl	rt_enter_critical
+ 402:../src/os/rt-thread/src/object.c **** 
+ 403:../src/os/rt-thread/src/object.c **** 	/* try to find object */
+ 404:../src/os/rt-thread/src/object.c **** 	information = &rt_object_container[type];
+ 1014              		.loc 2 404 0
+ 1015 0418 FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 1016 041a 4FEA0312 		lsl	r2, r3, #4
+ 1017 041e 194B     		ldr	r3, .L65+16
+ 1018 0420 D318     		adds	r3, r2, r3
+ 1019 0422 3B61     		str	r3, [r7, #16]
+ 405:../src/os/rt-thread/src/object.c **** 	for (node = information->object_list.next; node != &(information->object_list); node = node->next)
+ 1020              		.loc 2 405 0
+ 1021 0424 3B69     		ldr	r3, [r7, #16]
+ 1022 0426 5B68     		ldr	r3, [r3, #4]
+ 1023 0428 7B61     		str	r3, [r7, #20]
+ 1024 042a 14E0     		b	.L62
+ 1025              	.L64:
+ 406:../src/os/rt-thread/src/object.c **** 	{
+ 407:../src/os/rt-thread/src/object.c **** 		object = rt_list_entry(node, struct rt_object, list);
+ 1026              		.loc 2 407 0
+ 1027 042c 7B69     		ldr	r3, [r7, #20]
+ 1028 042e A3F10803 		sub	r3, r3, #8
+ 1029 0432 FB60     		str	r3, [r7, #12]
+ 408:../src/os/rt-thread/src/object.c **** 		if (rt_strncmp(object->name, name, RT_NAME_MAX) == 0)
+ 1030              		.loc 2 408 0
+ 1031 0434 FB68     		ldr	r3, [r7, #12]
+ 1032 0436 1846     		mov	r0, r3
+ 1033 0438 7968     		ldr	r1, [r7, #4]
+ 1034 043a 4FF00602 		mov	r2, #6
+ 1035 043e FFF7FEFF 		bl	rt_strncmp
+ 1036 0442 0346     		mov	r3, r0
+ 1037 0444 002B     		cmp	r3, #0
+ 1038 0446 03D1     		bne	.L63
+ 409:../src/os/rt-thread/src/object.c **** 		{
+ 410:../src/os/rt-thread/src/object.c **** 			/* leave critical */
+ 411:../src/os/rt-thread/src/object.c **** 			rt_exit_critical();
+ 1039              		.loc 2 411 0
+ 1040 0448 FFF7FEFF 		bl	rt_exit_critical
+ 412:../src/os/rt-thread/src/object.c **** 
+ 413:../src/os/rt-thread/src/object.c **** 			return object;
+ 1041              		.loc 2 413 0
+ 1042 044c FB68     		ldr	r3, [r7, #12]
+ 1043 044e 0CE0     		b	.L59
+ 1044              	.L63:
+ 405:../src/os/rt-thread/src/object.c **** 	for (node = information->object_list.next; node != &(information->object_list); node = node->next)
+ 1045              		.loc 2 405 0
+ 1046 0450 7B69     		ldr	r3, [r7, #20]
+ 1047 0452 1B68     		ldr	r3, [r3, #0]
+ 1048 0454 7B61     		str	r3, [r7, #20]
+ 1049              	.L62:
+ 405:../src/os/rt-thread/src/object.c **** 	for (node = information->object_list.next; node != &(information->object_list); node = node->next)
+ 1050              		.loc 2 405 0 is_stmt 0 discriminator 1
+ 1051 0456 3B69     		ldr	r3, [r7, #16]
+ 1052 0458 03F10402 		add	r2, r3, #4
+ 1053 045c 7B69     		ldr	r3, [r7, #20]
+ 1054 045e 9A42     		cmp	r2, r3
+ 1055 0460 E4D1     		bne	.L64
+ 414:../src/os/rt-thread/src/object.c **** 		}
+ 415:../src/os/rt-thread/src/object.c **** 	}
+ 416:../src/os/rt-thread/src/object.c **** 
+ 417:../src/os/rt-thread/src/object.c **** 	/* leave critical */
+ 418:../src/os/rt-thread/src/object.c **** 	rt_exit_critical();
+ 1056              		.loc 2 418 0 is_stmt 1
+ 1057 0462 FFF7FEFF 		bl	rt_exit_critical
+ 419:../src/os/rt-thread/src/object.c **** 
+ 420:../src/os/rt-thread/src/object.c **** 	return RT_NULL;
+ 1058              		.loc 2 420 0
+ 1059 0466 4FF00003 		mov	r3, #0
+ 1060              	.L59:
+ 421:../src/os/rt-thread/src/object.c **** }
+ 1061              		.loc 2 421 0
+ 1062 046a 1846     		mov	r0, r3
+ 1063 046c 07F11807 		add	r7, r7, #24
+ 1064 0470 BD46     		mov	sp, r7
+ 1065 0472 80BD     		pop	{r7, pc}
+ 1066              	.L66:
+ 1067              		.align	2
+ 1068              	.L65:
+ 1069 0474 00000000 		.word	rt_interrupt_nest
+ 1070 0478 00000000 		.word	.LC0
+ 1071 047c 58000000 		.word	.LC3
+ 1072 0480 88000000 		.word	__FUNCTION__.4933
+ 1073 0484 00000000 		.word	rt_object_container
+ 1074              		.cfi_endproc
+ 1075              	.LFE17:
+ 1077              		.section	.rodata
+ 1078 0085 000000   		.align	2
+ 1081              	__FUNCTION__.4933:
+ 1082 0088 72745F6F 		.ascii	"rt_object_find\000"
+ 1082      626A6563 
+ 1082      745F6669 
+ 1082      6E6400
+ 1083 0097 00       		.align	2
+ 1086              	__FUNCTION__.4920:
+ 1087 0098 72745F6F 		.ascii	"rt_object_is_systemobject\000"
+ 1087      626A6563 
+ 1087      745F6973 
+ 1087      5F737973 
+ 1087      74656D6F 
+ 1088 00b2 0000     		.align	2
+ 1091              	__FUNCTION__.4908:
+ 1092 00b4 72745F6F 		.ascii	"rt_object_delete\000"
+ 1092      626A6563 
+ 1092      745F6465 
+ 1092      6C657465 
+ 1092      00
+ 1093 00c5 000000   		.align	2
+ 1096              	__FUNCTION__.4898:
+ 1097 00c8 72745F6F 		.ascii	"rt_object_allocate\000"
+ 1097      626A6563 
+ 1097      745F616C 
+ 1097      6C6F6361 
+ 1097      746500
+ 1098 00db 00       		.align	2
+ 1101              	__FUNCTION__.4886:
+ 1102 00dc 72745F6F 		.ascii	"rt_object_detach\000"
+ 1102      626A6563 
+ 1102      745F6465 
+ 1102      74616368 
+ 1102      00
+ 1103 00ed 000000   		.text
+ 1104              	.Letext0:
+ 1105              		.file 3 "D:\\workspace_gnu\\RTT_Demo0\\src\\os\\rt-thread\\include/rtdef.h"
+DEFINED SYMBOLS
+                            *ABS*:00000000 object.c
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:18     .text:00000000 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:22     .text:00000000 rt_list_insert_after
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:72     .text:00000030 rt_list_remove
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:123    .data:00000000 rt_object_container
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:120    .data:00000000 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:175    .bss:00000000 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:176    .bss:00000000 rt_object_attach_hook
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:179    .bss:00000004 rt_object_detach_hook
+                            *COM*:00000004 rt_object_trytake_hook
+                            *COM*:00000004 rt_object_take_hook
+                            *COM*:00000004 rt_object_put_hook
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:190    .text:00000064 rt_object_attach_sethook
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:221    .text:0000007c $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:225    .text:00000080 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:230    .text:00000080 rt_object_detach_sethook
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:260    .text:00000098 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:264    .text:0000009c $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:269    .text:0000009c rt_object_trytake_sethook
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:299    .text:000000b4 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:303    .text:000000b8 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:308    .text:000000b8 rt_object_take_sethook
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:338    .text:000000d0 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:342    .text:000000d4 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:347    .text:000000d4 rt_object_put_sethook
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:377    .text:000000ec $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:381    .text:000000f0 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:386    .text:000000f0 rt_system_object_init
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:412    .text:000000fc rt_object_get_information
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:445    .text:0000011c $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:449    .text:00000120 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:454    .text:00000120 rt_object_init
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:526    .text:0000018c $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:532    .rodata:00000000 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:539    .text:00000194 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:544    .text:00000194 rt_object_detach
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:613    .text:000001f0 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:1101   .rodata:000000dc __FUNCTION__.4886
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:628    .text:00000200 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:633    .text:00000200 rt_object_allocate
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:756    .text:000002c4 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:1096   .rodata:000000c8 __FUNCTION__.4898
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:770    .text:000002dc $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:775    .text:000002dc rt_object_delete
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:871    .text:00000364 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:1091   .rodata:000000b4 __FUNCTION__.4908
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:879    .text:00000378 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:884    .text:00000378 rt_object_is_systemobject
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:945    .text:000003c4 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:1086   .rodata:00000098 __FUNCTION__.4920
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:951    .text:000003d0 $t
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:956    .text:000003d0 rt_object_find
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:1069   .text:00000474 $d
+C:\Users\YANGZH~1\AppData\Local\Temp\ccmZbwJ6.s:1081   .rodata:00000088 __FUNCTION__.4933
+                     .debug_frame:00000010 $d
+                           .group:00000000 wm4.1.9fa2be94b3b27131c651c32db681ca6e
+                           .group:00000000 wm4.rtconfig.h.3.5a4bd5c079694966fb1e9ee3a4751929
+                           .group:00000000 wm4.rtdef.h.36.f520ed9310a9e6fa8719d7b7d81c046a
+                           .group:00000000 wm4.rtdebug.h.12.1fd584faa18c8d5ccd4774b9c31afcd0
+                           .group:00000000 wm4.rtservice.h.19.f6999772500f0a8f811ba3fba5581f34
+
+UNDEFINED SYMBOLS
+rt_strncpy
+rt_hw_interrupt_disable
+rt_hw_interrupt_enable
+rt_kprintf
+rt_interrupt_get_nest
+rt_malloc
+rt_free
+rt_enter_critical
+rt_strncmp
+rt_exit_critical
+rt_interrupt_nest
