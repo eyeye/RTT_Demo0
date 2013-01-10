@@ -396,7 +396,27 @@ rt_err_t rt_hw_serial_register(struct rt_serial_device *serial,
 }
 
 /* ISR for serial interrupt */
-void rt_hw_serial_isr(struct rt_serial_device *serial)
+void rt_hw_serial_char_isr(struct rt_serial_device *serial)
+{
+    int ch = -1;
+
+    /* interrupt mode receive */
+    RT_ASSERT(serial->parent.flag & RT_DEVICE_FLAG_INT_RX);
+
+    while (1)
+    {
+        ch = serial->ops->getc(serial);
+        if (ch == -1)
+            break;
+
+        serial_ringbuffer_putc(serial->int_rx, ch);
+    }
+
+}
+
+
+
+void rt_hw_serial_timeout_isr(struct rt_serial_device *serial)
 {
     int ch = -1;
 
@@ -422,6 +442,7 @@ void rt_hw_serial_isr(struct rt_serial_device *serial)
         serial->parent.rx_indicate(&serial->parent, rx_length);
     }
 }
+
 
 /*
  * ISR for DMA mode Tx
