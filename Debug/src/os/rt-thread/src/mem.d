@@ -1,22 +1,23 @@
-src/os/rt-thread/src/mem.d: ../src/os/rt-thread/src/mem.c \
- D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include/rthw.h \
- D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include/rtthread.h \
- D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include/rtdef.h \
- D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\config/rtconfig.h \
- D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include/rtdebug.h \
- D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include/rtservice.h \
- D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include/rtm.h
+src/os/rt-thread/src/mem.d src/os/rt-thread/src/mem.o: \
+ ../src/os/rt-thread/src/mem.c \
+ E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\include/rthw.h \
+ E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\include/rtthread.h \
+ E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\include/rtdef.h \
+ E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\config/rtconfig.h \
+ E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\include/rtdebug.h \
+ E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\include/rtservice.h \
+ E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\include/rtm.h
 
-D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include/rthw.h:
+E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\include/rthw.h:
 
-D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include/rtthread.h:
+E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\include/rtthread.h:
 
-D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include/rtdef.h:
+E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\include/rtdef.h:
 
-D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\config/rtconfig.h:
+E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\config/rtconfig.h:
 
-D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include/rtdebug.h:
+E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\include/rtdebug.h:
 
-D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include/rtservice.h:
+E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\include/rtservice.h:
 
-D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include/rtm.h:
+E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\include/rtm.h:

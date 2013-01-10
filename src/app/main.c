@@ -7,59 +7,78 @@
 
 
 
-// ÷–Œƒ◊÷ÃÂ≤‚ ‘
-
-#include <stdint.h>
 #include <rtthread.h>
-#include "LPC177x_8x.h"
-
-volatile uint8_t array[0x80];
-
-volatile uint32_t temp32 = 0x32323232;
+#include "bsp/bsp.h"
+#include <rthw.h>
+#include "app/app.h"
 
 
-void test(void)
+#ifdef __CC_ARM
+extern int Image$$RW_IRAM1$$ZI$$Limit;
+#define STM32_SRAM_BEGIN    (&Image$$RW_IRAM1$$ZI$$Limit)
+#elif __ICCARM__
+#pragma section="HEAP"
+#define SRAM_BEGIN    (__segment_end("HEAP"))
+#else
+extern int __bss_end__;
+#define SRAM_BEGIN    (&__bss_end__)
+#endif
+
+
+void assert_failed(rt_uint8_t* file, rt_uint32_t line)
 {
-	uint8_t cnt = 0;
-	uint8_t sum = 0;
+	rt_kprintf("\n\r Wrong parameter value detected on\r\n");
+	rt_kprintf("       file  %s\r\n", file);
+	rt_kprintf("       line  %d\r\n", line);
 
-	for( cnt = 0; cnt < 10; cnt ++)
-	{
-		sum += cnt;
-	}
+	while (1) ;
 }
 
+/**
+ * This function will startup RT-Thread RTOS.
+ */
+void rtthread_startup(void)
+{
+	/* initialize board */
+	rt_hw_board_init();
 
+	/* show version */
+	rt_show_version();
+
+#ifdef RT_USING_HEAP
+    rt_system_heap_init((void*)SRAM_BEGIN, (void*)LPC1788_SRAM_END);
+#endif
+
+	/* initialize scheduler system */
+	rt_system_scheduler_init();
+
+	/* initialize application */
+	rt_application_init();
+
+    /* initialize timer thread */
+    rt_system_timer_thread_init();
+	/* initialize idle thread */
+	rt_thread_idle_init();
+
+	/* start scheduler */
+	rt_system_scheduler_start();
+
+	/* never reach here */
+	return ;
+}
 
 
 int main(void)
 {
-	volatile int count = 0;
+	/* disable interrupt first */
+	rt_hw_interrupt_disable();
 
-	HAL_Init();
-
-	while(1)
-	{
-		count ++;
-
-		test();
-	}
+	/* startup RT-Thread RTOS */
+	rtthread_startup();
 
 	return 0;
 }
 
-
-
-void SysTick_Handler(void)
-{
-	/* enter interrupt */
-	rt_interrupt_enter();
-
-	rt_tick_increase();
-
-	/* leave interrupt */
-	rt_interrupt_leave();
-}
 
 
 

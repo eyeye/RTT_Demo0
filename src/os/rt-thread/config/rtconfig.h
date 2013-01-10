@@ -74,6 +74,12 @@
 #define RT_USING_CONSOLE
 // <integer name="RT_CONSOLEBUF_SIZE" description="The buffer size for console output" default="128" />
 #define RT_CONSOLEBUF_SIZE	128
+// <string name="RT_CONSOLE_DEVICE_NAME" description="The device name for console output" default="vcom">
+// <item name="USB virtual serial port">"vcom"</item>
+// <item name="UART0">"uart0"</item>
+// <item name="UART1">"uart1"</item>
+// </string>
+#define RT_CONSOLE_DEVICE_NAME "serial1"
 // </section>
 
 // <bool name="RT_USING_COMPONENTS_INIT" description="Using RT-Thread components initialization" default="true" />

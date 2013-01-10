@@ -166,6 +166,7 @@ SECTIONS
     _estack = .;
     PROVIDE(estack = .);
   } >ram
+  
   __cs3_region_init_ram = LOADADDR (.data); 
   __cs3_region_init_size_ram = _edata - _sdata;
   __cs3_region_zero_size_ram = _end - _edata;

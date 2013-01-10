@@ -31,7 +31,7 @@ src/os/rt-thread/libcpu/arm/cortex-m3/%.o: ../src/os/rt-thread/libcpu/arm/cortex
 src/os/rt-thread/libcpu/arm/cortex-m3/%.o: ../src/os/rt-thread/libcpu/arm/cortex-m3/%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: ARM Sourcery Windows GCC C Compiler'
-	arm-none-eabi-gcc -D__RAM_MODE__ -I"D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include" -I"D:\workspace_gnu\RTT_Demo0\src" -I"D:\workspace_gnu\RTT_Demo0\src\hal\inc" -I"D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\config" -I"D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\Device\NXP\LPC177x_8x\Include" -I"D:\workspace_gnu\RTT_Demo0\src\lib\lpc177x_8x\Drivers\include" -I"D:\workspace_gnu\RTT_Demo0\src\os\rt-thread\include" -O0 -Wall -std=c99 -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -mcpu=cortex-m3 -mthumb -g3 -gdwarf-2 -o "$@" "$<"
+	arm-none-eabi-gcc -D__RAM_MODE__ -I"E:\workspaces\Juno_Gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\CMSIS\Include" -I"E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread" -I"E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\components\drivers\include\drivers" -I"E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\components\drivers\include" -I"E:\workspaces\Juno_Gnu\RTT_Demo0\src" -I"E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\config" -I"E:\workspaces\Juno_Gnu\RTT_Demo0\src\lib\lpc177x_8x\Core\Device\NXP\LPC177x_8x\Include" -I"E:\workspaces\Juno_Gnu\RTT_Demo0\src\lib\lpc177x_8x\Drivers\include" -I"E:\workspaces\Juno_Gnu\RTT_Demo0\src\os\rt-thread\include" -O0 -ffunction-sections -fdata-sections -Wall -std=gnu99 -funsigned-bitfields -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -mcpu=cortex-m3 -mthumb -g3 -gdwarf-2 -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 
