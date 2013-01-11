@@ -77,7 +77,7 @@ _db_hex_32          0x4               ./src/lib/lpc177x_8x/Drivers/source/debug_
 rt_thread_switch_interrupt_flag
                     0x4               ./src/os/rt-thread/libcpu/arm/cortex-m3/cpuport.o
 _db_dec_16          0x4               ./src/lib/lpc177x_8x/Drivers/source/debug_frmwrk.o
-serial1_int_tx      0x44              ./src/bsp/driver_periph/lpc1788_usart.o
+serial1_int_tx      0x84              ./src/bsp/driver_periph/lpc1788_usart.o
 SendLength          0x4               ./src/bsp/driver_periph/lpc1788_usart.o
 rt_thread_priority_table
                     0x100             ./src/os/rt-thread/src/scheduler.o
@@ -90,7 +90,7 @@ rt_current_priority
 _db_hex_            0x4               ./src/lib/lpc177x_8x/Drivers/source/debug_frmwrk.o
 CCS                 0x1               ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_mci.o
 _db_msg             0x4               ./src/lib/lpc177x_8x/Drivers/source/debug_frmwrk.o
-serial1_int_rx      0x44              ./src/bsp/driver_periph/lpc1788_usart.o
+serial1_int_rx      0x84              ./src/bsp/driver_periph/lpc1788_usart.o
 _db_get_char        0x4               ./src/lib/lpc177x_8x/Drivers/source/debug_frmwrk.o
 CardRCA             0x4               ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_mci.o
 _db_msg_            0x4               ./src/lib/lpc177x_8x/Drivers/source/debug_frmwrk.o
@@ -3102,8 +3102,8 @@ LOAD g:/program files/codesourcery/sourcery_codebench_lite_for_arm_eabi/bin/../l
 LOAD g:/program files/codesourcery/sourcery_codebench_lite_for_arm_eabi/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib/thumb2\libcs3micro.a
 END GROUP
                 0x10010000                PROVIDE (__cs3_stack, (__cs3_region_start_ram + __cs3_region_size_ram))
-                0x20015f98                PROVIDE (__cs3_stack_size, ((__cs3_region_start_ram + __cs3_region_size_ram) - _end))
-                0x10009968                PROVIDE (__cs3_heap_start, _end)
+                0x20015f18                PROVIDE (__cs3_stack_size, ((__cs3_region_start_ram + __cs3_region_size_ram) - _end))
+                0x100099e8                PROVIDE (__cs3_heap_start, _end)
                 0x10010000                PROVIDE (__cs3_heap_end, (__cs3_region_start_ram + __cs3_region_size_ram))
 
 .text           0x10000000     0x7bb8
@@ -3782,7 +3782,7 @@ END GROUP
                 0x10007ba8        0x4 LONG 0x10007bc0 __cs3_region_init_ram
                 0x10007bac        0x4 LONG 0x10000000 __cs3_region_start_ram
                 0x10007bb0        0x4 LONG 0xc0 __cs3_region_init_size_ram
-                0x10007bb4        0x4 LONG 0x1ce8 __cs3_region_zero_size_ram
+                0x10007bb4        0x4 LONG 0x1d68 __cs3_region_zero_size_ram
                 0x10007bb8                __exidx_start = .
 
 .v4_bx          0x10007bb8        0x0
@@ -3849,7 +3849,7 @@ END GROUP
 .igot.plt       0x10007c80        0x0
  .igot.plt      0x00000000        0x0 g:/program files/codesourcery/sourcery_codebench_lite_for_arm_eabi/bin/../lib/gcc/arm-none-eabi/4.7.2/thumb2/crtbegin.o
 
-.bss            0x10007c80     0x1ce8
+.bss            0x10007c80     0x1d68
                 0x10007c80                . = ALIGN (0x4)
                 0x10007c80                __bss_start__ = .
  *(.shbss)
@@ -3926,26 +3926,26 @@ END GROUP
                 0x10009854                rt_interrupt_to_thread
                 0x10009858                rt_interrupt_from_thread
                 0x1000985c                rt_thread_switch_interrupt_flag
- COMMON         0x10009860      0x108 ./src/bsp/driver_periph/lpc1788_usart.o
+ COMMON         0x10009860      0x188 ./src/bsp/driver_periph/lpc1788_usart.o
                 0x10009860                SendPtr
                 0x10009864                serial1_int_tx
-                0x100098a8                SendLength
-                0x100098ac                serial1
-                0x10009924                serial1_int_rx
-                0x10009968                __bss_end__ = .
+                0x100098e8                SendLength
+                0x100098ec                serial1
+                0x10009964                serial1_int_rx
+                0x100099e8                __bss_end__ = .
  *(.ram.b)
-                0x10009968                . = ALIGN (0x4)
-                0x10009968                _end = .
-                0x10009968                __end = .
+                0x100099e8                . = ALIGN (0x4)
+                0x100099e8                _end = .
+                0x100099e8                __end = .
 
 .usb_ram
  *.o(USB_RAM)
 
-.heap           0x10009968     0x1000
+.heap           0x100099e8     0x1000
  *(.heap)
- .heap          0x10009968     0x1000 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/GCC/startup_LPC177x_8x.o
-                0x10009968                __cs3_heap_start
-                0x1000a968                __cs3_heap_end
+ .heap          0x100099e8     0x1000 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/GCC/startup_LPC177x_8x.o
+                0x100099e8                __cs3_heap_start
+                0x1000a9e8                __cs3_heap_end
 
 .stack          0x1000fc00      0x400
  *(.stack)
@@ -3955,7 +3955,7 @@ END GROUP
                 0x10010000                PROVIDE (estack, .)
                 0x10007bc0                __cs3_region_init_ram = LOADADDR (.data)
                 0x000000c0                __cs3_region_init_size_ram = (_edata - _sdata)
-                0x00001ce8                __cs3_region_zero_size_ram = (_end - _edata)
+                0x00001d68                __cs3_region_zero_size_ram = (_end - _edata)
                 0x00010000                __cs3_region_size_ram = 0x10000
                 0x00000001                __cs3_region_num = 0x1
 
@@ -4111,7 +4111,7 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000    0x232ca
+.debug_info     0x00000000    0x232ce
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x401 ./src/os/rt-thread/src/clock.o
  .debug_info    0x00000401      0xa21 ./src/os/rt-thread/src/device.o
@@ -4137,46 +4137,46 @@ END GROUP
  .debug_info    0x00009e98      0x3d6 ./src/os/rt-thread/components/drivers/src/ringbuffer.o
  .debug_info    0x0000a26e      0xee4 ./src/os/rt-thread/components/drivers/spi/spi_core.o
  .debug_info    0x0000b152      0xd9a ./src/os/rt-thread/components/drivers/spi/spi_dev.o
- .debug_info    0x0000beec      0xeb1 ./src/os/rt-thread/components/drivers/serial/serial.o
- .debug_info    0x0000cd9d       0x61 ./src/os/rt-thread/components/drivers/rtc/alarm.o
- .debug_info    0x0000cdfe      0x5cc ./src/os/rt-thread/components/drivers/rtc/rtc.o
- .debug_info    0x0000d3ca       0x61 ./src/os/rt-thread/components/drivers/mtd/mtd_nand.o
- .debug_info    0x0000d42b       0x61 ./src/os/rt-thread/components/drivers/mtd/mtd_nor.o
- .debug_info    0x0000d48c      0x9b4 ./src/lib/lpc177x_8x/Drivers/source/debug_frmwrk.o
- .debug_info    0x0000de40      0x539 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_adc.o
- .debug_info    0x0000e379      0x763 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_bod.o
- .debug_info    0x0000eadc     0x11fb ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_can.o
- .debug_info    0x0000fcd7      0x754 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.o
- .debug_info    0x0001042b      0x35c ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_crc.o
- .debug_info    0x00010787      0x33f ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.o
- .debug_info    0x00010ac6      0x3f1 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_eeprom.o
- .debug_info    0x00010eb7      0xeaa ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_emac.o
- .debug_info    0x00011d61     0x126e ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_emc.o
- .debug_info    0x00012fcf      0x587 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.o
- .debug_info    0x00013556     0x1313 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_gpdma.o
- .debug_info    0x00014869      0xc4b ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_gpio.o
- .debug_info    0x000154b4     0x103d ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_i2c.o
- .debug_info    0x000164f1      0x94e ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_i2s.o
- .debug_info    0x00016e3f      0x52c ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.o
- .debug_info    0x0001736b     0x1242 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_lcd.o
- .debug_info    0x000185ad     0x2565 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_mci.o
- .debug_info    0x0001ab12      0x850 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_mcpwm.o
- .debug_info    0x0001b362      0x443 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_nvic.o
- .debug_info    0x0001b7a5      0x683 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.o
- .debug_info    0x0001be28      0x909 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.o
- .debug_info    0x0001c731      0xa4e ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.o
- .debug_info    0x0001d17f      0xdd3 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_rtc.o
- .debug_info    0x0001df52      0x790 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_ssp.o
- .debug_info    0x0001e6e2      0x23a ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.o
- .debug_info    0x0001e91c      0x851 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_timer.o
- .debug_info    0x0001f16d     0x1573 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_uart.o
- .debug_info    0x000206e0      0x5ca ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_wwdt.o
- .debug_info    0x00020caa       0xa1 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/GCC/startup_LPC177x_8x.o
- .debug_info    0x00020d4b      0x6bb ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
- .debug_info    0x00021406     0x1388 ./src/bsp/driver_periph/lpc1788_usart.o
- .debug_info    0x0002278e      0x5f8 ./src/bsp/bsp.o
- .debug_info    0x00022d86      0x433 ./src/app/app.o
- .debug_info    0x000231b9      0x111 ./src/app/main.o
+ .debug_info    0x0000beec      0xeb3 ./src/os/rt-thread/components/drivers/serial/serial.o
+ .debug_info    0x0000cd9f       0x61 ./src/os/rt-thread/components/drivers/rtc/alarm.o
+ .debug_info    0x0000ce00      0x5cc ./src/os/rt-thread/components/drivers/rtc/rtc.o
+ .debug_info    0x0000d3cc       0x61 ./src/os/rt-thread/components/drivers/mtd/mtd_nand.o
+ .debug_info    0x0000d42d       0x61 ./src/os/rt-thread/components/drivers/mtd/mtd_nor.o
+ .debug_info    0x0000d48e      0x9b4 ./src/lib/lpc177x_8x/Drivers/source/debug_frmwrk.o
+ .debug_info    0x0000de42      0x539 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_adc.o
+ .debug_info    0x0000e37b      0x763 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_bod.o
+ .debug_info    0x0000eade     0x11fb ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_can.o
+ .debug_info    0x0000fcd9      0x754 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.o
+ .debug_info    0x0001042d      0x35c ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_crc.o
+ .debug_info    0x00010789      0x33f ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.o
+ .debug_info    0x00010ac8      0x3f1 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_eeprom.o
+ .debug_info    0x00010eb9      0xeaa ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_emac.o
+ .debug_info    0x00011d63     0x126e ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_emc.o
+ .debug_info    0x00012fd1      0x587 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.o
+ .debug_info    0x00013558     0x1313 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_gpdma.o
+ .debug_info    0x0001486b      0xc4b ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_gpio.o
+ .debug_info    0x000154b6     0x103d ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_i2c.o
+ .debug_info    0x000164f3      0x94e ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_i2s.o
+ .debug_info    0x00016e41      0x52c ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.o
+ .debug_info    0x0001736d     0x1242 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_lcd.o
+ .debug_info    0x000185af     0x2565 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_mci.o
+ .debug_info    0x0001ab14      0x850 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_mcpwm.o
+ .debug_info    0x0001b364      0x443 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_nvic.o
+ .debug_info    0x0001b7a7      0x683 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.o
+ .debug_info    0x0001be2a      0x909 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.o
+ .debug_info    0x0001c733      0xa4e ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.o
+ .debug_info    0x0001d181      0xdd3 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_rtc.o
+ .debug_info    0x0001df54      0x790 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_ssp.o
+ .debug_info    0x0001e6e4      0x23a ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.o
+ .debug_info    0x0001e91e      0x851 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_timer.o
+ .debug_info    0x0001f16f     0x1573 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_uart.o
+ .debug_info    0x000206e2      0x5ca ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_wwdt.o
+ .debug_info    0x00020cac       0xa1 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/GCC/startup_LPC177x_8x.o
+ .debug_info    0x00020d4d      0x6bb ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
+ .debug_info    0x00021408     0x138a ./src/bsp/driver_periph/lpc1788_usart.o
+ .debug_info    0x00022792      0x5f8 ./src/bsp/bsp.o
+ .debug_info    0x00022d8a      0x433 ./src/app/app.o
+ .debug_info    0x000231bd      0x111 ./src/app/main.o
 
 .debug_abbrev   0x00000000     0x640b
  *(.debug_abbrev)
@@ -4395,7 +4395,7 @@ END GROUP
  .debug_frame   0x000062b8       0x20 g:/program files/codesourcery/sourcery_codebench_lite_for_arm_eabi/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-errno.o)
  .debug_frame   0x000062d8       0x2c g:/program files/codesourcery/sourcery_codebench_lite_for_arm_eabi/bin/../lib/gcc/arm-none-eabi/4.7.2/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-init.o)
 
-.debug_str      0x00000000    0x24bff
+.debug_str      0x00000000    0x24c18
  *(.debug_str)
  .debug_str     0x00000000     0x381e ./src/os/rt-thread/src/clock.o
                                0x38d4 (size before relaxing)
@@ -4431,95 +4431,95 @@ END GROUP
                                0x394c (size before relaxing)
  .debug_str     0x00005335       0x5b ./src/os/rt-thread/components/init/components.o
                                0x371f (size before relaxing)
- .debug_str     0x00005390      0x58d ./src/os/rt-thread/components/drivers/src/completion.o
-                               0x3e6c (size before relaxing)
- .debug_str     0x0000591d      0x116 ./src/os/rt-thread/components/drivers/src/dataqueue.o
-                               0x3ef2 (size before relaxing)
- .debug_str     0x00005a33      0x10d ./src/os/rt-thread/components/drivers/src/pipe.o
-                               0x40cc (size before relaxing)
- .debug_str     0x00005b40     0x1c54 ./src/os/rt-thread/components/drivers/src/ringbuffer.o
-                               0x5901 (size before relaxing)
- .debug_str     0x00007794      0x4e4 ./src/os/rt-thread/components/drivers/spi/spi_core.o
+ .debug_str     0x00005390      0x5a6 ./src/os/rt-thread/components/drivers/src/completion.o
+                               0x3e6e (size before relaxing)
+ .debug_str     0x00005936      0x116 ./src/os/rt-thread/components/drivers/src/dataqueue.o
+                               0x3ef4 (size before relaxing)
+ .debug_str     0x00005a4c      0x10d ./src/os/rt-thread/components/drivers/src/pipe.o
+                               0x40ce (size before relaxing)
+ .debug_str     0x00005b59     0x1c54 ./src/os/rt-thread/components/drivers/src/ringbuffer.o
+                               0x5903 (size before relaxing)
+ .debug_str     0x000077ad      0x4e4 ./src/os/rt-thread/components/drivers/spi/spi_core.o
                                0x5b78 (size before relaxing)
- .debug_str     0x00007c78       0xe5 ./src/os/rt-thread/components/drivers/spi/spi_dev.o
+ .debug_str     0x00007c91       0xe5 ./src/os/rt-thread/components/drivers/spi/spi_dev.o
                                0x5b26 (size before relaxing)
- .debug_str     0x00007d5d      0x252 ./src/os/rt-thread/components/drivers/serial/serial.o
-                               0x41b9 (size before relaxing)
- .debug_str     0x00007faf       0xa7 ./src/os/rt-thread/components/drivers/rtc/alarm.o
-                               0x3c5a (size before relaxing)
- .debug_str     0x00008056      0x5b8 ./src/os/rt-thread/components/drivers/rtc/rtc.o
+ .debug_str     0x00007d76      0x252 ./src/os/rt-thread/components/drivers/serial/serial.o
+                               0x41bb (size before relaxing)
+ .debug_str     0x00007fc8       0xa7 ./src/os/rt-thread/components/drivers/rtc/alarm.o
+                               0x3c5c (size before relaxing)
+ .debug_str     0x0000806f      0x5b8 ./src/os/rt-thread/components/drivers/rtc/rtc.o
                                0x5c3a (size before relaxing)
- .debug_str     0x0000860e       0xcf ./src/os/rt-thread/components/drivers/mtd/mtd_nand.o
-                               0x3c82 (size before relaxing)
- .debug_str     0x000086dd       0x84 ./src/os/rt-thread/components/drivers/mtd/mtd_nor.o
-                               0x3c37 (size before relaxing)
- .debug_str     0x00008761     0x6635 ./src/lib/lpc177x_8x/Drivers/source/debug_frmwrk.o
+ .debug_str     0x00008627       0xcf ./src/os/rt-thread/components/drivers/mtd/mtd_nand.o
+                               0x3c84 (size before relaxing)
+ .debug_str     0x000086f6       0x84 ./src/os/rt-thread/components/drivers/mtd/mtd_nor.o
+                               0x3c39 (size before relaxing)
+ .debug_str     0x0000877a     0x6635 ./src/lib/lpc177x_8x/Drivers/source/debug_frmwrk.o
                                0x8a08 (size before relaxing)
- .debug_str     0x0000ed96     0x10b0 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_adc.o
+ .debug_str     0x0000edaf     0x10b0 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_adc.o
                                0x7fdc (size before relaxing)
- .debug_str     0x0000fe46      0x541 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_bod.o
+ .debug_str     0x0000fe5f      0x541 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_bod.o
                                0x745b (size before relaxing)
- .debug_str     0x00010387     0x2176 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_can.o
+ .debug_str     0x000103a0     0x2176 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_can.o
                                0x9c27 (size before relaxing)
- .debug_str     0x000124fd      0x158 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.o
+ .debug_str     0x00012516      0x158 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_clkpwr.o
                                0x7d24 (size before relaxing)
- .debug_str     0x00012655      0x1b7 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_crc.o
+ .debug_str     0x0001266e      0x1b7 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_crc.o
                                0x7be9 (size before relaxing)
- .debug_str     0x0001280c      0x30f ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.o
+ .debug_str     0x00012825      0x30f ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_dac.o
                                0x82e9 (size before relaxing)
- .debug_str     0x00012b1b      0x3ed ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_eeprom.o
+ .debug_str     0x00012b34      0x3ed ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_eeprom.o
                                0x7e3d (size before relaxing)
- .debug_str     0x00012f08     0x234e ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_emac.o
+ .debug_str     0x00012f21     0x234e ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_emac.o
                                0xa412 (size before relaxing)
- .debug_str     0x00015256     0x2680 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_emc.o
+ .debug_str     0x0001526f     0x2680 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_emc.o
                                0xa846 (size before relaxing)
- .debug_str     0x000178d6      0x22a ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.o
+ .debug_str     0x000178ef      0x22a ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_exti.o
                                0x72b9 (size before relaxing)
- .debug_str     0x00017b00     0x122a ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_gpdma.o
+ .debug_str     0x00017b19     0x122a ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_gpdma.o
                                0x8ea0 (size before relaxing)
- .debug_str     0x00018d2a      0x6b4 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_gpio.o
+ .debug_str     0x00018d43      0x6b4 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_gpio.o
                                0x8100 (size before relaxing)
- .debug_str     0x000193de      0xd1e ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_i2c.o
+ .debug_str     0x000193f7      0xd1e ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_i2c.o
                                0x901c (size before relaxing)
- .debug_str     0x0001a0fc      0xc3d ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_i2s.o
+ .debug_str     0x0001a115      0xc3d ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_i2s.o
                                0x8733 (size before relaxing)
- .debug_str     0x0001ad39      0x31f ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.o
+ .debug_str     0x0001ad52      0x31f ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_iap.o
                                0x7d4e (size before relaxing)
- .debug_str     0x0001b058      0x691 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_lcd.o
+ .debug_str     0x0001b071      0x691 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_lcd.o
                                0x8be5 (size before relaxing)
- .debug_str     0x0001b6e9     0x2172 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_mci.o
+ .debug_str     0x0001b702     0x2172 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_mci.o
                                0xb54d (size before relaxing)
- .debug_str     0x0001d85b      0xe54 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_mcpwm.o
+ .debug_str     0x0001d874      0xe54 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_mcpwm.o
                                0x88bf (size before relaxing)
- .debug_str     0x0001e6af       0x8f ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_nvic.o
+ .debug_str     0x0001e6c8       0x8f ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_nvic.o
                                0x703c (size before relaxing)
- .debug_str     0x0001e73e      0x2bf ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.o
+ .debug_str     0x0001e757      0x2bf ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pinsel.o
                                0x7799 (size before relaxing)
- .debug_str     0x0001e9fd      0xa71 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.o
+ .debug_str     0x0001ea16      0xa71 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_pwm.o
                                0x8510 (size before relaxing)
- .debug_str     0x0001f46e     0x1a8b ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.o
+ .debug_str     0x0001f487     0x1a8b ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_qei.o
                                0x9511 (size before relaxing)
- .debug_str     0x00020ef9     0x1120 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_rtc.o
+ .debug_str     0x00020f12     0x1120 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_rtc.o
                                0x8c54 (size before relaxing)
- .debug_str     0x00022019      0xd44 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_ssp.o
+ .debug_str     0x00022032      0xd44 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_ssp.o
                                0x8812 (size before relaxing)
- .debug_str     0x00022d5d      0x28d ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.o
+ .debug_str     0x00022d76      0x28d ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_systick.o
                                0x7ccb (size before relaxing)
- .debug_str     0x00022fea      0x6f0 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_timer.o
+ .debug_str     0x00023003      0x6f0 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_timer.o
                                0x881c (size before relaxing)
- .debug_str     0x000236da      0x7b6 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_uart.o
+ .debug_str     0x000236f3      0x7b6 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_uart.o
                                0x935d (size before relaxing)
- .debug_str     0x00023e90      0x758 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_wwdt.o
+ .debug_str     0x00023ea9      0x758 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_wwdt.o
                                0x87a9 (size before relaxing)
- .debug_str     0x000245e8      0x376 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
+ .debug_str     0x00024601      0x376 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
                                0x7218 (size before relaxing)
- .debug_str     0x0002495e      0x14a ./src/bsp/driver_periph/lpc1788_usart.o
-                               0xb199 (size before relaxing)
- .debug_str     0x00024aa8       0x59 ./src/bsp/bsp.o
+ .debug_str     0x00024977      0x14a ./src/bsp/driver_periph/lpc1788_usart.o
+                               0xb19b (size before relaxing)
+ .debug_str     0x00024ac1       0x59 ./src/bsp/bsp.o
                                0x8436 (size before relaxing)
- .debug_str     0x00024b01       0x9a ./src/app/app.o
+ .debug_str     0x00024b1a       0x9a ./src/app/app.o
                                0x38fa (size before relaxing)
- .debug_str     0x00024b9b       0x64 ./src/app/main.o
+ .debug_str     0x00024bb4       0x64 ./src/app/main.o
                                0x37bd (size before relaxing)
 
 .debug_loc      0x00000000     0xa65e

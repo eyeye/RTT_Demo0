@@ -211,13 +211,13 @@ static int putchar(struct rt_serial_device *serial, char c)
 {
 	RT_ASSERT(serial != RT_NULL);
 
-	if( SendFifoLength < 16 )
+	if( SendFifoLength < 15 )
 	{
 		LPC_UART1->THR = c & UART_THR_MASKBIT;
 		SendFifoLength ++;
 	}
 
-	return (16 - SendFifoLength);
+	return (15 - SendFifoLength);
 }
 
 
