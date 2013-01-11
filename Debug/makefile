@@ -54,7 +54,7 @@ all: RTT_Demo0.elf secondary-outputs
 RTT_Demo0.elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: ARM Sourcery Windows GCC C Linker'
-	arm-none-eabi-gcc -T"D:/workspace_gnu/RTT_Demo0/src/config/ldscript_ram_gnu.ld" -Xlinker --gc-sections -Wl,-Map,RTT_Demo0.map -mcpu=cortex-m3 -mthumb -g3 -gdwarf-2 -o "RTT_Demo0.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	arm-none-eabi-gcc -T"E:/workspaces/Juno_Gnu/RTT_Demo0/src/config/ldscript_ram_gnu.ld" -Xlinker --gc-sections -Wl,-Map,RTT_Demo0.map -mcpu=cortex-m3 -mthumb -g3 -gdwarf-2 -o "RTT_Demo0.elf" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

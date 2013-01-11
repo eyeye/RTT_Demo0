@@ -30,13 +30,13 @@
 
 static rt_uint8_t RecvFifoLength;
 static rt_uint8_t SendFifoLength;
-char *SendPtr;
-rt_size_t SendLength;
+static char *SendPtr;
+static rt_size_t SendLength;
 
-struct serial_ringbuffer serial1_int_rx;
-struct serial_ringbuffer serial1_int_tx;
+struct serial_ringbuffer serial_int_rx;
+struct serial_ringbuffer serial_int_tx;
 
-struct rt_serial_device serial1;
+static struct rt_serial_device serial_device;
 
 
 static rt_err_t configure(	struct rt_serial_device *serial,
@@ -207,7 +207,7 @@ static rt_err_t control(	struct rt_serial_device *serial,
 
 
 
-static int putchar(struct rt_serial_device *serial, char c)
+static int put_char(struct rt_serial_device *serial, char c)
 {
 	RT_ASSERT(serial != RT_NULL);
 
@@ -247,7 +247,7 @@ static int getchar(struct rt_serial_device *serial)
 
 
 
-static uint32_t writeSendFifo(void)
+static inline uint32_t writeSendFifo(void)
 {
 	uint8_t write_cnt = 0;
 
@@ -271,11 +271,11 @@ static uint32_t writeSendFifo(void)
 
 
 
-rt_size_t dma_transmit(struct rt_serial_device *serial, const char *buf, rt_size_t size)
+static rt_size_t dma_transmit(struct rt_serial_device *serial, const char *buf, rt_size_t size)
 {
 	RT_ASSERT(serial != RT_NULL);
 
-	SendPtr = buf;
+	SendPtr = (char*)buf;
 	SendLength = size;
 
 	writeSendFifo();
@@ -289,31 +289,32 @@ static const struct rt_uart_ops usart_ops =
 {
 	.configure	= configure,
 	.control	= control,
-	.putc		= putchar,
+	.putc		= put_char,
 	.getc		= getchar,
 	.dma_transmit = dma_transmit,
 };
 
 
-void rt_hw_usart_init(void)
+void rt_hw_usart1_init(void)
 {
 	struct serial_configure config = RT_SERIAL_CONFIG_DEFAULT;
 
-	serial1.ops    = &usart_ops;
-	serial1.int_rx = &serial1_int_rx;
-	serial1.int_tx = &serial1_int_tx;
-	serial1.config = config;
+	serial_device.ops    = &usart_ops;
+	serial_device.int_rx = &serial_int_rx;
+	serial_device.int_tx = &serial_int_tx;
+	serial_device.config = config;
 
-	configure(&serial1, &config);
+	configure(&serial_device, &config);
 
     /* register USART1 device */
-    rt_hw_serial_register(&serial1, "serial1",
+    rt_hw_serial_register(&serial_device, "serial1",
                           RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_INT_RX | RT_DEVICE_FLAG_TX,
                           (void*)0 );
 }
 
 
 ////////////////////////////////////////////////////////////
+
 
 
 void UART1_IRQHandler(void)
@@ -347,14 +348,14 @@ void UART1_IRQHandler(void)
     if ( iir == UART_IIR_INTID_RDA )
     {
     	RecvFifoLength = FIFO_THRESHOLD;
-    	rt_hw_serial_char_isr(&serial1);
+    	rt_hw_serial_char_isr(&serial_device);
     }
 
     // Receive Character time-out
     if( iir == UART_IIR_INTID_CTI )
     {
     	RecvFifoLength = FIFO_THRESHOLD;
-    	rt_hw_serial_timeout_isr(&serial1);
+    	rt_hw_serial_timeout_isr(&serial_device);
     }
 
     // Transmit Holding Empty
@@ -365,10 +366,10 @@ void UART1_IRQHandler(void)
 #if (RT_DEVICE_FLAG_TX == RT_DEVICE_FLAG_DMA_TX)
     	if( writeSendFifo() == 0 )
     	{
-    		rt_hw_serial_dma_tx_isr(&serial1);
+    		rt_hw_serial_dma_tx_isr(&serial_device);
     	}
 #else
-    	rt_hw_serial_int_tx_isr(&serial1);
+    	rt_hw_serial_int_tx_isr(&serial_device);
 #endif
     }
 

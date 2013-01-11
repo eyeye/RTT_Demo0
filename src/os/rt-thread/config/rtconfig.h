@@ -79,7 +79,7 @@
 // <item name="UART0">"uart0"</item>
 // <item name="UART1">"uart1"</item>
 // </string>
-#define RT_CONSOLE_DEVICE_NAME "serial1"
+#define RT_CONSOLE_DEVICE_NAME "serial0"
 // </section>
 
 // <bool name="RT_USING_COMPONENTS_INIT" description="Using RT-Thread components initialization" default="true" />

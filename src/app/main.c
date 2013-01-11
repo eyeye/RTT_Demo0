@@ -11,7 +11,8 @@
 #include "bsp/bsp.h"
 #include <rthw.h>
 #include "app/app.h"
-
+#include "bsp/driver_periph/lpc1788_usart0.h"
+#include "bsp/driver_periph/lpc1788_usart1.h"
 
 #ifdef __CC_ARM
 extern int Image$$RW_IRAM1$$ZI$$Limit;
@@ -45,8 +46,8 @@ void rtthread_startup(void)
 #ifdef RT_USING_HEAP
     rt_system_heap_init((void*)SRAM_BEGIN, (void*)LPC1788_SRAM_END);
 #endif
-
-    rt_hw_usart_init();
+    rt_hw_usart0_init();
+    rt_hw_usart1_init();
 
 #ifdef RT_USING_CONSOLE
     rt_console_set_device(RT_CONSOLE_DEVICE_NAME);

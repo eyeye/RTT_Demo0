@@ -5,11 +5,11 @@
  *      Author: YangZhiyong
  */
 
-#ifndef LPC1788_USART_H_
-#define LPC1788_USART_H_
+#ifndef LPC1788_USART1_H_
+#define LPC1788_USART1_H_
 
 
-void rt_hw_usart_init(void);
+void rt_hw_usart1_init(void);
 
 
 
