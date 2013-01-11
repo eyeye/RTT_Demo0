@@ -29,7 +29,7 @@ src/os/rt-thread/components/drivers/mtd \
 src/lib/lpc177x_8x/Drivers/source \
 src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates \
 src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/GCC \
-src/bsp/driver_periph \
+src/bsp/driver_periph/usart \
 src/bsp \
 src/app \
 

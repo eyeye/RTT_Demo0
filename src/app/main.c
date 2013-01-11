@@ -11,8 +11,8 @@
 #include "bsp/bsp.h"
 #include <rthw.h>
 #include "app/app.h"
-#include "bsp/driver_periph/lpc1788_usart0.h"
-#include "bsp/driver_periph/lpc1788_usart1.h"
+#include "bsp/driver_periph/usart/lpc1788_usart0.h"
+#include "bsp/driver_periph/usart/lpc1788_usart1.h"
 
 #ifdef __CC_ARM
 extern int Image$$RW_IRAM1$$ZI$$Limit;

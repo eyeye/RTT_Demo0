@@ -19,7 +19,7 @@ RM := cs-rm -rf
 -include src/lib/lpc177x_8x/Drivers/source/subdir.mk
 -include src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/GCC/subdir.mk
 -include src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/subdir.mk
--include src/bsp/driver_periph/subdir.mk
+-include src/bsp/driver_periph/usart/subdir.mk
 -include src/bsp/subdir.mk
 -include src/app/subdir.mk
 -include subdir.mk

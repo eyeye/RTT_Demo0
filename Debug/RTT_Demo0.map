@@ -86,7 +86,7 @@ rt_current_priority
 _db_hex_            0x4               ./src/lib/lpc177x_8x/Drivers/source/debug_frmwrk.o
 CCS                 0x1               ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_mci.o
 _db_msg             0x4               ./src/lib/lpc177x_8x/Drivers/source/debug_frmwrk.o
-serial_int_rx       0x84              ./src/bsp/driver_periph/lpc1788_usart0.o
+serial_int_rx       0x84              ./src/bsp/driver_periph/usart/lpc1788_usart0.o
 _db_get_char        0x4               ./src/lib/lpc177x_8x/Drivers/source/debug_frmwrk.o
 CardRCA             0x4               ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_mci.o
 _db_msg_            0x4               ./src/lib/lpc177x_8x/Drivers/source/debug_frmwrk.o
@@ -113,7 +113,7 @@ _db_hex_16          0x4               ./src/lib/lpc177x_8x/Drivers/source/debug_
 FULLCAN_ENABLE      0x1               ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_can.o
 rt_object_trytake_hook
                     0x4               ./src/os/rt-thread/src/object.o
-serial_int_tx       0x84              ./src/bsp/driver_periph/lpc1788_usart0.o
+serial_int_tx       0x84              ./src/bsp/driver_periph/usart/lpc1788_usart0.o
 MCI_CardType        0x1               ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_mci.o
 crc_cur_type        0x1               ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_crc.o
 
@@ -1758,12 +1758,12 @@ Discarded input sections
  .text          0x00000000        0x0 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
  .data          0x00000000        0x0 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
  .bss           0x00000000        0x0 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
- .text          0x00000000        0x0 ./src/bsp/driver_periph/lpc1788_usart0.o
- .data          0x00000000        0x0 ./src/bsp/driver_periph/lpc1788_usart0.o
- .bss           0x00000000        0x0 ./src/bsp/driver_periph/lpc1788_usart0.o
- .text          0x00000000        0x0 ./src/bsp/driver_periph/lpc1788_usart1.o
- .data          0x00000000        0x0 ./src/bsp/driver_periph/lpc1788_usart1.o
- .bss           0x00000000        0x0 ./src/bsp/driver_periph/lpc1788_usart1.o
+ .text          0x00000000        0x0 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
+ .data          0x00000000        0x0 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
+ .bss           0x00000000        0x0 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
+ .text          0x00000000        0x0 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
+ .data          0x00000000        0x0 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
+ .bss           0x00000000        0x0 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .text          0x00000000        0x0 ./src/bsp/bsp.o
  .data          0x00000000        0x0 ./src/bsp/bsp.o
  .bss           0x00000000        0x0 ./src/bsp/bsp.o
@@ -1946,8 +1946,8 @@ LOAD ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_uart.o
 LOAD ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_wwdt.o
 LOAD ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/GCC/startup_LPC177x_8x.o
 LOAD ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
-LOAD ./src/bsp/driver_periph/lpc1788_usart0.o
-LOAD ./src/bsp/driver_periph/lpc1788_usart1.o
+LOAD ./src/bsp/driver_periph/usart/lpc1788_usart0.o
+LOAD ./src/bsp/driver_periph/usart/lpc1788_usart1.o
 LOAD ./src/bsp/bsp.o
 LOAD ./src/app/app.o
 LOAD ./src/app/main.o
@@ -2407,48 +2407,48 @@ END GROUP
                 0x10005908      0x104 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
                 0x10005908                SystemInit
  .text.NVIC_EnableIRQ
-                0x10005a0c       0x34 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x10005a0c       0x34 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .text.NVIC_DisableIRQ
-                0x10005a40       0x38 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x10005a40       0x38 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .text.NVIC_SetPriority
-                0x10005a78       0x58 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x10005a78       0x58 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .text.configure
-                0x10005ad0      0x230 ./src/bsp/driver_periph/lpc1788_usart0.o
- .text.control  0x10005d00       0x74 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x10005ad0      0x230 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
+ .text.control  0x10005d00       0x74 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .text.put_char
-                0x10005d74       0x70 ./src/bsp/driver_periph/lpc1788_usart0.o
- .text.getchar  0x10005de4       0x90 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x10005d74       0x70 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
+ .text.getchar  0x10005de4       0x90 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .text.writeSendFifo
-                0x10005e74       0x78 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x10005e74       0x78 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .text.dma_transmit
-                0x10005eec       0x60 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x10005eec       0x60 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .text.rt_hw_usart0_init
-                0x10005f4c       0x70 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x10005f4c       0x70 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
                 0x10005f4c                rt_hw_usart0_init
  .text.UART0_IRQHandler
-                0x10005fbc       0x90 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x10005fbc       0x90 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
                 0x10005fbc                UART0_IRQHandler
  .text.NVIC_EnableIRQ
-                0x1000604c       0x34 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x1000604c       0x34 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .text.NVIC_DisableIRQ
-                0x10006080       0x38 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x10006080       0x38 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .text.NVIC_SetPriority
-                0x100060b8       0x58 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x100060b8       0x58 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .text.configure
-                0x10006110      0x230 ./src/bsp/driver_periph/lpc1788_usart1.o
- .text.control  0x10006340       0x74 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x10006110      0x230 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
+ .text.control  0x10006340       0x74 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .text.put_char
-                0x100063b4       0x70 ./src/bsp/driver_periph/lpc1788_usart1.o
- .text.getchar  0x10006424       0x8c ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x100063b4       0x70 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
+ .text.getchar  0x10006424       0x8c ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .text.writeSendFifo
-                0x100064b0       0x78 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x100064b0       0x78 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .text.dma_transmit
-                0x10006528       0x60 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x10006528       0x60 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .text.rt_hw_usart1_init
-                0x10006588       0x70 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x10006588       0x70 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
                 0x10006588                rt_hw_usart1_init
  .text.UART1_IRQHandler
-                0x100065f8       0x90 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x100065f8       0x90 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
                 0x100065f8                UART1_IRQHandler
  .text.NVIC_SetPriority
                 0x10006688       0x58 ./src/bsp/bsp.o
@@ -2605,36 +2605,36 @@ END GROUP
                 0x10008074       0x10 ./src/os/rt-thread/components/drivers/serial/serial.o
  .rodata.__FUNCTION__.4871
                 0x10008084       0x10 ./src/os/rt-thread/components/drivers/serial/serial.o
- .rodata        0x10008094       0x4c ./src/bsp/driver_periph/lpc1788_usart0.o
+ .rodata        0x10008094       0x4c ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .rodata.usart_ops
-                0x100080e0       0x14 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x100080e0       0x14 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .rodata.C.0.7576
-                0x100080f4        0x8 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x100080f4        0x8 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .rodata.__FUNCTION__.6579
-                0x100080fc       0x10 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x100080fc       0x10 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .rodata.__FUNCTION__.6559
-                0x1000810c        0x8 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x1000810c        0x8 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .rodata.__FUNCTION__.6550
-                0x10008114        0xc ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x10008114        0xc ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .rodata.__FUNCTION__.6537
-                0x10008120        0x8 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x10008120        0x8 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .rodata.__FUNCTION__.6497
-                0x10008128        0xc ./src/bsp/driver_periph/lpc1788_usart0.o
- .rodata        0x10008134       0x4c ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x10008128        0xc ./src/bsp/driver_periph/usart/lpc1788_usart0.o
+ .rodata        0x10008134       0x4c ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .rodata.usart_ops
-                0x10008180       0x14 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x10008180       0x14 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .rodata.C.0.7576
-                0x10008194        0x8 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x10008194        0x8 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .rodata.__FUNCTION__.6579
-                0x1000819c       0x10 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x1000819c       0x10 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .rodata.__FUNCTION__.6559
-                0x100081ac        0x8 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x100081ac        0x8 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .rodata.__FUNCTION__.6550
-                0x100081b4        0xc ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x100081b4        0xc ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .rodata.__FUNCTION__.6537
-                0x100081c0        0x8 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x100081c0        0x8 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .rodata.__FUNCTION__.6497
-                0x100081c8        0xc ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x100081c8        0xc ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .rodata        0x100081d4       0x44 ./src/app/app.o
  .rodata        0x10008218       0x58 ./src/app/main.o
  *(.ARM.extab* .gnu.linkonce.armextab.*)
@@ -2791,25 +2791,25 @@ END GROUP
                 0x10009e04        0x4 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_mci.o
                 0x10009e04                Mci_Data_Xfer_ERR
  .bss.RecvFifoLength
-                0x10009e08        0x1 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x10009e08        0x1 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .bss.SendFifoLength
-                0x10009e09        0x1 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x10009e09        0x1 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  *fill*         0x10009e0a        0x2 00
- .bss.SendPtr   0x10009e0c        0x4 ./src/bsp/driver_periph/lpc1788_usart0.o
+ .bss.SendPtr   0x10009e0c        0x4 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .bss.SendLength
-                0x10009e10        0x4 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x10009e10        0x4 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .bss.serial_device
-                0x10009e14       0x78 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x10009e14       0x78 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .bss.RecvFifoLength
-                0x10009e8c        0x1 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x10009e8c        0x1 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .bss.SendFifoLength
-                0x10009e8d        0x1 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x10009e8d        0x1 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  *fill*         0x10009e8e        0x2 00
- .bss.SendPtr   0x10009e90        0x4 ./src/bsp/driver_periph/lpc1788_usart1.o
+ .bss.SendPtr   0x10009e90        0x4 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .bss.SendLength
-                0x10009e94        0x4 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x10009e94        0x4 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .bss.serial_device
-                0x10009e98       0x78 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x10009e98       0x78 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  *(COMMON)
  COMMON         0x10009f10        0x1 ./src/os/rt-thread/src/irq.o
                 0x10009f10                rt_interrupt_nest
@@ -2828,7 +2828,7 @@ END GROUP
                 0x1000a034                rt_interrupt_to_thread
                 0x1000a038                rt_interrupt_from_thread
                 0x1000a03c                rt_thread_switch_interrupt_flag
- COMMON         0x1000a040      0x108 ./src/bsp/driver_periph/lpc1788_usart0.o
+ COMMON         0x1000a040      0x108 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
                 0x1000a040                serial_int_rx
                 0x1000a0c4                serial_int_tx
                 0x1000a148                __bss_end__ = .
@@ -2936,8 +2936,8 @@ END GROUP
  .comment       0x00000000       0x2b ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_uart.o
  .comment       0x00000000       0x2b ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_wwdt.o
  .comment       0x00000000       0x2b ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
- .comment       0x00000000       0x2b ./src/bsp/driver_periph/lpc1788_usart0.o
- .comment       0x00000000       0x2b ./src/bsp/driver_periph/lpc1788_usart1.o
+ .comment       0x00000000       0x2b ./src/bsp/driver_periph/usart/lpc1788_usart0.o
+ .comment       0x00000000       0x2b ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .comment       0x00000000       0x2b ./src/bsp/bsp.o
  .comment       0x00000000       0x2b ./src/app/app.o
  .comment       0x00000000       0x2b ./src/app/main.o
@@ -3059,9 +3059,9 @@ END GROUP
  .debug_aranges
                 0x00001c78       0x28 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
  .debug_aranges
-                0x00001ca0       0x70 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x00001ca0       0x70 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .debug_aranges
-                0x00001d10       0x70 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x00001d10       0x70 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .debug_aranges
                 0x00001d80       0x38 ./src/bsp/bsp.o
  .debug_aranges
@@ -3179,9 +3179,9 @@ END GROUP
  .debug_pubnames
                 0x00003be4       0x7d ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
  .debug_pubnames
-                0x00003c61       0x61 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x00003c61       0x61 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .debug_pubnames
-                0x00003cc2       0x61 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x00003cc2       0x61 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .debug_pubnames
                 0x00003d23       0x3b ./src/bsp/bsp.o
  .debug_pubnames
@@ -3251,8 +3251,8 @@ END GROUP
  .debug_info    0x000208c5      0x5bd ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_wwdt.o
  .debug_info    0x00020e82       0xa7 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/GCC/startup_LPC177x_8x.o
  .debug_info    0x00020f29      0x6f4 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
- .debug_info    0x0002161d     0x1586 ./src/bsp/driver_periph/lpc1788_usart0.o
- .debug_info    0x00022ba3     0x13ac ./src/bsp/driver_periph/lpc1788_usart1.o
+ .debug_info    0x0002161d     0x1586 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
+ .debug_info    0x00022ba3     0x13ac ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .debug_info    0x00023f4f      0x608 ./src/bsp/bsp.o
  .debug_info    0x00024557      0x42e ./src/app/app.o
  .debug_info    0x00024985      0x107 ./src/app/main.o
@@ -3319,13 +3319,13 @@ END GROUP
  .debug_abbrev  0x00005352      0x1c7 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_wwdt.o
  .debug_abbrev  0x00005519       0x12 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/GCC/startup_LPC177x_8x.o
  .debug_abbrev  0x0000552b      0x14d ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
- .debug_abbrev  0x00005678      0x2bb ./src/bsp/driver_periph/lpc1788_usart0.o
- .debug_abbrev  0x00005933      0x2bb ./src/bsp/driver_periph/lpc1788_usart1.o
+ .debug_abbrev  0x00005678      0x2bb ./src/bsp/driver_periph/usart/lpc1788_usart0.o
+ .debug_abbrev  0x00005933      0x2bb ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .debug_abbrev  0x00005bee      0x133 ./src/bsp/bsp.o
  .debug_abbrev  0x00005d21      0x11e ./src/app/app.o
  .debug_abbrev  0x00005e3f       0xa7 ./src/app/main.o
 
-.debug_line     0x00000000    0x10a8d
+.debug_line     0x00000000    0x10a9f
  *(.debug_line)
  .debug_line    0x00000000      0x167 ./src/os/rt-thread/src/clock.o
  .debug_line    0x00000167      0x2c8 ./src/os/rt-thread/src/device.o
@@ -3387,11 +3387,11 @@ END GROUP
  .debug_line    0x0000eeb2      0x4ac ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_wwdt.o
  .debug_line    0x0000f35e       0xb3 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/GCC/startup_LPC177x_8x.o
  .debug_line    0x0000f411      0x37f ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
- .debug_line    0x0000f790      0x5dc ./src/bsp/driver_periph/lpc1788_usart0.o
- .debug_line    0x0000fd6c      0x5dd ./src/bsp/driver_periph/lpc1788_usart1.o
- .debug_line    0x00010349      0x329 ./src/bsp/bsp.o
- .debug_line    0x00010672      0x217 ./src/app/app.o
- .debug_line    0x00010889      0x204 ./src/app/main.o
+ .debug_line    0x0000f790      0x5e2 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
+ .debug_line    0x0000fd72      0x5e3 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
+ .debug_line    0x00010355      0x329 ./src/bsp/bsp.o
+ .debug_line    0x0001067e      0x217 ./src/app/app.o
+ .debug_line    0x00010895      0x20a ./src/app/main.o
 
 .debug_frame    0x00000000     0x6474
  *(.debug_frame)
@@ -3448,8 +3448,8 @@ END GROUP
  .debug_frame   0x000054e4      0x398 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_uart.o
  .debug_frame   0x0000587c      0x254 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_wwdt.o
  .debug_frame   0x00005ad0       0x48 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
- .debug_frame   0x00005b18      0x160 ./src/bsp/driver_periph/lpc1788_usart0.o
- .debug_frame   0x00005c78      0x160 ./src/bsp/driver_periph/lpc1788_usart1.o
+ .debug_frame   0x00005b18      0x160 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
+ .debug_frame   0x00005c78      0x160 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .debug_frame   0x00005dd8       0x84 ./src/bsp/bsp.o
  .debug_frame   0x00005e5c       0xb0 ./src/app/app.o
  .debug_frame   0x00005f0c       0x68 ./src/app/main.o
@@ -3477,7 +3477,7 @@ END GROUP
  .debug_frame   0x00006428       0x20 e:/program files/codesourcery/sourcery g++ lite/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-errno.o)
  .debug_frame   0x00006448       0x2c e:/program files/codesourcery/sourcery g++ lite/bin/../lib/gcc/arm-none-eabi/4.5.2/../../../../arm-none-eabi/lib/thumb2\libc.a(lib_a-init.o)
 
-.debug_str      0x00000000     0x96ef
+.debug_str      0x00000000     0x96fb
  *(.debug_str)
  .debug_str     0x00000000      0x202 ./src/os/rt-thread/src/clock.o
                                 0x29a (size before relaxing)
@@ -3595,15 +3595,15 @@ END GROUP
                                 0x3b8 (size before relaxing)
  .debug_str     0x00009447       0x97 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
                                 0x394 (size before relaxing)
- .debug_str     0x000094de       0xf2 ./src/bsp/driver_periph/lpc1788_usart0.o
-                                0xc0b (size before relaxing)
- .debug_str     0x000095d0       0x4d ./src/bsp/driver_periph/lpc1788_usart1.o
-                                0xbfa (size before relaxing)
- .debug_str     0x0000961d       0x47 ./src/bsp/bsp.o
+ .debug_str     0x000094de       0xf8 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
+                                0xc11 (size before relaxing)
+ .debug_str     0x000095d6       0x53 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
+                                0xc00 (size before relaxing)
+ .debug_str     0x00009629       0x47 ./src/bsp/bsp.o
                                 0x46b (size before relaxing)
- .debug_str     0x00009664       0x44 ./src/app/app.o
+ .debug_str     0x00009670       0x44 ./src/app/app.o
                                 0x260 (size before relaxing)
- .debug_str     0x000096a8       0x47 ./src/app/main.o
+ .debug_str     0x000096b4       0x47 ./src/app/main.o
                                  0xfa (size before relaxing)
 
 .debug_loc      0x00000000     0xa8c6
@@ -3661,8 +3661,8 @@ END GROUP
  .debug_loc     0x00009660      0x692 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_uart.o
  .debug_loc     0x00009cf2      0x430 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_wwdt.o
  .debug_loc     0x0000a122       0x64 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
- .debug_loc     0x0000a186      0x268 ./src/bsp/driver_periph/lpc1788_usart0.o
- .debug_loc     0x0000a3ee      0x268 ./src/bsp/driver_periph/lpc1788_usart1.o
+ .debug_loc     0x0000a186      0x268 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
+ .debug_loc     0x0000a3ee      0x268 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .debug_loc     0x0000a656       0xc8 ./src/bsp/bsp.o
  .debug_loc     0x0000a71e      0x118 ./src/app/app.o
  .debug_loc     0x0000a836       0x90 ./src/app/main.o
@@ -3786,9 +3786,9 @@ END GROUP
  .debug_macinfo
                 0x0016772d     0x7429 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
  .debug_macinfo
-                0x0016eb56     0xaff5 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x0016eb56     0xaff5 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .debug_macinfo
-                0x00179b4b     0xaff5 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x00179b4b     0xaff5 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .debug_macinfo
                 0x00184b40     0x8725 ./src/bsp/bsp.o
  .debug_macinfo
@@ -3939,9 +3939,9 @@ END GROUP
  .ARM.attributes
                 0x00000b6d       0x31 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
  .ARM.attributes
-                0x00000b9e       0x31 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x00000b9e       0x31 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .ARM.attributes
-                0x00000bcf       0x31 ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x00000bcf       0x31 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .ARM.attributes
                 0x00000c00       0x31 ./src/bsp/bsp.o
  .ARM.attributes
@@ -4136,9 +4136,9 @@ OUTPUT(RTT_Demo0.elf elf32-littlearm)
  .debug_pubtypes
                 0x00003119       0x57 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
  .debug_pubtypes
-                0x00003170      0x273 ./src/bsp/driver_periph/lpc1788_usart0.o
+                0x00003170      0x273 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
  .debug_pubtypes
-                0x000033e3      0x25e ./src/bsp/driver_periph/lpc1788_usart1.o
+                0x000033e3      0x25e ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .debug_pubtypes
                 0x00003641       0x7a ./src/bsp/bsp.o
  .debug_pubtypes
@@ -4201,8 +4201,8 @@ OUTPUT(RTT_Demo0.elf elf32-littlearm)
  .debug_ranges  0x00001878       0xa8 ./src/lib/lpc177x_8x/Drivers/source/lpc177x_8x_wwdt.o
  .debug_ranges  0x00001920       0x20 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/GCC/startup_LPC177x_8x.o
  .debug_ranges  0x00001940       0x30 ./src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/system_LPC177x_8x.o
- .debug_ranges  0x00001970       0x60 ./src/bsp/driver_periph/lpc1788_usart0.o
- .debug_ranges  0x000019d0       0x60 ./src/bsp/driver_periph/lpc1788_usart1.o
+ .debug_ranges  0x00001970       0x60 ./src/bsp/driver_periph/usart/lpc1788_usart0.o
+ .debug_ranges  0x000019d0       0x60 ./src/bsp/driver_periph/usart/lpc1788_usart1.o
  .debug_ranges  0x00001a30       0x28 ./src/bsp/bsp.o
  .debug_ranges  0x00001a58       0x30 ./src/app/app.o
  .debug_ranges  0x00001a88       0x20 ./src/app/main.o
