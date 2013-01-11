@@ -106,7 +106,7 @@ struct rt_serial_device
 
     struct rt_data_queue      tx_dq;              /* tx dataqueue */
     
-    volatile rt_bool_t        dma_flag;           /* dma transfer flag */
+    volatile rt_bool_t        tx_busy;           /* dma transfer flag */
 };
 typedef struct rt_serial_device rt_serial_t;
 
@@ -126,6 +126,7 @@ struct rt_uart_ops
 
 void rt_hw_serial_char_isr(struct rt_serial_device *serial);
 void rt_hw_serial_timeout_isr(struct rt_serial_device *serial);
+void rt_hw_serial_int_tx_isr(struct rt_serial_device *serial);
 void rt_hw_serial_dma_tx_isr(struct rt_serial_device *serial);
 rt_err_t rt_hw_serial_register(struct rt_serial_device *serial,
                                const char              *name,

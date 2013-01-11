@@ -13,6 +13,8 @@
 #include "lpc177x_8x_pinsel.h"
 
 
+#define RT_DEVICE_FLAG_TX	RT_DEVICE_FLAG_INT_TX	//RT_DEVICE_FLAG_DMA_TX
+
 #define FIFO_TRIGGER	UART_FIFO_TRGLEV3
 
 #if FIFO_TRIGGER == UART_FIFO_TRGLEV3
@@ -26,7 +28,8 @@
 #endif
 
 
-static rt_uint8_t RecvLength;
+static rt_uint8_t RecvFifoLength;
+static rt_uint8_t SendFifoLength;
 char *SendPtr;
 rt_size_t SendLength;
 
@@ -206,12 +209,15 @@ static rt_err_t control(	struct rt_serial_device *serial,
 
 static int putchar(struct rt_serial_device *serial, char c)
 {
-	int result = -1;
-
 	RT_ASSERT(serial != RT_NULL);
-	LPC_UART1->THR = c & UART_THR_MASKBIT;
 
-	return result;
+	if( SendFifoLength < 16 )
+	{
+		LPC_UART1->THR = c & UART_THR_MASKBIT;
+		SendFifoLength ++;
+	}
+
+	return (16 - SendFifoLength);
 }
 
 
@@ -224,10 +230,10 @@ static int getchar(struct rt_serial_device *serial)
 
 	while( ((LPC_UART1->LSR) & UART_LSR_BITMASK) & UART_LSR_RDR )
 	{
-		if( RecvLength > 1 )		/// 留下最后一个字节触发字符超时中断。
+		if( RecvFifoLength > 1 )		/// 留下最后一个字节触发字符超时中断。
 		{
 			result = LPC_UART1->RBR;
-			RecvLength--;
+			RecvFifoLength--;
 		}
 		else
 		{
@@ -243,15 +249,16 @@ static int getchar(struct rt_serial_device *serial)
 
 static uint32_t writeSendFifo(void)
 {
-	uint8_t fifo_idx;
+	uint8_t write_cnt = 0;
 
-	for( fifo_idx = 0; fifo_idx < 16; fifo_idx ++ )
+	for( ; SendFifoLength < 16; SendFifoLength ++ )
 	{
 		if( SendLength > 0)
 		{
 			LPC_UART1->THR = (*SendPtr) & UART_THR_MASKBIT;
 			SendPtr ++;
 			SendLength --;
+			write_cnt ++;
 		}
 		else
 		{
@@ -259,7 +266,7 @@ static uint32_t writeSendFifo(void)
 		}
 	}
 
-	return fifo_idx;
+	return write_cnt;
 }
 
 
@@ -301,7 +308,7 @@ void rt_hw_usart_init(void)
 
     /* register USART1 device */
     rt_hw_serial_register(&serial1, "serial1",
-                          RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_INT_RX | RT_DEVICE_FLAG_DMA_TX,
+                          RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_INT_RX | RT_DEVICE_FLAG_TX,
                           (void*)0 );
 }
 
@@ -339,24 +346,30 @@ void UART1_IRQHandler(void)
     // Receive Data Available
     if ( iir == UART_IIR_INTID_RDA )
     {
-    	RecvLength = FIFO_THRESHOLD;
+    	RecvFifoLength = FIFO_THRESHOLD;
     	rt_hw_serial_char_isr(&serial1);
     }
 
     // Receive Character time-out
     if( iir == UART_IIR_INTID_CTI )
     {
-    	RecvLength = FIFO_THRESHOLD;
+    	RecvFifoLength = FIFO_THRESHOLD;
     	rt_hw_serial_timeout_isr(&serial1);
     }
 
     // Transmit Holding Empty
     if ( iir == UART_IIR_INTID_THRE )
     {
+    	SendFifoLength = 0;
+
+#if (RT_DEVICE_FLAG_TX == RT_DEVICE_FLAG_DMA_TX)
     	if( writeSendFifo() == 0 )
     	{
     		rt_hw_serial_dma_tx_isr(&serial1);
     	}
+#else
+    	rt_hw_serial_int_tx_isr(&serial1);
+#endif
     }
 
     rt_interrupt_leave();

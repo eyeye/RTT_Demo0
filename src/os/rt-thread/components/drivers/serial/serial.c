@@ -137,7 +137,7 @@ static rt_err_t rt_serial_init(struct rt_device *dev)
 
         if (dev->flag & RT_DEVICE_FLAG_DMA_TX)
         {
-            serial->dma_flag = RT_FALSE;
+            serial->tx_busy = RT_FALSE;
             
             /* init data queue */
             rt_data_queue_init(&(serial->tx_dq), RT_SERIAL_TX_DATAQUEUE_SIZE,
@@ -243,6 +243,44 @@ static rt_size_t rt_serial_read(struct rt_device *dev,
     return read_nbytes;
 }
 
+
+
+static inline rt_size_t serial_put(struct rt_serial_device *serial)
+{
+	int ch;
+	int count = 0;
+	int remain;
+
+    while(1)
+    {
+    	ch = serial_ringbuffer_getc(serial->int_tx);
+    	if( ch > 0 )
+    	{// rb中还有需要发送的数据
+    		remain = serial->ops->putc(serial, ch);
+    		count ++;
+    		if( remain == 0 )
+    			break;
+    	}
+    	else if( count == 0 )
+    	{// rb中没有需要发送的数据 & 发送数据结束。
+    	    /* invoke callback */
+    		serial->tx_busy = RT_FALSE;
+    	    if (serial->parent.tx_complete != RT_NULL)
+    	    {
+    	        serial->parent.tx_complete(&serial->parent, RT_NULL);
+    	    }
+    	    break;
+    	}
+    	else//  (ch < 0) && (count != 0)
+    	{// rb中没有需要发送的数据 & 数据发送未结束。
+    		break;
+    	}
+    }
+
+    return count;
+}
+
+
 static rt_size_t rt_serial_write(struct rt_device *dev,
                                  rt_off_t          pos,
                                  const void       *buffer,
@@ -259,6 +297,7 @@ static rt_size_t rt_serial_write(struct rt_device *dev,
 
     if (dev->flag & RT_DEVICE_FLAG_INT_TX)
     {
+    	rt_base_t level;
         /* warning: data will be discarded if buffer is full */
         while (size)
         {
@@ -270,6 +309,17 @@ static rt_size_t rt_serial_write(struct rt_device *dev,
             else
                 break;
         }
+
+        level = rt_hw_interrupt_disable();
+        if( serial->tx_busy == RT_FALSE )
+        {
+        	rt_hw_interrupt_enable(level);
+        	serial->tx_busy = RT_TRUE;
+        	/// TODO
+        	serial_put(serial);
+        }
+        else
+        	rt_hw_interrupt_enable(level);
     }
     else if (dev->flag & RT_DEVICE_FLAG_DMA_TX)
     {
@@ -284,9 +334,9 @@ static rt_size_t rt_serial_write(struct rt_device *dev,
         if (result == RT_EOK)
         {
             level = rt_hw_interrupt_disable();
-            if (serial->dma_flag == RT_FALSE)
+            if (serial->tx_busy == RT_FALSE)
             {
-                serial->dma_flag = RT_TRUE;
+                serial->tx_busy = RT_TRUE;
                 rt_hw_interrupt_enable(level);
             
                 if (RT_EOK == rt_data_queue_pop(&(serial->tx_dq), &data_ptr, &data_size, 0))
@@ -445,6 +495,18 @@ void rt_hw_serial_timeout_isr(struct rt_serial_device *serial)
 
 
 /*
+ * ISR for Int mode Tx
+ */
+void rt_hw_serial_int_tx_isr(struct rt_serial_device *serial)
+{
+    /* interrupt mode send */
+    RT_ASSERT(serial->parent.flag & RT_DEVICE_FLAG_INT_TX);
+
+    serial_put(serial);
+}
+
+
+/*
  * ISR for DMA mode Tx
  */
 void rt_hw_serial_dma_tx_isr(struct rt_serial_device *serial)
@@ -459,7 +521,7 @@ void rt_hw_serial_dma_tx_isr(struct rt_serial_device *serial)
     }
     else
     {
-        serial->dma_flag = RT_FALSE;
+        serial->tx_busy = RT_FALSE;
     }
 
     /* invoke callback */
