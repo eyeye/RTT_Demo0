@@ -229,8 +229,8 @@
 #define USBCLKSEL_Val         0x00000201
 #define EMCCLKSEL_Val         0x00000001
 #define PCLKSEL_Val           0x00000002
-#define PCONP_Val             0x042887DE
-#define CLKOUTCFG_Val         0x00000100
+#define PCONP_Val             0xFFFEFFFF
+#define CLKOUTCFG_Val         0x00000000
 
 
 /*--------------------- Flash Accelerator Configuration ----------------------

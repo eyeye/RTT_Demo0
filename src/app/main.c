@@ -42,12 +42,18 @@ void rtthread_startup(void)
 	/* initialize board */
 	rt_hw_board_init();
 
-	/* show version */
-	rt_show_version();
-
 #ifdef RT_USING_HEAP
     rt_system_heap_init((void*)SRAM_BEGIN, (void*)LPC1788_SRAM_END);
 #endif
+
+    rt_hw_usart_init();
+
+#ifdef RT_USING_CONSOLE
+    rt_console_set_device(RT_CONSOLE_DEVICE_NAME);
+#endif
+
+	/* show version */
+	rt_show_version();
 
 	/* initialize scheduler system */
 	rt_system_scheduler_init();

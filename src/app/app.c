@@ -86,6 +86,7 @@ static void demo0(void* parameter)
 	{
 		rt_thread_delay(1000);
 		count ++;
+		rt_kprintf("demo0 count: %d \r\n", count);
 	}
 }
 
@@ -99,6 +100,7 @@ static void demo1(void* parameter)
 	{
 		rt_thread_delay(2000);
 		count ++;
+		rt_kprintf("demo1 count: %d \r\n", count);
 	}
 }
 
@@ -111,6 +113,7 @@ static void demo2(void* parameter)
 	{
 		rt_thread_delay(3000);
 		count ++;
+		rt_kprintf("demo2 count: %d \r\n", count);
 	}
 }
 
@@ -149,3 +152,5 @@ int rt_application_init(void)
 
     return 0;
 }
+
+

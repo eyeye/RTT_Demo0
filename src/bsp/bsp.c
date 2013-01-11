@@ -9,7 +9,7 @@
 #include <rtthread.h>
 #include "LPC177x_8x.h"
 #include "system_LPC177x_8x.h"
-
+#include "bsp/driver_periph/lpc1788_usart.h"
 
 
 
@@ -32,4 +32,5 @@ void rt_hw_board_init(void)
     SysTick_Config( SystemCoreClock/RT_TICK_PER_SECOND - 1);
     /* set pend exception priority */
     NVIC_SetPriority(PendSV_IRQn, (1<<__NVIC_PRIO_BITS) - 1);
+
 }

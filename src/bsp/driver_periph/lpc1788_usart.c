@@ -30,6 +30,9 @@ static rt_uint8_t RecvLength;
 char *SendPtr;
 rt_size_t SendLength;
 
+struct serial_ringbuffer serial1_int_rx;
+struct serial_ringbuffer serial1_int_tx;
+
 struct rt_serial_device serial1;
 
 
@@ -161,7 +164,7 @@ static rt_err_t configure(	struct rt_serial_device *serial,
     UART_IntConfig(UART_1, UART_INTCFG_RBR, ENABLE);
     /* Enable UART line status interrupt */
     UART_IntConfig(UART_1, UART_INTCFG_RLS, ENABLE);
-
+    UART_IntConfig(UART_1, UART_INTCFG_THRE, ENABLE);
     /* preemption = 1, sub-priority = 1 */
     NVIC_SetPriority(UART1_IRQn, ((0x01<<3)|0x01));
 
@@ -247,6 +250,7 @@ static uint32_t writeSendFifo(void)
 		if( SendLength > 0)
 		{
 			LPC_UART1->THR = (*SendPtr) & UART_THR_MASKBIT;
+			SendPtr ++;
 			SendLength --;
 		}
 		else
@@ -288,11 +292,16 @@ void rt_hw_usart_init(void)
 {
 	struct serial_configure config = RT_SERIAL_CONFIG_DEFAULT;
 
+	serial1.ops    = &usart_ops;
+	serial1.int_rx = &serial1_int_rx;
+	serial1.int_tx = &serial1_int_tx;
+	serial1.config = config;
+
 	configure(&serial1, &config);
 
     /* register USART1 device */
-    rt_hw_serial_register(&serial1, "uart2",
-                          RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_INT_RX | RT_DEVICE_FLAG_DMA_TX | RT_DEVICE_FLAG_STREAM,
+    rt_hw_serial_register(&serial1, "serial1",
+                          RT_DEVICE_FLAG_RDWR | RT_DEVICE_FLAG_INT_RX | RT_DEVICE_FLAG_DMA_TX,
                           (void*)0 );
 }
 

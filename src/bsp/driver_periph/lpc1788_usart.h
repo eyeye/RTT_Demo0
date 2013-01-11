@@ -9,10 +9,7 @@
 #define LPC1788_USART_H_
 
 
-
-
-
-
+void rt_hw_usart_init(void);
 
 
 
