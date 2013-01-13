@@ -63,6 +63,10 @@
 								<option id="org.eclipse.cdt.cross.arm.gnu.c.compiler.option.optimization.level.682020601" name="Optimization level" superClass="org.eclipse.cdt.cross.arm.gnu.c.compiler.option.optimization.level" value="org.eclipse.cdt.cross.arm.gnu.base.option.optimization.level.none" valueType="enumerated"/>
 								<option id="org.eclipse.cdt.cross.arm.gnu.c.compiler.option.include.paths.1680476148" name="Include paths (-I)" superClass="org.eclipse.cdt.cross.arm.gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/lib/lpc177x_8x/Core/CMSIS/Include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/os/rt-thread/components/net/lwip/src/include/ipv4}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/os/rt-thread/components/net/lwip/src/arch/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/os/rt-thread/components/net/lwip/src}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/os/rt-thread/components/net/lwip/src/include}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/os/rt-thread}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/os/rt-thread/components/drivers/include/drivers}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/os/rt-thread/components/drivers/include}&quot;"/>
@@ -104,7 +108,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/lib/lpc177x_8x/Core/CMSIS/Include" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src/os/rt-thread/components/net/lwip/apps|src/os/rt-thread/components/net/lwip/apps/ftpd.c|src/os/rt-thread/components/net/lwip/src/core/ipv6|src/os/rt-thread/components/net/lwip/test|src/lib/lpc177x_8x/Core/CMSIS/Include" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -154,7 +158,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/lib/lpc177x_8x/Core/CMSIS/Include" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src/os/rt-thread/components/net/lwip/apps|src/os/rt-thread/components/net/lwip/apps/ftpd.c|src/os/rt-thread/components/net/lwip/src/core/ipv6|src/os/rt-thread/components/net/lwip/test|src/lib/lpc177x_8x/Core/CMSIS/Include" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

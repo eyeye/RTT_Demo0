@@ -20,6 +20,13 @@ S_UPPER_DEPS :=
 SUBDIRS := \
 src/os/rt-thread/src \
 src/os/rt-thread/libcpu/arm/cortex-m3 \
+src/os/rt-thread/components/net/lwip/src/netif \
+src/os/rt-thread/components/net/lwip/src/netif/ppp \
+src/os/rt-thread/components/net/lwip/src/core \
+src/os/rt-thread/components/net/lwip/src/core/snmp \
+src/os/rt-thread/components/net/lwip/src/core/ipv4 \
+src/os/rt-thread/components/net/lwip/src/arch \
+src/os/rt-thread/components/net/lwip/src/api \
 src/os/rt-thread/components/init \
 src/os/rt-thread/components/drivers/src \
 src/os/rt-thread/components/drivers/spi \
@@ -30,6 +37,7 @@ src/lib/lpc177x_8x/Drivers/source \
 src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates \
 src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/GCC \
 src/bsp/driver_periph/usart \
+src/bsp/driver_periph/ethenet \
 src/bsp \
 src/app \
 

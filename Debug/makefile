@@ -10,6 +10,13 @@ RM := cs-rm -rf
 -include sources.mk
 -include src/os/rt-thread/src/subdir.mk
 -include src/os/rt-thread/libcpu/arm/cortex-m3/subdir.mk
+-include src/os/rt-thread/components/net/lwip/src/netif/ppp/subdir.mk
+-include src/os/rt-thread/components/net/lwip/src/netif/subdir.mk
+-include src/os/rt-thread/components/net/lwip/src/core/snmp/subdir.mk
+-include src/os/rt-thread/components/net/lwip/src/core/ipv4/subdir.mk
+-include src/os/rt-thread/components/net/lwip/src/core/subdir.mk
+-include src/os/rt-thread/components/net/lwip/src/arch/subdir.mk
+-include src/os/rt-thread/components/net/lwip/src/api/subdir.mk
 -include src/os/rt-thread/components/init/subdir.mk
 -include src/os/rt-thread/components/drivers/src/subdir.mk
 -include src/os/rt-thread/components/drivers/spi/subdir.mk
@@ -20,6 +27,7 @@ RM := cs-rm -rf
 -include src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/GCC/subdir.mk
 -include src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/subdir.mk
 -include src/bsp/driver_periph/usart/subdir.mk
+-include src/bsp/driver_periph/ethenet/subdir.mk
 -include src/bsp/subdir.mk
 -include src/app/subdir.mk
 -include subdir.mk

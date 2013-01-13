@@ -228,7 +228,7 @@ static int getchar(struct rt_serial_device *serial)
 
 	RT_ASSERT(serial != RT_NULL);
 
-	while( ((LPC_UART1->LSR) & UART_LSR_BITMASK) & UART_LSR_RDR )
+	while( ((LPC_UART0->LSR) & UART_LSR_BITMASK) & UART_LSR_RDR )
 	{
 		if( RecvFifoLength > 1 )		/// 留下最后一个字节触发字符超时中断。
 		{
