@@ -32,4 +32,5 @@ src/lib/lpc177x_8x/Core/Device/NXP/LPC177x_8x/Source/Templates/GCC \
 src/bsp/driver_periph/usart \
 src/bsp \
 src/app \
+src/bsp/driver_periph \
 
